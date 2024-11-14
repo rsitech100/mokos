@@ -26,7 +26,7 @@ export function InputField({
 }: InputFieldProps) {
       return (
             <div className="flex flex-col gap-2">
-                  <label className="text-sm font-bold text-neutral-700">{label}</label>
+                  <label className="text-xs sm:text-sm font-bold text-neutral-700">{label}</label>
                   <div className="flex items-center border border-neutral-400 rounded-lg">
                         <input
                               type={showPasswordToggle && showPassword ? "text" : type}

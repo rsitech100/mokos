@@ -20,16 +20,16 @@ export function LoginComponent() {
 
       return (
             // Right Section with Form 
-            <section className="w-1/2 h-screen flex flex-col items-center justify-center gap-4">
+            <section className="w-full lg:w-1/2 p-5 lg:p-0 h-screen flex flex-col items-center justify-center gap-4">
                   <div className="flex flex-col items-center">
                         <div className="rounded-full h-12 w-12 bg-[#D9D9D9]"></div>
-                        <h2 className="mt-5 font-bold text-neutral-700 text-2xl">Masuk</h2>
-                        <p className="text-neutral-600 text-sm mt-1">
+                        <h2 className="mt-2 font-bold text-neutral-700 text-lg sm:text-2xl">Masuk</h2>
+                        <p className="text-neutral-600 text-xs sm:text-sm mt-1">
                               Silahkan masuk dengan akun yang kamu miliki
                         </p>
                   </div>
 
-                  <form className="flex flex-col justify-start text-left w-[400px] gap-4">
+                  <form className="flex flex-col justify-start text-left w-full max-w-[360px] sm:w-[400px] gap-4">
                         {/* Input Email */}
                         <InputField
                               label="Email / Nomor HP"
@@ -52,7 +52,7 @@ export function LoginComponent() {
                         />
 
                         {/* Forgot Password Button */}
-                        <Link href="/auth/forgot-password" className="text-primary-500 font-bold text-sm -mt-2" passHref>Lupa Password?</Link>
+                        <Link href="/auth/forgot-password" className="text-primary-500 font-bold text-xs sm:text-sm -mt-2" passHref>Lupa Password?</Link>
                         {/* Submit Button */}
                         <button
                               type="submit"
@@ -64,10 +64,10 @@ export function LoginComponent() {
                         </button>
                   </form>
 
-                  <div className="flex flex-col text-center w-[400px] gap-4">
+                  <div className="flex flex-col text-center w-full max-w-[360px] sm:w-[400px] gap-4">
                         <div className="flex flex-row text-center items-center">
                               <hr className="border-neutral-400 border w-full h-[1px]" />
-                              <p className="text-neutral-600 text-sm w-full">atau masuk dengan</p>
+                              <p className="text-neutral-600 text-xs sm:text-sm w-full whitespace-nowrap px-2">atau masuk dengan</p>
                               <hr className="border-neutral-400 border w-full" />
                         </div>
                         <button className="flex flex-row w-full items-center justify-center gap-2 rounded-3xl border border-neutral-400 text-neutral-700 text-sm p-2">

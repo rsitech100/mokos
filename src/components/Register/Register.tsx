@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { InputField } from "../Input/InputField";
+import { PopupOTP } from "../Popup/Register/PopupOTP";
 
 // Main RegisterComponent
 export function RegisterComponent() {
@@ -11,6 +12,11 @@ export function RegisterComponent() {
       const [confirmationPassword, setConfirmationPassword] = useState<string>("");
       const [showPassword, setShowPassword] = useState<boolean>(false);
       const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+      const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // State for control the popup
+
+      // function to open and close the pop up
+      const openPopUp = () => setIsPopupOpen(true);
+      const closePopUp = () => setIsPopupOpen(false);
 
       // Function to toggle visibility of the password field
       const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -19,15 +25,22 @@ export function RegisterComponent() {
       // Check if all required fields are filled to enable the button
       const isValid = email.trim() !== "" && password.trim() !== "" && confirmationPassword.trim() !== "";
 
+      // function for handle form submission
+      const handleRegister = (e: React.FormEvent) => {
+            e.preventDefault(); 
+            if (isValid) {
+                  openPopUp();
+            }
+      }
       return (
-            <section className="w-1/2 h-screen flex flex-col items-center justify-center gap-4">
+            <section className="w-full lg:w-1/2 p-5 lg:p-0 h-screen flex flex-col items-center justify-center gap-4">
                   <div className="flex flex-col items-center">
                         <div className="rounded-full h-12 w-12 bg-[#D9D9D9]"></div>
-                        <h2 className="mt-5 font-bold text-neutral-700 text-2xl">Daftar</h2>
-                        <p className="text-neutral-600 text-sm mt-1">Silahkan melakukan pendaftaran</p>
+                        <h2 className="mt-2 font-bold text-neutral-700 text-lg sm:text-2xl">Daftar</h2>
+                        <p className="text-neutral-600 text-xs sm:text-sm mt-1">Silahkan melakukan pendaftaran</p>
                   </div>
 
-                  <form className="flex flex-col justify-start text-left w-[400px] gap-4">
+                  <form className="flex flex-col justify-start text-left w-full max-w-[360px] sm:w-[400px] gap-4" onSubmit={handleRegister}>
                         {/* Input Email */}
                         <InputField
                               label="Email / Nomor HP"
@@ -71,11 +84,11 @@ export function RegisterComponent() {
                         </button>
                   </form>
 
-                  <div className="flex flex-col text-center w-[400px] gap-4">
+                  <div className="flex flex-col text-center w-full max-w-[360px] sm:w-[400px] gap-4">
                         <div className="flex items-center">
-                              <hr className="border-neutral-300 flex-grow" />
-                              <p className="text-neutral-600 text-sm mx-2">atau daftar dengan</p>
-                              <hr className="border-neutral-300 flex-grow" />
+                        <hr className="border-neutral-400 border w-full h-[1px]" />
+                              <p className="text-neutral-600 text-xs sm:text-sm w-full whitespace-nowrap px-2">atau daftar dengan</p>
+                              <hr className="border-neutral-400 border w-full" />
                         </div>
                         <button className="flex items-center justify-center gap-2 rounded-3xl border border-neutral-400 text-neutral-700 text-sm p-2">
                               <Image src="/image/login/google-icon.svg" alt="google-icon" width={20} height={20} className="w-5" />
@@ -85,6 +98,8 @@ export function RegisterComponent() {
                               Sudah punya akun? <Link href="/auth/login" className="text-primary-500 font-semibold">Masuk</Link>
                         </p>
                   </div>
+
+                  <PopupOTP isOpen={isPopupOpen} onClose={closePopUp} />                  
             </section>
       );
 }

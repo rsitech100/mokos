@@ -9,10 +9,10 @@ export default function ForgotPasswordPage() {
 
       return (
             <main className="flex flex-col items-center justify-center h-screen">
-                  <section className="flex flex-col items-center justify-center max-w-[400px] w-full">
+                  <section className="flex flex-col items-center justify-center max-w-[360px] sm:max-w-[400px] w-full">
                         <div className="rounded-full h-12 w-12 bg-[#D9D9D9]"></div>
-                        <h2 className="mt-5 font-bold text-neutral-700 text-2xl">Lupa Kata Sandi</h2>
-                        <p className="text-neutral-600 text-sm mt-1 max-w-[320px] text-center">
+                        <h2 className="mt-5 font-bold text-neutral-700 text-lg sm:text-2xl">Lupa Kata Sandi</h2>
+                        <p className="text-neutral-600 text-xs sm:text-sm mt-1 max-w-[320px] text-center">
                               Masukkan email kamu untuk menerima link pengaturan ulang kata sandi
                         </p>
                         <form className="w-full mt-3">

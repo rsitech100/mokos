@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 import { usePathname } from "next/navigation"
+import Image from "next/image";
 import { disableNavWithFooter } from "@/utils/disableNavWithFooter";
 import { CartButton } from "@/components/Buttons/CartButton";
 import { CategoryButton } from "@/components/Buttons/CategoryButton";
 import { LoginButton } from "@/components/Buttons/LoginButton";
 import { RegisterButton } from "@/components/Buttons/RegisterButton";
 import { SearchButton } from "@/components/Buttons/SearchButton";
-import Image from "next/image";
 import { HamburgerIcon, XIcon } from "./NavbarIcon";
 
 export function Navbar() {
