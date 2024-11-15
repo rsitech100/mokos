@@ -5,10 +5,11 @@ import Image from "next/image";
 import { disableNavWithFooter } from "@/utils/disableNavWithFooter";
 import { CartButton } from "@/components/Buttons/CartButton";
 import { CategoryButton } from "@/components/Buttons/CategoryButton";
-import { LoginButton } from "@/components/Buttons/LoginButton";
-import { RegisterButton } from "@/components/Buttons/RegisterButton";
+
 import { SearchButton } from "@/components/Buttons/SearchButton";
 import { HamburgerIcon, XIcon } from "./NavbarIcon";
+import { MenuBeforeLogin } from "../Menu/MenuBeforeLogin";
+import { MenuAfterLogin } from "../Menu/MenuAfterLogin";
 
 export function Navbar() {
       const path = usePathname()
@@ -23,8 +24,8 @@ export function Navbar() {
                   {!disableNavWithFooter.includes(path) && (
                         <nav className="bg-white shadow-card">
                               <div className="flex flex-row px-0 lg:px-20 lg:py-4 w-full justify-between max-w-[1440px] mx-auto items-center">
-                                    <div className="flex flex-col lg:flex-row gap-5 w-full justify-around">
-                                          <div className="flex flex-row gap-5 w-full justify-between shadow-card py-4 px-5 lg:shadow-none">
+                                    <div className="flex flex-col lg:flex-row w-full justify-around">
+                                          <div className="flex flex-row gap-5 lg:gap-0 w-full items-center justify-between shadow-card py-4 lg:py-0 px-5 lg:px-0 lg:shadow-none">
                                                 {/* Logo Profile */}
                                                 {!isOpen &&
                                                       <div className="w-16 sm:w-[48px] sm:h-fit flex items-center justify-center">
@@ -43,20 +44,18 @@ export function Navbar() {
 
                                                 {/* Search Button */}
                                                 {!isOpen && <SearchButton />}
+                                                {!isOpen && <CartButton />}
                                                 <div className="flex flex-row items-center gap-5">
-                                                      {!isOpen && <CartButton />}
                                                       <div className="lg:hidden flex items-center justify-center">
                                                             <button onClick={toggleMenu}>
                                                                   {isOpen ? <XIcon className="transition-transform duration-300 transform rotate-180 opacity-100" /> : <HamburgerIcon className="transition-transform duration-300 transform rotate-0 opacity-100" />}
                                                             </button>
                                                       </div>
-                                                      <hr className="bg-neutral-400 w-6 rotate-90 hidden lg:flex" />
                                                 </div>
                                           </div>
-                                          <div className={`lg:flex flex-row gap-5 items-start lg:items-center bg-white ${isOpen ? 'flex bg-white h-screen z-50 px-5' : 'hidden'}`}>
-                                                <LoginButton />
-                                                <RegisterButton />
-                                          </div>
+                                          {/* If the user is not logged in, the BeforeLogin menu will be displayed. */}
+                                          {/* <MenuBeforeLogin isOpen={isOpen} /> */}
+                                          <MenuAfterLogin isOpen={isOpen} />
                                     </div>
                               </div>
                         </nav>
