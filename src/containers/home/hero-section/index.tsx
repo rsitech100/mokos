@@ -14,7 +14,7 @@ const ImagesItem: ImagesType[] = [
 
 export function Hero() {
       return (
-            <section className="px-5 lg:px-20 w-full h-fit lg:h-[300px]">
+            <section className="px-5 lg:px-20 w-full h-fit lg:h-[300px] flex items-center justify-center">
                   <Swiper
                         modules={[Autoplay, Pagination]}
                         pagination={{ clickable: true }}
@@ -23,15 +23,16 @@ export function Hero() {
                         spaceBetween={10}
                         slidesPerView={1}
                         className="relative"
+                        centeredSlides={true}
                   >
                         {ImagesItem.map((item) => (
-                              <SwiperSlide key={item.alt} >
+                              <SwiperSlide key={item.alt} className="w-full h-auto object-contain" >
                                     <Image
                                           src={item.image}
                                           alt={item.alt}
                                           width={100}
                                           height={100}
-                                          className="rounded-2xl w-fit h-auto"
+                                          className="rounded-2xl w-full h-auto object-contain"
                                           loading="lazy"
                                     />
                               </SwiperSlide>
