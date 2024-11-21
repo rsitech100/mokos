@@ -6,6 +6,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { UserProfile } from "./Profile/UserProfile";
 import { PopupMenuProfile } from "@/components/Popup/Header/Profile/PopupMenuProfile";
 import { ProfileItems } from "./Profile/ProfileItems";
+import { motion } from "framer-motion"; // Import motion dari Framer Motion
 
 interface ProfileAfterLoginProps {
   isOpen: boolean;
@@ -20,18 +21,23 @@ export function MenuAfterLogin({ isOpen }: ProfileAfterLoginProps) {
 
   return (
     <div
-      className={`lg:flex flex-row gap-5 justify-start bg-white cursor-pointer ${
-        isOpen ? "items-start flex bg-white h-screen z-50 px-5" : "hidden"
-      }`}
+      className={`lg:flex flex-row gap-5 justify-start bg-white cursor-pointer ${isOpen ? "items-start flex bg-white h-screen z-50 px-5" : "hidden"
+        }`}
     >
       {isOpen ? (
-        <div className="flex flex-col w-full max-w-[250px] gap-5">
+        <motion.div
+          initial={{ opacity: 0, x: -100 }}  // Mulai dengan opacity 0 dan geser ke kanan
+          animate={{ opacity: 1, x: 0 }}    // Animasi menuju opacity penuh dan posisi normal
+          exit={{ opacity: 0, x: 100 }}    // Animasi saat keluar, geser ke kiri dan hilang
+          transition={{ duration: 0.3 }}     // Durasi animasi 0.3 detik
+          className="flex flex-col w-full max-w-[250px] gap-5"
+        >
           <UserProfile />
           <div className="border-t-[1px] border-dashed border-neutral-400"></div>
           <div className="flex flex-col">
             <ProfileItems />
           </div>
-        </div>
+        </motion.div>
       ) : (
         <div className="flex items-center">
           <NotificationButton />
@@ -56,9 +62,14 @@ export function MenuAfterLogin({ isOpen }: ProfileAfterLoginProps) {
           </div>
 
           {isPopUpVisible && (
-            <div className="absolute top-[85px] right-[310px] z-50">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}  // Mulai dari bawah dengan opacity 0
+              animate={{ opacity: 1, y: 0 }}    // Muncul dengan opacity penuh dan posisi normal
+              transition={{ duration: 0.2 }}     // Durasi animasi 0.2 detik
+              className="absolute top-[60px] right-[310px] z-50"
+            >
               <PopupMenuProfile />
-            </div>
+            </motion.div>
           )}
         </div>
       )}

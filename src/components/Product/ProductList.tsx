@@ -1,15 +1,17 @@
 import { ProductCard } from "./ProductCard";
-import { productsData } from "@/utils/product-data";
+import { productsData } from "@/lib/product-data";
 
 interface ProductsListProps {
   showAllProducts: boolean;
+  gridClass?: string;
+  FeaturedProducts: number;
 }
 
-export function ProductList({ showAllProducts }: ProductsListProps) {
-  const displayedProducts = showAllProducts ? productsData : productsData.slice(0, 12);
+export function ProductList({ showAllProducts, gridClass, FeaturedProducts }: ProductsListProps) {
+  const displayedProducts = showAllProducts ? productsData : productsData.slice(0, FeaturedProducts);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+    <div className={`grid gap-5 ${gridClass}`}>
       {displayedProducts.map((item) => (
         <ProductCard
           key={item.id}

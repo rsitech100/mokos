@@ -1,6 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation"
-import { disableNavWithFooter } from "@/utils/disableNavWithFooter";
+import { disableNavWithFooter } from "@/utils/DisableNavWithFooter";
 import Image from "next/image";
 import Link from "next/link";
 import { ImagesIconType } from "@/types/images";

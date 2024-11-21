@@ -8,8 +8,8 @@ type IconProps = {
       <svg
         className={className}
         xmlns="http://www.w3.org/2000/svg"
-        width="30"
-        height="30"
+        width="24"
+        height="24"
         viewBox="0 0 256 256"
         fill="#292D32" 
       >
@@ -41,8 +41,8 @@ type IconProps = {
       <svg
         className={className}
         xmlns="http://www.w3.org/2000/svg"
-        width="30"
-        height="30"
+        width="24"
+        height="24"
         viewBox="0 0 24 24"
         fill="none"
         stroke="#292D32"

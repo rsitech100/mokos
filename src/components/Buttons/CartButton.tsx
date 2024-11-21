@@ -11,7 +11,7 @@ export function CartButton() {
       }
 
       return (
-            <div className="relative cursor-pointer w-6 h-6" onClick={togglePopUp}>
+            <div className="flex items-center justify-center relative cursor-pointer w-6 h-6" onClick={togglePopUp}>
                   <Image src="/image/nav/cart.svg" alt="cart-icon" width={24} height={24} className="w-6 h-6" />
 
                   {isPopUpVisible && (

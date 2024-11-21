@@ -12,7 +12,7 @@ export function NotificationButton() {
 
       return (
             <div className="cursor-pointer w-6 h-6" onClick={togglePopUp}>
-                  <Image src="/image/nav/notification-icon.svg" alt="notification-icon" width={24} height={24} className="w-6 cursor-pointer" />
+                  <Image src="/image/nav/notification-icon.svg" alt="notification-icon" width={24} height={24} className="w-6 h-6 cursor-pointer" />
 
                   {isPopUpVisible && (
                         <div className="absolute top-[53px] right-[720px] z-50">

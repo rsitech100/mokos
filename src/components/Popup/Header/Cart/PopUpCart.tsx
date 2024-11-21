@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { productsData } from "@/utils/product-data";
+import { productsData } from "@/lib/product-data";
 
 export function PopupCart() {
       const ProductsAtChart = productsData.slice(0, 4);
