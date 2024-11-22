@@ -20,7 +20,7 @@ export function FilterByTime() {
                               <SelectGroup>
                                     <SelectItem value="terbaru">Terbaru</SelectItem>
                                     <SelectItem value="harga-tertinggi">Harga Tertinggi</SelectItem>
-                                    <SelectItem value="harga-terrendah">Harga Terrendah</SelectItem>
+                                    <SelectItem value="harga-terrendah">Harga Terendah</SelectItem>
                               </SelectGroup>
                         </SelectContent>
                   </Select>

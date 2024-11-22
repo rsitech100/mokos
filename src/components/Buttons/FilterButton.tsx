@@ -3,7 +3,6 @@ import { useState } from "react";
 import Image from "next/image";
 import { PopupCategoryFilter } from "../Popup/Category/PopupCategoryFilter";
 import { ListFilterCategory } from "../Category/ListFilterCategory";
-import { div } from "framer-motion/client";
 
 export function FilterButton() {
       const [isPopupOpen, setIsPopupOpen] = useState(false);

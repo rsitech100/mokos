@@ -5,13 +5,21 @@ type ProfileItemProps = {
       alt: string;
       title: string;
       onClick?: () => void;
+      isActive?: boolean; // Add isActive prop
 };
 
-export function ProfileItem({ icon, alt, title, onClick }: ProfileItemProps) {
+export function ProfileItem({ icon, alt, title, onClick, isActive }: ProfileItemProps) {
       return (
-            <div className="flex flex-row gap-3 px-3 py-3.5 hover:bg-primary-100 hover:rounded-xl cursor-pointer" onClick={onClick}>
+            <div
+                  className={`flex flex-row items-center gap-3 px-3 py-3.5 cursor-pointer ${isActive ? "bg-primary-100 text-primary-500 rounded-xl font-semibold" : "text-neutral-700"
+                        }`}
+                  onClick={onClick}
+            >
                   <Image src={icon} alt={alt} width={24} height={24} className="w-6" />
-                  <p className="text-sm text-neutral-700 hover:text-primary-500 hover:font-semibold">
+                  <p
+                        className={`text-sm ${isActive ? "text-primary-500 font-semibold" : "text-neutral-700"
+                              }`}
+                  >
                         {title}
                   </p>
             </div>

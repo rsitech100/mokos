@@ -23,7 +23,7 @@ export function Navbar() {
             <>
                   {!disableNavWithFooter.includes(path) && (
                         <nav className="bg-white shadow-card !box-shadow-[4px_4px_20px_0_rgba(203,_202,_202,_0.25)]">
-                              <div className="flex flex-row px-0 lg:px-20 lg:py-4 w-full justify-between max-w-[1440px] mx-auto items-center">
+                              <div className="shadow-md flex flex-row px-0 lg:px-20 lg:py-4 w-full justify-between max-w-[1440px] mx-auto items-center">
                                     <div className="flex flex-col lg:flex-row w-full justify-around">
                                           <div className="flex flex-row gap-5 lg:gap-0 w-full items-center justify-between shadow-card py-4 lg:py-0 px-5 lg:px-0 lg:shadow-none">
                                                 {/* Logo Profile */}

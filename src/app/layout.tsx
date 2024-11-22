@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/Layout/Navbar/Navbar";
-import { Footer } from "@/components/Layout/Footer";
+import ClientWrapper from "@/utils/ClientWrapper";
 
 export const metadata: Metadata = {
   title: "Mini E-Commerce",
@@ -10,23 +9,18 @@ export const metadata: Metadata = {
 };
 
 const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'], 
-  display: 'swap',
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
-
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={`${plusJakartaSans.className} bg-white`}>
-        <Navbar />
-        {children}
-        <Footer />
+        <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
   );
