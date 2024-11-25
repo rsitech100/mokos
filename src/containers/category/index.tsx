@@ -17,7 +17,7 @@ export function CategorySection() {
                   <p className="text-neutral-700 font-bold text-base">Filter</p>     
                   <ListFilterCategory display="hidden lg:flex max-w-[180px]" />
                   </div>
-                  <div className="flex flex-col w-full gap-4">
+                  <div className="flex flex-col max-w-[1000px] w-full gap-4">
                         <div className="flex flex-row items-center justify-between">
                               <p className="text-neutral-700 text-sm">Menampilkan 1 - 15 barang dari {productsData.length} produk untuk &quot;Sepatu&quot;</p>
                               <FilterByTime />

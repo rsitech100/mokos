@@ -3,11 +3,11 @@ import { UserProfile } from "../Menu/Profile/UserProfile";
 
 export function Sidebar() {
       return (
-            <div className="flex flex-col gap-5 w-[250px]">
+            <div className="hidden lg:flex flex-col gap-5 w-[250px]">
                   <UserProfile />
                   <div className="border-t-[1px] border-dashed border-neutral-400"></div>
                   <div className="flex flex-col">
-                        <ProfileItems />
+                  <ProfileItems />
                   </div>
             </div>
       )

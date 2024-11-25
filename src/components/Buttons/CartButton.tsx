@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { PopupCart } from "../Popup/Header/Cart/PopUpCart";
+import { PopupCart } from "../Popup/Header/Cart/PopupCart";
 
 export function CartButton() {
       const [isPopUpVisible, setIsPopUpVisible] = useState(false);

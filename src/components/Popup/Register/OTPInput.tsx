@@ -35,7 +35,7 @@ const OTPInput = ({ length = 6, onComplete }: InputProps) => {
   };
 
   return (
-    <div className="grid grid-cols-6">
+    <div className="grid grid-cols-6 mx-auto gap-4 md:mx-0 md:gap-0">
       {Array.from({ length }, (_, index) => (
         <input
           key={index}

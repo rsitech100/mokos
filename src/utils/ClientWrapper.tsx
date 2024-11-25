@@ -13,7 +13,7 @@ export default function ClientWrapper({
             return (
                   <>
                         <Navbar />
-                        <main className="flex flex-row max-w-[1440px] w-full mx-auto gap-10" style={{ padding: '48px 80px 120px 80px'}}>
+                        <main className="flex flex-row max-w-[1440px] w-full p-5 lg:pt-12 lg:py-[120px] lg:px-20 mx-auto gap-10">
                               <Sidebar />
                               {children}
                         </main>
