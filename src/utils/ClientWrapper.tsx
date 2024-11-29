@@ -9,7 +9,7 @@ export default function ClientWrapper({
 }: Readonly<{ children: React.ReactNode }>) {
       const pathname = usePathname();
 
-      if (pathname === "/profile" || pathname === "/address") {
+      if (pathname === "/profile" || pathname === "/address" || pathname === "/order") {
             return (
                   <>
                         <Navbar />

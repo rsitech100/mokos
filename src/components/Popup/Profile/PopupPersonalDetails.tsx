@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa";
 
-type PopupPersonalDetailsProps = {
+interface PopupPersonalDetailsProps  {
       data: {
             name: string;
             birthDate: string;

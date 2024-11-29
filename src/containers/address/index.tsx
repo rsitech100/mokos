@@ -5,7 +5,7 @@ import { SearchAddressButton } from "@/components/Buttons/SearchAddressButton";
 export function AddressSection() {
       return (
             <div className="flex flex-col shadow-md p-6 rounded-lg w-full gap-6">
-                  <div className="inline-flex w-full justify-between">
+                  <div className="flex flex-col md:flex-row w-full justify-between gap-4">
                   <AddAddressButton />
                   <SearchAddressButton />
                   </div>
