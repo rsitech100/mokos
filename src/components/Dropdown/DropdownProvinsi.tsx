@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchProvinsi } from "@/lib/api/fetchProvinsi";
+import { fetchProvinsi } from "@/lib/api/fetch-provinsi";
 import { DropdownTemplate } from "./Address/DropdownTemplate";
 
 export default function DropdownProvinsi() {
@@ -8,7 +8,7 @@ export default function DropdownProvinsi() {
       useEffect(() => {
             async function loadData() {
                   const data = await fetchProvinsi();
-                  console.log("Data Provinsi:", data); // Debug untuk memastikan data sesuai
+                  // console.log("Data Provinsi:", data); // Debug untuk memastikan data sesuai
                   setProvinsi(data);
             }
 

@@ -1,5 +1,5 @@
 import { AddressList } from "@/components/Address/AddressList";
-import { AddAddressButton } from "@/components/Buttons/AddAdressButton";
+import { AddAddressButton } from "@/components/Buttons/AddAddressButton";
 import { SearchAddressButton } from "@/components/Buttons/SearchAddressButton";
 
 export function AddressSection() {

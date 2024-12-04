@@ -7,3 +7,4 @@ export type ProductCardType = {
       ratings: string;
       sold: string;
 }
+

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { AddAddressButton } from "../Buttons/AddAdressButton";
+import { AddAddressButton } from "../Buttons/AddAddressButton";
 
 export function AddressEmpty() {
       return (

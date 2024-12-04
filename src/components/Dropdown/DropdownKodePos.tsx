@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchKodePos } from "@/lib/api/fetchKodePos";
+import { fetchKodePos } from "@/lib/api/fetch-kodepos";
 import { DropdownTemplate } from "./Address/DropdownTemplate";
 
 export default function DropdownKodePos() {
