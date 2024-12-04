@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { PopupAddAddress } from "../Popup/Address/PopupAddAdress";
+import { PopupAddAddress } from "../Popup/Address/PopupAddAddress";
 import { FaPlus } from "react-icons/fa6";
 
 export function AddAddressButton() {

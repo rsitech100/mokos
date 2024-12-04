@@ -11,7 +11,7 @@ type ProfileItemProps = {
 export function ProfileItem({ icon, alt, title, onClick, isActive }: ProfileItemProps) {
       return (
             <div
-                  className={`flex flex-row items-center gap-3 px-3 py-3.5 cursor-pointer ${isActive ? "bg-primary-100 text-primary-500 rounded-xl font-semibold" : "text-neutral-700"
+                  className={`flex flex-row items-center gap-3 px-3 py-3.5 cursor-pointer hover:bg-primary-600 hover:rounded-xl hover:bg-opacity-20 ${isActive ? "bg-primary-100 text-primary-500 rounded-xl font-semibold" : "text-neutral-700"
                         }`}
                   onClick={onClick}
             >

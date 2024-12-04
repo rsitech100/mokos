@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchKecamatan } from "@/lib/api/fetchKecamatan";
+import { fetchKecamatan } from "@/lib/api/fetch-kecamatan";
 import { DropdownTemplate } from "./Address/DropdownTemplate";
 
 export default function DropdownKecamatan() {
