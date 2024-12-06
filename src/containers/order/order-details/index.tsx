@@ -21,7 +21,7 @@ export function OrderDetailsSection({ order }: OrderDetailsSectionProps) {
                   </div>
                   <div className="flex flex-col gap-5 w-full">
                         <OrderInvoice order={order} />
-                        <div className="flex flex-row gap-5 w-full">
+                        <div className="flex flex-col md:flex-row gap-5 w-full">
                               <div className="flex flex-col gap-5 w-full">
                                     <TrackOrder order={order} />
                                     <DetailProduct />

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const NotificationDummy = () => {
       return (
@@ -19,7 +20,9 @@ export function PopupNotification() {
             <div className="z-50 bg-white p-6 shadow-md rounded-lg absolute gap-5 w-[420px]">
                   <div className="flex flex-row justify-between gap-40 items-center whitespace-nowrap">
                         <p className="text-lg text-neutral-700 font-bold">Notifikasi</p>
-                        <p className="text-sm font-semibold text-primary-500 hover:underline">Lihat Semua</p>
+                        <Link href="/notification" passHref>
+                        <p className="text-sm font-semibold text-primary-500 hover:underline">Lihat Semua</p>                        
+                        </Link>
                   </div>
                   <div className="border-t-[1px] border-dashed border-neutral-400 my-2"></div>
 

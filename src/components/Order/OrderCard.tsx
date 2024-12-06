@@ -24,7 +24,7 @@ export function OrderCard({ order }: OrderCardProps) {
       return (
             <div className="flex flex-col gap-4 w-full p-4 shadow-md rounded-[12px]">
                   {/* payment status, invoice number and payment date component */}
-                  <div className="flex flex-row gap-3 items-center">
+                  <div className="flex flex-row flex-wrap gap-3 items-center">
                         <div className="bg-info-100 text-xs text-info-300 -py-2 px-3 rounded-[12px]">
                               {order.status}
                         </div>
@@ -40,8 +40,8 @@ export function OrderCard({ order }: OrderCardProps) {
                   <div className="border-t-[1px] border-dashed border-neutral-400"></div>
 
                   {/* order details and total order */}
-                  <div className="flex flex-row gap-6 justify-between">
-                        <div className="flex flex-col gap-4 w-1/2">
+                  <div className="flex flex-col w-full md:flex-row gap-6 justify-between">
+                        <div className="flex flex-col gap-4 w-full md:w-1/2">
                               {order.items.slice(0, 1).map((item) => (
                                     <div className="flex flex-row gap-2" key={item.name}>
                                           <Image src="/image/order/dummy.png" alt="dummy" width={60} height={60} className="w-[60px]" />
@@ -79,9 +79,9 @@ export function OrderCard({ order }: OrderCardProps) {
                                           </div>
                                     ))}
                         </div>
-                        <div className="flex flex-row gap-4 w-1/2">
-                              <div className="bg-neutral-400 w-[1px] my-5"></div>
-                              <div className="flex flex-col gap-2 items-start justify-center text-left">
+                        <div className="flex flex-col md:flex-row gap-4 w-full md:w-1/2">
+                              <hr className="border border-dashed md:border-solid border-neutral-400 h-full" />
+                              <div className="flex flex-row md:flex-col gap-2 justify-between md:justify-center items-center md:items-start  text-left">
                                     <p className="text-xs text-neutral-700">Total Belanja</p>
                                     <p className="font-extrabold text-neutral-700 text-base">Rp{order.total_price}</p>
                               </div>
@@ -89,10 +89,10 @@ export function OrderCard({ order }: OrderCardProps) {
                   </div>
 
                   {/*  more and see details button */}
-                  <div className="inline-flex justify-end items-center gap-3">
+                  <div className="inline-flex justify-between md:justify-end items-center gap-3">
                         <button className="p-2 border border-neutral-400 rounded-xl"><IoIosMore size={20} color="#000000" /></button>
-                        <Link href={`/order/order-details/${order.id}`} passHref>
-                              <button className="bg-primary-500 rounded-3xl py-2 px-8 text-white text-sm">Lihat Detail</button>
+                        <Link href={`/order/order-details/${order.id}`} className="w-full md:w-fit" passHref>
+                              <button className="bg-primary-500 rounded-3xl py-2 px-8 text-white text-sm w-full md:w-fit">Lihat Detail</button>
                         </Link>
                   </div>
             </div>

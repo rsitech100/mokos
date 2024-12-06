@@ -42,7 +42,7 @@ export function Pagination({ totalProducts, rowsPerPageOptions }: PaginationProp
 
       return (
             <div className="py-2 px-6 flex justify-end">
-                  <div className="inline-flex items-center justify-end text-sm gap-3.5 text-neutral-700 w-full">
+            <div className="inline-flex items-center justify-between md:justify-end text-sm gap-1 md:gap-3.5 text-neutral-700 w-full">
                         <p>Rows per page</p>
                         <Select onValueChange={handleRowsPerPageChange}>
                               <SelectTrigger className="bg-neutral-200 rounded-3xl w-[66px] py-2 px-3">
