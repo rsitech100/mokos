@@ -8,7 +8,7 @@ export function ProductDetailsDescription({infoProductDetails}: ProductDetailsDe
       return (
             <div className="">
                   {infoProductDetails.map((item) => (
-                        <p className="text-sm" key={item.id}>{item.description}</p>
+                        <p className="text-xs sm:text-sm" key={item.id}>{item.description}</p>
                   ))}
             </div>
       )

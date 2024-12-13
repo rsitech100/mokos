@@ -26,14 +26,15 @@ export function ProductDetailsImage() {
       const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
       return (
-            <div className="flex flex-col items-center gap-4 justify-start">
+            <div className="flex flex-col items-center gap-4 justify-start w-full">
                   {/* Slider Utama */}
                   <Swiper
                         spaceBetween={10}
                         navigation={true}
                         thumbs={{ swiper: thumbsSwiper }}
                         modules={[Thumbs]}
-                        className="main-slider w-full max-w-[320px]"
+                        slidesPerView={1}
+                        className="main-slider w-full md:max-w-[320px]"
                   >
                         {ProductImageItem.map((item, index) => (
                               <SwiperSlide key={index}>
@@ -56,7 +57,15 @@ export function ProductDetailsImage() {
                         freeMode={true}
                         watchSlidesProgress={true}
                         modules={[Thumbs]}
-                        className="thumbnail-slider w-full max-w-[320px]"
+                        className="thumbnail-slider w-full md:max-w-[320px]"
+                        breakpoints={{
+                              390: {
+                                    slidesPerView: 5
+                              },
+                              768: {
+                                    slidesPerView: 4.5
+                              }
+                        }}
                   >
                         {ProductImageItem.map((item, index) => (
                               <SwiperSlide key={index}>

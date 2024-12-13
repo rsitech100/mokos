@@ -2,7 +2,7 @@ import { ProductCard } from "./ProductCard";
 import { productsData } from "@/lib/product-data";
 
 interface ProductsListProps {
-  showAllProducts: boolean;
+  showAllProducts?: boolean;
   gridClass?: string;
   FeaturedProducts: number;
 }

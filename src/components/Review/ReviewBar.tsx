@@ -16,17 +16,17 @@ const ReviewBarItem: ReviewBarType[] = [
 ]
 export function ReviewBar() {
       return (
-            <div className="flex flex-row justify-between border rounded-xl border-neutral-400 p-6">
+            <div className="flex flex-col gap-3 lg:flex-row justify-between border rounded-xl border-neutral-400 p-6">
                   <div className="inline-flex gap-2 items-center">
                         <FaStar color="#FFAB0D" size={24} />
-                        <p className="font-extrabold text-[32px] text-neutral-700">
+                        <p className="font-extrabold text-2xl sm:text-[32px] text-neutral-700">
                               4.9
                               <span className="font-semibold text-sm">/5.0</span>
                         </p>
                   </div>
-                  <div className="inline-flex gap-3">
+                  <div className="flex flex-wrap gap-3">
                         {ReviewBarItem.map((item) => (
-                              <div className="inline-flex border border-neutral-400 px-4 py-2 rounded-2xl gap-1 items-center cursor-pointer" key={item.id}>
+                              <div className="inline-flex border border-neutral-400 px-4 py-2 rounded-2xl gap-1 items-center cursor-pointer text-xs sm:text-sm" key={item.id}>
                                     <FaStar color="#FFAB0D" size={20} />
                                     {item.label}
                               </div>

@@ -18,14 +18,14 @@ export function ProductDetailsCart() {
 
       return (
             <div className="z-50 shadow-md fixed bottom-0 bg-neutral-100 w-full">
-                  <div className="flex flex-row justify-between items-center py-5 w-full mx-auto max-w-[1200px]">
-                        <div className="flex flex-row gap-3 items-center">
+                  <div className="flex flex-row justify-center md:justify-between items-center px-5 md:px-0 py-5 w-full mx-auto max-w-[1200px]">
+                        <div className="hidden md:flex flex-row gap-3 items-center">
                               <Image src="/image/detail-product/dummy-2.svg" alt="dummy" width={48} height={48} />
                               <p className="text-sm text-neutral-700 font-medium">
                                     Sepatu Hitam Bagus <br /> dan Berkualitas
                               </p>
                         </div>
-                        <div className="inline-flex gap-5">
+                        <div className="hidden md:flex flex-row gap-5">
                               <div className="inline-flex border border-neutral-400 px-4 py-2 gap-4 rounded-xl">
                                     <FaMinus size={24} color="#9C9C9C" onClick={handleDecrement} className="cursor-pointer" />
                                     {quantity}
@@ -38,8 +38,8 @@ export function ProductDetailsCart() {
                         </div>
 
                         <div className="inline-flex gap-3">
-                              <button className="rounded-2xl px-10 py-3 text-primary-500 border border-primary-500 bg-neutral-100 text-sm font-semibold">Beli Sekarang</button>
-                              <button className="rounded-2xl px-10 py-3 text-neutral-100 border bg-primary-500 text-sm font-semibold">Tambah ke Keranjang</button>
+                              <button className="rounded-2xl px-10 py-3 text-primary-500 border border-primary-500 bg-neutral-100 text-xs sm:text-sm font-semibold">Beli Sekarang</button>
+                              <button className="rounded-2xl px-10 py-3 text-neutral-100 border bg-primary-500 text-xs sm:text-sm font-semibold">Tambah ke Keranjang</button>
                         </div>
                   </div>
             </div>

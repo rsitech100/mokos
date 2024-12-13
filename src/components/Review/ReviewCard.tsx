@@ -1,4 +1,3 @@
-import { ReviewDataType } from "@/types/review";
 import Image from "next/image";
 import { FaStar } from "react-icons/fa6";
 
@@ -23,16 +22,16 @@ export function ReviewCard({ name, rating, date, reviewText, images }: ReviewCar
                               <FaStar color="#FFAB0D" size={18} />
                               <FaStar color="#FFAB0D" size={18} />
                               <FaStar color="#FFAB0D" size={18} />
-                              <p className="font-bold text-sm text-neutral-700">5.0</p>
+                              <p className="font-bold text-xs sm:text-sm text-neutral-700">5.0</p>
                         </div>
 
-                        <div className="inline-flex gap-2 items-center">
+                        <div className="inline-flex gap-2 items-center text-xs sm:text-sm">
                               <p className="font-semibold text-neutral-700">{name}</p>
                               <span className="w-1 h-1 rounded-full bg-neutral-400"></span>
                               <p className="text-neutral-600">{date}</p>
                         </div>
 
-                        <p className="text-sm text-neutral-700">{reviewText}</p>
+                        <p className="text-xs sm:text-sm text-neutral-700">{reviewText}</p>
 
                         <div className="inline-flex gap-2 mt-5">
                               {images.map((item, index) => (

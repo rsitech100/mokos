@@ -13,7 +13,7 @@ export default function DetailProductPage() {
             <div className="relative">
                   <main className="flex flex-col lg:py-12 p-5 lg:px-20 gap-10 w-full max-w-[1440px] mx-auto">
                         <div className="flex flex-col gap-4">
-                              <Breadcrumb items={breadcrumbItems} />
+                              <Breadcrumb items={breadcrumbItems} /> 
                               <ProductDetailsSection />
                         </div>
                         <div className="bg-neutral-400 w-full h-[1px]"></div>

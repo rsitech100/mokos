@@ -18,7 +18,7 @@ export function ProductDetailsSection() {
       }
 
       return (
-            <section className="flex flex-row gap-10">
+            <section className="flex flex-col md:flex-row gap-10">
                   <div className="flex flex-col gap-4 items-start">
                         <ProductDetailsImage />
                         <ProductDetailsShare />

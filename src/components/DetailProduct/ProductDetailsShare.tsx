@@ -17,7 +17,7 @@ const SocmedProductsItem: SocmedProductsType[] = [
 export function ProductDetailsShare() {
       return (
             <div className="inline-flex gap-3 items-center">
-                  <p className="text-sm text-neutral-700">Share</p>
+                  <p className="text-xs sm:text-sm text-neutral-700">Share</p>
                   {SocmedProductsItem.map((item) => (
                         <div className="bg-primary-100 p-3 rounded-full" key={item.alt}>
                               {item.icon}

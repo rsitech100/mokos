@@ -18,7 +18,7 @@ export function ProductCard({ image, title, price, location, ratings, sold }: Pr
           <Image src={image} alt={title} width={170} height={170} className="w-full h-auto" loading="lazy" />
         </div>
 
-        <div className="flex flex-col p-3 gap-2">
+        <div className="flex flex-col p-3 gap-2 bg-neutral-100">
           <h5 className="text-xs sm:text-sm text-neutral-700">{title}</h5>
           <p className="text-xs sm:text-sm font-bold text-neutral-700">{price}</p>
 

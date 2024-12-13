@@ -12,7 +12,7 @@ export function ProductDetailsBar({ infoProductDetails, activeInfoProductDetails
                         {infoProductDetails.map((item) => (
                               <button
                                     key={item}
-                                    className={`text-sm whitespace-nowrap px-20 ${activeInfoProductDetails === item ? 'border-b-[3px] border-primary-500 text-primary-500 font-semibold py-5' : 'text-neutral-700 font-normal'}}`}
+                                    className={`text-sm whitespace-nowrap px-6 md:px-20 ${activeInfoProductDetails === item ? 'border-b-[3px] border-primary-500 text-primary-500 font-semibold py-5' : 'text-neutral-700 font-normal'}}`}
                                     onClick={() => onTabClick(item)}
                               >
                                     <p className="py-2">{item}</p>
