@@ -10,13 +10,14 @@ export default function ClientWrapper({
       const pathname = usePathname();
 
       const backgroundColor =
-            pathname === "/cart" || pathname === "/payment" ? "bg-neutral-200" : "bg-white";
+            pathname === "/cart" || pathname === "/checkout" || pathname === "/pay" || pathname === "/payment" ? "bg-neutral-200" : "bg-white";
 
       if (
             pathname === "/profile" ||
             pathname === "/address" ||
             pathname === "/order" ||
             pathname === "/notification" ||
+            pathname === "/review" ||
             pathname.startsWith("/order/order-details")
       ) {
             return (

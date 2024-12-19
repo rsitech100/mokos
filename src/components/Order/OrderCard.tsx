@@ -25,7 +25,7 @@ export function OrderCard({ order }: OrderCardProps) {
             <div className="flex flex-col gap-4 w-full p-4 shadow-md rounded-[12px]">
                   {/* payment status, invoice number and payment date component */}
                   <div className="flex flex-row flex-wrap gap-3 items-center">
-                        <div className="bg-info-100 text-xs text-info-300 -py-2 px-3 rounded-[12px]">
+                        <div className="bg-info-100 text-xs text-info-300 py-1 px-3 rounded-[12px]">
                               {order.status}
                         </div>
                         <span className="mx-2.5 w-1 h-1 rounded-full bg-neutral-400"></span>

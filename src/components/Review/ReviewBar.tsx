@@ -1,37 +1,37 @@
-import { FaStar } from "react-icons/fa6";
-
-type ReviewBarType = {
-      id: number;
-      label: string;
-      active?: boolean;
+interface ReviewBarProps {
+      activeBar: string;
+      onTabClick: (category: string) => void;
 }
 
-const ReviewBarItem: ReviewBarType[] = [
-      { id: 1, label: 'Semua' },
-      { id: 2, label: '5 (10)' },
-      { id: 3, label: '4 (10)' },
-      { id: 4, label: '3 (10)' },
-      { id: 5, label: '2 (10)' },
-      { id: 6, label: '1 (10)' },
+type BarItemType = {
+      id: number;
+      label: string;
+}
+
+const BarItem: BarItemType[] = [
+      { id: 1, label: 'Belum Diulas' },
+      { id: 2, label: 'Sudah Diulas' }
 ]
-export function ReviewBar() {
+
+
+export function ReviewBar({ activeBar, onTabClick }: ReviewBarProps) {
       return (
-            <div className="flex flex-col gap-3 lg:flex-row justify-between border rounded-xl border-neutral-400 p-6">
-                  <div className="inline-flex gap-2 items-center">
-                        <FaStar color="#FFAB0D" size={24} />
-                        <p className="font-extrabold text-2xl sm:text-[32px] text-neutral-700">
-                              4.9
-                              <span className="font-semibold text-sm">/5.0</span>
-                        </p>
-                  </div>
-                  <div className="flex flex-wrap gap-3">
-                        {ReviewBarItem.map((item) => (
-                              <div className="inline-flex border border-neutral-400 px-4 py-2 rounded-2xl gap-1 items-center cursor-pointer text-xs sm:text-sm" key={item.id}>
-                                    <FaStar color="#FFAB0D" size={20} />
-                                    {item.label}
-                              </div>
+            <div className="flex flex-col overflow-hidden w-full md:w-fit">
+                  <div className="flex flex-row w-full justify-evenly">
+                        {BarItem.map((bar) => (
+                              <button
+                                    key={bar.id}
+                                    className={`text-sm whitespace-nowrap px-10 ${activeBar === bar.label
+                                                ? 'border-b-[3px] border-primary-500 text-primary-500 font-semibold py-3'
+                                                : 'text-neutral-700 font-normal'
+                                          }`}
+                                    onClick={() => onTabClick(bar.label)}
+                              >
+                                    <p>{bar.label}</p>
+                              </button>
                         ))}
                   </div>
+                  <div className="h-[1px] w-full bg-neutral-400 "></div>
             </div>
       )
 }

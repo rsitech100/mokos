@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useCartContext } from "@/utils/CartContext";
+import Link from 'next/link';
 
 export function TotalShoppingBox() {
       const { calculateTotalPrice, cartItems } = useCartContext();
@@ -32,12 +33,14 @@ export function TotalShoppingBox() {
                         <p>Total</p>
                         <p>Rp{totalPrice.toLocaleString()}</p>
                   </div>
-                  <button
-                        disabled={totalPrice === 0}
-                        className="text-center py-2 text-sm text-neutral-100 bg-neutral-400 w-full rounded-3xl"
-                  >
-                        Beli
-                  </button>
+                  <Link href="/checkout" passHref>
+                        <button
+                              // disabled={totalPrice === 0}
+                              className="text-center py-2 text-sm text-neutral-100 bg-neutral-400 w-full rounded-3xl"
+                        >
+                              Beli
+                        </button>
+                  </Link>
             </div>
       )
 }

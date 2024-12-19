@@ -22,7 +22,7 @@ export function ReviewCard({ name, rating, date, reviewText, images }: ReviewCar
                               <FaStar color="#FFAB0D" size={18} />
                               <FaStar color="#FFAB0D" size={18} />
                               <FaStar color="#FFAB0D" size={18} />
-                              <p className="font-bold text-xs sm:text-sm text-neutral-700">5.0</p>
+                              <p className="font-bold text-xs sm:text-sm text-neutral-700">{rating}</p>
                         </div>
 
                         <div className="inline-flex gap-2 items-center text-xs sm:text-sm">

@@ -10,8 +10,8 @@ export function NotificationSection() {
       const [activeNotification, setActiveNotification] = useState<string>('Semua');
       const notifications = Object.keys(NotificationItems);
 
-      const handleTabClick = (notifications: string) => {
-            setActiveNotification(notifications);
+      const handleTabClick = (notification: string) => {
+            setActiveNotification(notification);
       }
 
       return (
