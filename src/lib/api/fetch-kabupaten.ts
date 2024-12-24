@@ -1,9 +1,11 @@
-import { getDataAddress } from "./source/api-source";
+// import { getDataAddress } from "./source/api-source";
 import { ApiLocalType } from "@/types/api-local";
 
-export async function fetchKabupatenKota() {
-      const data = await getDataAddress({ source: 'kabkota' });
-      // console.log("Data Kabupaten Kota:", data); // Debug isi data dari API
+export async function fetchKabupatenKota(provinsiId: string) {
+      const response = await fetch(`https://alamat.thecloudalert.com/api/kabkota/get/?d_provinsi_id=${provinsiId}`);
+      const data = await response.json();
+      // debugging -->
+      // console.log("Data Kabupaten Kota:", data); 
 
       // Pastikan data.result adalah array sebelum menggunakan map
       if (data && typeof data === "object" && Array.isArray(data.result)) {
@@ -13,7 +15,6 @@ export async function fetchKabupatenKota() {
             }));
       }
 
-      // Jika data.result bukan array, log error dan kembalikan array kosong
       // console.error("Data Kabupaten/Kota tidak valid:", data);
       return [];
 }

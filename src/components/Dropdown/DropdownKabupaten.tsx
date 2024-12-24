@@ -2,24 +2,32 @@ import React, { useEffect, useState } from "react";
 import { fetchKabupatenKota } from "@/lib/api/fetch-kabupaten";
 import { DropdownTemplate } from "./Address/DropdownTemplate";
 
-export default function DropdownKabupaten() {
+interface DropdownKabupatenProps {
+      provinsiId: string | null; // ID Provinsi untuk fetch data
+      onChange: (value: string) => void;
+}
+
+
+export function DropdownKabupaten({ provinsiId, onChange }: DropdownKabupatenProps) {
       const [kabupaten, setKabupaten] = useState<{ value: string; label: string }[]>([]);
 
       useEffect(() => {
             async function loadData() {
-                  const data = await fetchKabupatenKota();
-                  // console.log("Data Kabupaten:", data); // Debug untuk memastikan data sesuai
-                  setKabupaten(data);
+                  if (provinsiId) {
+                        const data = await fetchKabupatenKota(provinsiId); // Fetch data berdasarkan provinsiId
+                        setKabupaten(data);
+                  }
             }
 
             loadData();
-      }, []);
+      }, [provinsiId]);
 
       return (
             <DropdownTemplate
                   label="Kabupaten"
                   placeholder="Pilih Kabupaten"
                   options={kabupaten}
+                  onChange={onChange}
             />
       );
 }

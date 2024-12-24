@@ -12,13 +12,14 @@ interface DropdownProps {
       label: string;
       placeholder: string;
       options: { value: string; label: string }[]; // Array untuk opsi dropdown
+      onChange?: (value: string) => void; // Callback opsional
 }
 
-export function DropdownTemplate({ label, placeholder, options }: DropdownProps) {
+export function DropdownTemplate({ label, placeholder, options, onChange }: DropdownProps) {
       return (
             <div className="flex flex-col gap-2">
                   <label className="text-sm text-neutral-700 font-bold">{label}</label>
-                  <Select>
+                  <Select onValueChange={onChange}> 
                         <SelectTrigger className="w-full border border-neutral-400 rounded-lg text-neutral-700">
                               <SelectValue placeholder={placeholder} />
                         </SelectTrigger>

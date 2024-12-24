@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { fetchProvinsi } from "@/lib/api/fetch-provinsi";
 import { DropdownTemplate } from "./Address/DropdownTemplate";
 
-export default function DropdownProvinsi() {
+interface DropdownProvinsiProps {
+      onChange: (value: string) => void; // Callback untuk mengirim ID Provinsi
+    }
+
+
+export default function DropdownProvinsi({onChange}: DropdownProvinsiProps) {
       const [provinsi, setProvinsi] = useState<{ value: string; label: string }[]>([]);
 
       useEffect(() => {
@@ -20,6 +25,7 @@ export default function DropdownProvinsi() {
                   label="Provinsi"
                   placeholder="Pilih Provinsi"
                   options={provinsi}
+                  onChange={onChange}
             />
       );
 }

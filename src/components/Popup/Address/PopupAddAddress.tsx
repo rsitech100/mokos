@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa";
 import DropdownProvinsi from "@/components/Dropdown/DropdownProvinsi";
-import DropdownKecamatan from "@/components/Dropdown/DropdownKecamatan";
-import DropdownKabupaten from "@/components/Dropdown/DropdownKabupaten";
+import { DropdownKecamatan } from "@/components/Dropdown/DropdownKecamatan";
+import { DropdownKabupaten } from "@/components/Dropdown/DropdownKabupaten";
 import DropdownKodePos from "@/components/Dropdown/DropdownKodePos";
 
 
@@ -18,6 +18,9 @@ interface PopupAddAddressProps {
 
 export function PopupAddAddress({ onClose }: PopupAddAddressProps) {
       const [isMobile, setIsMobile] = useState(false);
+      const [selectedProvinsi, setSelectedProvinsi] = useState<string | null>(null);
+      const [selectedKabupaten, setSelectedKabupaten] = useState<string | null>(null);
+      const [selectedKecamatan, setSelectedKecamatan] = useState<string | null>(null);
       // const [formData, setFormData] = useState('');
 
       // Cek apakah tampilan adalah mobile
@@ -43,7 +46,7 @@ export function PopupAddAddress({ onClose }: PopupAddAddressProps) {
                                     <div onClick={onClose} className="flex md:hidden cursor-pointer">
                                           <FaArrowLeft size={14} color="#00000" />
                                     </div>
-                                    <h3 className="text-sm font-bold mb-0 lg:mb-4 text-center">Tambah Alamat</h3>
+                                    <h3 className="text-sm font-bold text-center">Tambah Alamat</h3>
                                     <div onClick={onClose} className="hidden md:flex cursor-pointer">
                                           <IoClose size={24} color="#00000" />
                                     </div>
@@ -90,17 +93,27 @@ export function PopupAddAddress({ onClose }: PopupAddAddressProps) {
 
 
                                     {/* Provinsi Dropdown Input */}
-                                    <DropdownProvinsi  />
+                                    <DropdownProvinsi onChange={(value) => setSelectedProvinsi(value)} />
+
 
                                     {/* Kabupaten Dropdown Input */}
-                                    {/* <DropdownKabupaten /> */}
-                                   
+                                    <DropdownKabupaten 
+                                    provinsiId={selectedProvinsi}
+                                    onChange={(value) => setSelectedKabupaten(value)}
+      />
+
                                     {/* Kecamatan Dropdown Input */}
-                                    {/* <DropdownKecamatan /> */}
+                                    <DropdownKecamatan 
+                                    kabupatenId={selectedKabupaten} 
+                                    onChange={(value) => setSelectedKecamatan(value)}
+                                    />
 
                                     {/* KodePos Dropdown Input */}
-                                    {/* <DropdownKodePos /> */}
-                                   
+                                    <DropdownKodePos 
+                                    kabupatenId={selectedKabupaten} 
+                                    kecamatanId={selectedKecamatan} 
+                                    />
+
 
                                     {/* Detail Alamat Input */}
                                     <div className="flex flex-col gap-2">

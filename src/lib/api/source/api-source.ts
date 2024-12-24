@@ -9,7 +9,7 @@ export async function getDataAddress({ source }: ApiSourceProps) {
             const response = await fetch(`https://alamat.thecloudalert.com/api/${source}/get/`);
 
             if (!response.ok) {
-                  throw new Error(`Failed oto fetch data from ${source}`);
+                  throw new Error(`Failed to fetch data from ${source}`);
             }
 
             const data = await response.json();

@@ -1,8 +1,9 @@
 import { ApiLocalType } from "@/types/api-local";
-import { getDataAddress } from "./source/api-source";
+// import { getDataAddress } from "./source/api-source";
 
-export async function fetchKecamatan() {
-      const data = await getDataAddress({ source: "kecamatan" });
+export async function fetchKecamatan(kabupatenId: string) {
+      const response = await fetch(`https://alamat.thecloudalert.com/api/kecamatan/get/?d_kabkota_id=${kabupatenId}`);
+      const data = await response.json();
       // console.log("Data Kecamatan:", data); // Debug isi data dari API
 
       // Pastikan data.result adalah array sebelum menggunakan map

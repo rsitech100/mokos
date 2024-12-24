@@ -6,17 +6,23 @@ import { IoIosArrowDown } from "react-icons/io";
 import { UserProfile } from "./Profile/UserProfile";
 import { PopupMenuProfile } from "@/components/Popup/Header/Profile/PopupMenuProfile";
 import { ProfileItems } from "./Profile/ProfileItems";
-import { motion } from "framer-motion"; // Import motion dari Framer Motion
+import { motion } from "framer-motion";
 
 interface ProfileAfterLoginProps {
   isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function MenuAfterLogin({ isOpen }: ProfileAfterLoginProps) {
+export function MenuAfterLogin({ isOpen, setIsOpen }: ProfileAfterLoginProps) {
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
 
   const togglePopUp = () => {
     setIsPopUpVisible(!isPopUpVisible);
+  };
+
+  const handleCloseMenu = () => {
+    setIsPopUpVisible(false); // Fungsi untuk menutup menu
+    setIsOpen(false);
   };
 
   return (
@@ -35,7 +41,7 @@ export function MenuAfterLogin({ isOpen }: ProfileAfterLoginProps) {
           <UserProfile />
           <div className="border-t-[1px] border-dashed border-neutral-400"></div>
           <div className="flex flex-col">
-            <ProfileItems />
+            <ProfileItems onClose={handleCloseMenu} />
           </div>
         </motion.div>
       ) : (

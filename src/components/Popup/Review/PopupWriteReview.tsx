@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { FaStar } from "react-icons/fa6";
+// import { FaStar } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import { StarRating } from "./StarRating";
 import { PhotoUploader } from "./PhotoUploader";

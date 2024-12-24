@@ -1,11 +1,8 @@
-// LogoutPopup.tsx
 interface LogoutPopupProps {
-      isOpen: boolean;
       onClose: () => void;
 }
 
-export function LogoutPopup({ isOpen, onClose }: LogoutPopupProps) {
-      if (!isOpen) return null; // Jika tidak terbuka, jangan render popup
+export function LogoutPopup({onClose }: LogoutPopupProps) {
 
       return (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -20,7 +17,7 @@ export function LogoutPopup({ isOpen, onClose }: LogoutPopupProps) {
                                     Batal
                               </button>
                               <button
-                                    className="px-12 py-2 bg-transparent bg-danger-200 text-white font-semibold rounded-3xl"
+                                    className="px-12 py-2 bg-danger-200 text-white font-semibold rounded-3xl"
                                     // onClick={onConfirm}
                               >
                                     Keluar

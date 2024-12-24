@@ -6,7 +6,7 @@ import { disableNavWithFooter } from "@/utils/DisableNavWithFooter";
 import { CartButton } from "@/components/Buttons/CartButton";
 import { CategoryButton } from "@/components/Buttons/CategoryButton";
 
-import { SearchButton } from "@/components/Buttons/SearchButton";
+import { InputSearchAllProduct } from "@/components/Input/InputSearchAllProduct";
 import { HamburgerIcon, XIcon } from "./NavbarIcon";
 import { MenuBeforeLogin } from "../Menu/MenuBeforeLogin";
 import { MenuAfterLogin } from "../Menu/MenuAfterLogin";
@@ -22,28 +22,32 @@ export function Navbar() {
       return (
             <>
                   {!disableNavWithFooter.includes(path) && (
-                        <nav className="bg-white shadow-md !box-shadow-[4px_4px_20px_0_rgba(203,_202,_202,_0.25)]">
-                              <div className="flex flex-row px-0 lg:px-20 lg:py-4 w-full justify-between max-w-[1440px] mx-auto items-center">
+                        <nav className="bg-white shadow-md">
+                              <div className="sticky z-50 flex flex-row px-0 lg:px-20 lg:py-4 w-full justify-between max-w-[1440px] mx-auto items-center">
                                     <div className="flex flex-col lg:flex-row w-full justify-around">
-                                          <div className="flex flex-row gap-5 lg:gap-0 w-full items-center justify-between shadow-card py-4 lg:py-0 px-5 lg:px-0 lg:shadow-none">
+                                          <div className="flex flex-row gap-3 lg:gap-0 w-full items-center justify-between shadow-card py-4 lg:py-0 px-5 lg:px-0 lg:shadow-none bg-white">
                                                 {/* Logo Profile */}
                                                 {!isOpen &&
-                                                      <div className="w-16 sm:w-[48px] sm:h-fit flex items-center justify-center">
-                                                            <Image src="/image/nav/profile-dummy.svg" alt="profile-dummy" width={48} height={48} className="rounded-full w-[40px] sm:w-[48px] " />
+                                                      <div className="w-10 sm:w-[48px] sm:h-fit flex items-center justify-center">
+                                                            <Image src="/image/nav/profile-dummy.svg" alt="profile-dummy" width={48} height={48} className="rounded-full w-10 sm:w-[48px] " />
                                                       </div>
                                                 }
 
                                                 {/* Title on Mobile */}
+                                                <div>
                                                 {isOpen &&
                                                       <h2 className="font-bold text-neutral-700 text-lg">
                                                             Menu
                                                       </h2>
                                                 }
+                                                
+                                                </div>
+
                                                 {/* Category Button */}
                                                 {!isOpen && <CategoryButton />}
 
                                                 {/* Search Button */}
-                                                {!isOpen && <SearchButton />}
+                                                {!isOpen && <InputSearchAllProduct />}
                                                 {!isOpen && <CartButton />}
                                                 <div className="flex flex-row items-center gap-5">
                                                       <div className="lg:hidden flex items-center justify-center">
@@ -55,7 +59,7 @@ export function Navbar() {
                                           </div>
                                           {/* If the user is not logged in, the BeforeLogin menu will be displayed. */}
                                           {/* <MenuBeforeLogin isOpen={isOpen} /> */}
-                                          <MenuAfterLogin isOpen={isOpen} />
+                                          <MenuAfterLogin isOpen={isOpen} setIsOpen={setIsOpen} />
                                     </div>
                               </div>
                         </nav>
