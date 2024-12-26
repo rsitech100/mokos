@@ -7,15 +7,21 @@ export function AddAddressButton() {
       const [showPopup, setShowPopup] = useState(false);
 
       const togglePopUp = () => {
-            setShowPopup(true)
+            setShowPopup(true);
       }
+
+      const handleClose = () => {
+            setShowPopup(false);
+            console.log("pop up closed");
+      };
+
       return (
             <div className="cursor-pointer w-full md:w-fit text-center bg-primary-500 text-white rounded-3xl px-5 py-2.5 text-sm flex justify-center items-center gap-2" onClick={togglePopUp}>
                   <FaPlus size={15} color="#FFFFFF" />
                   Tambah Alamat
                   {showPopup && (
                         <PopupAddAddress
-                              onClose={() => setShowPopup(false)}
+                              onClose={handleClose}
                         // onSave={onSave}
                         />
                   )}

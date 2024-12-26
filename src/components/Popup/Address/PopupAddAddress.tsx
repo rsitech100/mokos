@@ -44,11 +44,11 @@ export function PopupAddAddress({ onClose }: PopupAddAddressProps) {
                         <div className="flex flex-col gap-2 overflow-y-auto h-full">
                               <div className="inline-flex w-full justify-start items-center md:justify-between shadow-md md:shadow-none p-5 md:p-0 gap-3 md:gap-0 text-neutral-700">
                                     <div onClick={onClose} className="flex md:hidden cursor-pointer">
-                                          <FaArrowLeft size={14} color="#00000" />
+                                          <FaArrowLeft size={14} color="#00000" onClick={onClose} />
                                     </div>
                                     <h3 className="text-sm font-bold text-center">Tambah Alamat</h3>
                                     <div onClick={onClose} className="hidden md:flex cursor-pointer">
-                                          <IoClose size={24} color="#00000" />
+                                          <IoClose size={24} color="#00000" onClick={onClose} />
                                     </div>
                               </div>
                               <div className="flex flex-col gap-3.5 text-left px-5 lg:px-0">

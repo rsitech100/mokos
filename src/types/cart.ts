@@ -5,6 +5,7 @@ export interface Product {
   price: number;
   imageUrl: string;
   quantity: number;
+  isSelected: boolean;
 }
 
 export interface CartItem {

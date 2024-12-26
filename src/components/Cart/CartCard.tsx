@@ -1,5 +1,5 @@
 'use client';
-// import { useState } from "react";
+import { useState } from "react";
 import { Product } from "@/types/cart";
 import Image from "next/image";
 import { FaMinus } from "react-icons/fa6";
@@ -14,13 +14,27 @@ interface CartCardProps {
 
 export function CartCard({ storeName, storeId, products }: CartCardProps) {
       const { updateProductSelection, cartItems } = useCartContext();
+      // State untuk checkbox utama
+      const [isStoreSelected, setIsStoreSelected] = useState(false);
 
+      // Fungsi untuk mengontrol semua checkbox dalam toko
+      const toggleAllProducts = (isSelected: boolean) => {
+            setIsStoreSelected(isSelected);
+            products.forEach((product) => {
+                  updateProductSelection(storeId, product.id, isSelected);
+            });
+      };
 
       return (
             <div className="bg-neutral-100 rounded-[12px] shadow-md gap-5 p-5 flex flex-col">
                   {/* Store Name */}
                   <div className="inline-flex gap-1.5 items-center">
-                        <input type="checkbox" className="w-5 h-5" />
+                        <input
+                              type="checkbox"
+                              className="w-5 h-5"
+                               checked={isStoreSelected}
+                              onChange={(e) => toggleAllProducts(e.target.checked)}
+                        />
                         <p className="font-bold text-xs sm:text-sm text-neutral-700">{storeName}</p>
                   </div>
 

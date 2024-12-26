@@ -5,10 +5,9 @@ import { DropdownTemplate } from "./Address/DropdownTemplate";
 interface DropdownKodePosProps {
       kabupatenId: string | null;
       kecamatanId: string | null;
-      onChange: (value: string) => void;
 }
 
-export default function DropdownKodePos({kabupatenId, kecamatanId, onChange}: DropdownKodePosProps) {
+export default function DropdownKodePos({kabupatenId, kecamatanId}: DropdownKodePosProps) {
       const [kodePos, setKodePos] = useState<{ value: string; label: string }[]>([]);
 
       useEffect(() => {
@@ -30,7 +29,7 @@ export default function DropdownKodePos({kabupatenId, kecamatanId, onChange}: Dr
                   label="Kode Pos"
                   placeholder="Pilih Kode Pos"
                   options={kodePos}
-                  onChange={onChange}
+                  // onChange={onChange}
             />
       );
 }

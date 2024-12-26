@@ -10,7 +10,7 @@ export function ShoppingSummaryBox() {
       }
 
       return (
-            <div className="flex flex-col gap-6 p-5 shadow-md bg-white w-full max-w-[330px] h-fit rounded-[12px]">
+            <div className="fixed bottom-0 lg:static flex flex-col gap-6 p-5 shadow-md bg-white w-full lg:max-w-[330px] h-fit rounded-[12px]">
                   <h4 className="font-extrabold text-lg text-neutral-700">Ringkasan Belanja</h4>
                   <div className="inline-flex justify-between text-sm text-neutral-700">
                         <p>Total Harga (<span>4</span> Barang)</p>
