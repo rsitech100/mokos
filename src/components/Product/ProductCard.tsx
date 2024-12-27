@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ProductCardSkeleton } from "../Skeleton/ProductCardSkeleton";
 
 interface ProductCardProps {
   image: string;
@@ -8,9 +9,14 @@ interface ProductCardProps {
   location: string;
   ratings: string;
   sold: string;
+  isLoading?: boolean;
 }
 
-export function ProductCard({ image, title, price, location, ratings, sold }: ProductCardProps) {
+export function ProductCard({ image, title, price, location, ratings, sold, isLoading }: ProductCardProps) {
+  if (isLoading) {
+    return <ProductCardSkeleton />;
+  }
+
   return (
     <Link href="/detail-product" passHref>
       <div className="flex flex-col shadow-card rounded-lg">

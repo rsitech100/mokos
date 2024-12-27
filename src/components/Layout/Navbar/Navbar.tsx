@@ -10,6 +10,7 @@ import { InputSearchAllProduct } from "@/components/Input/InputSearchAllProduct"
 import { HamburgerIcon, XIcon } from "./NavbarIcon";
 import { MenuBeforeLogin } from "../Menu/MenuBeforeLogin";
 import { MenuAfterLogin } from "../Menu/MenuAfterLogin";
+import Link from "next/link";
 
 export function Navbar() {
       const path = usePathname()
@@ -28,19 +29,21 @@ export function Navbar() {
                                           <div className="flex flex-row gap-3 lg:gap-0 w-full items-center justify-between shadow-card py-4 lg:py-0 px-5 lg:px-0 lg:shadow-none bg-white">
                                                 {/* Logo Profile */}
                                                 {!isOpen &&
-                                                      <div className="w-10 sm:w-[48px] sm:h-fit flex items-center justify-center">
-                                                            <Image src="/image/nav/profile-dummy.svg" alt="profile-dummy" width={48} height={48} className="rounded-full w-10 sm:w-[48px] " />
-                                                      </div>
+                                                      <Link href="/" passHref>
+                                                            <div className="w-10 sm:w-[48px] sm:h-fit flex items-center justify-center">
+                                                                  <Image src="/image/nav/profile-dummy.svg" alt="profile-dummy" width={48} height={48} className="rounded-full w-10 sm:w-[48px] " />
+                                                            </div>
+                                                      </Link>
                                                 }
 
                                                 {/* Title on Mobile */}
                                                 <div>
-                                                {isOpen &&
-                                                      <h2 className="font-bold text-neutral-700 text-lg">
-                                                            Menu
-                                                      </h2>
-                                                }
-                                                
+                                                      {isOpen &&
+                                                            <h2 className="font-bold text-neutral-700 text-lg">
+                                                                  Menu
+                                                            </h2>
+                                                      }
+
                                                 </div>
 
                                                 {/* Category Button */}
