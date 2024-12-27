@@ -27,7 +27,7 @@ export function TotalShoppingBox() {
       }, [calculateTotalPrice, cartItems]);
 
       return (
-            <div className="fixed bottom-0 lg:static flex flex-row justify-between items-center lg:items-start lg:flex-col gap-0 lg:gap-6 p-5 rounded-none md:rounded-[12px] bg-white shadow-none md:shadow-md w-full lg:max-w-[328px] z-50 h-fit">
+            <div className="fixed bottom-0 lg:static flex flex-row justify-between items-center lg:items-start lg:flex-col gap-0 lg:gap-6 p-5 rounded-none md:rounded-[12px] bg-white shadow-none md:shadow-md w-full lg:max-w-[328px] z-50 lg:z-20 h-fit">
                   <div className="flex flex-col gap-1 w-full">
                         <h4 className="text-xs lg:text-lg text-neutral-700 font-normal lg:font-bold">Total Belanja</h4>
                         <div className="inline-flex gap-1 justify-between text-sm text-neutral-700 w-full">
