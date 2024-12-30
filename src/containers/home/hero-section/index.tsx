@@ -26,7 +26,7 @@ export function Hero() {
                         centeredSlides={true}
                   >
                         {ImagesItem.map((item) => (
-                              <SwiperSlide key={item.alt} className="w-full h-auto object-contain" >
+                              <SwiperSlide key={item.alt} className="w-full h-auto object-contain" lazy={true}>
                                     <Image
                                           src={item.image}
                                           alt={item.alt}

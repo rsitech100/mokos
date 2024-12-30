@@ -11,9 +11,6 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
-			boxShadow: {
-				card: '4px 4px 20px 0 rgba(203, 202, 202, 0.25)',
-			},
 			colors: {
 				neutral: {
 					'100': '#ffffff',

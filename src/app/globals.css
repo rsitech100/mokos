@@ -74,3 +74,8 @@ input, input:checked {
     @apply bg-background text-foreground;
   }
 }
+
+
+.shadow-card {
+  box-shadow: 4px 4px 20px 0px #CBCACA40;
+}

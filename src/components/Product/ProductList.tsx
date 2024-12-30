@@ -1,3 +1,4 @@
+
 import { ProductCard } from "./ProductCard";
 import { productsData } from "@/lib/product-data";
 
@@ -8,8 +9,8 @@ interface ProductsListProps {
 }
 
 export function ProductList({ showAllProducts, gridClass, FeaturedProducts }: ProductsListProps) {
-  const displayedProducts = showAllProducts ? productsData : productsData.slice(0, FeaturedProducts);
 
+  const displayedProducts = showAllProducts ? productsData : productsData.slice(0, FeaturedProducts);
   return (
     <div className={`grid gap-5 ${gridClass}`}>
       {displayedProducts.map((item) => (

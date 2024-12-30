@@ -1,3 +1,5 @@
+'use client';
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductCardSkeleton } from "../Skeleton/ProductCardSkeleton";
@@ -9,14 +11,21 @@ interface ProductCardProps {
   location: string;
   ratings: string;
   sold: string;
-  isLoading?: boolean;
 }
 
-export function ProductCard({ image, title, price, location, ratings, sold, isLoading }: ProductCardProps) {
-  if (isLoading) {
-    return <ProductCardSkeleton />;
-  }
+export function ProductCard({ image, title, price, location, ratings, sold }: ProductCardProps) {
+    const [isLoading, setIsLoading] = useState(true);
+  
+    useEffect(() => {
+      const timer = setTimeout(() => setIsLoading(false), 2000); 
+      return () => clearTimeout(timer); 
+    }, []);
+  
+    if (isLoading) {
+      return <ProductCardSkeleton />;
+    }
 
+    
   return (
     <Link href="/detail-product" passHref>
       <div className="flex flex-col shadow-card rounded-lg">
