@@ -2,13 +2,19 @@
 import Link from "next/link";
 import { useState } from "react";
 import { InputField } from "../Input/InputField";
-
 import Image from "next/image";
+// import { useRouter } from "next/navigation";
+import { PopupOTP } from "../Popup/Register/PopupOTP";
 
 export function LoginComponent() {
+      // const router = useRouter();
       const [email, setEmail] = useState<string>("");
       const [password, setPassword] = useState<string>("");
       const [showPassword, setShowPassword] = useState<boolean>(false);
+      const [isLoading, setIsLoading] = useState<boolean>(false);
+      const [errorMessage, setErrorMessage] = useState<string>("");
+      const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // State for control the popup
+      const [requestKey, setRequestKey] = useState<string | null>(null);
 
       // Function to toggle the visibility of the password
       const togglePasswordVisibility = () => {
@@ -17,6 +23,54 @@ export function LoginComponent() {
 
       // Check if both fields are filled to enable the button
       const isValid = email.trim() !== "" && password.trim() !== "";
+
+      // Handle login form submission
+      const handleLogin = async (e: React.FormEvent) => {
+            e.preventDefault();
+            setIsLoading(true);
+            setErrorMessage("");
+
+            try {
+                  const response = await fetch("/api/v1/auth/login", {
+                        method: "POST",
+                        headers: {
+                              "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ username: email, password }),
+                  });
+
+                  const responseData = await response.json();
+                  const key = responseData?.data?.data?.requestKey; // Akses requestKey dari data.data
+                  if (!responseData.success) {
+                        throw new Error(responseData.message || "Login failed");
+                  }
+
+                  // Login success
+                  console.log("Login successful:", responseData.data);
+                  console.log("Request Key:", responseData.data.data.requestKey);
+
+                  if (key) {
+                        setRequestKey(key);
+                        openPopUp();
+                  } else {
+                        alert("Request Key tidak ditemukan!");
+                  }
+
+            } catch (error: unknown) {
+                  if (error instanceof Error) {
+                        alert(error.message || "Terjadi kesalahan saat login");
+                  } else {
+                        setErrorMessage("Terjadi kesalahan yang tidak diketahui");
+                  }
+            } finally {
+                  setIsLoading(false);
+            }
+      };
+
+
+      // function to open and close the pop up
+      const openPopUp = () => setIsPopupOpen(true);
+      const closePopUp = () => setIsPopupOpen(false);
 
       return (
             // Right Section with Form 
@@ -29,11 +83,14 @@ export function LoginComponent() {
                         </p>
                   </div>
 
-                  <form className="flex flex-col justify-start text-left w-full max-w-[360px] sm:w-[400px] gap-4">
+                  <form
+                        className="flex flex-col justify-start text-left w-full max-w-[360px] sm:w-[400px] gap-4"
+                        onSubmit={handleLogin}
+                  >
                         {/* Input Email */}
                         <InputField
                               label="Email / Nomor HP"
-                              type="text"
+                              type="email"
                               placeholder="Masukkan email atau nomor hp"
                               value={email}
                               onChange={setEmail}
@@ -51,16 +108,22 @@ export function LoginComponent() {
                               showPassword={showPassword}
                         />
 
+                        {/* Error Message */}
+                        {errorMessage && (
+                              <p className="text-red-500 text-xs sm:text-sm">{errorMessage}</p>
+                        )}
+
                         {/* Forgot Password Button */}
                         <Link href="/auth/forgot-password" className="text-primary-500 font-bold text-xs sm:text-sm -mt-2" passHref>Lupa Password?</Link>
+
                         {/* Submit Button */}
                         <button
                               type="submit"
-                              disabled={!isValid}
-                              className={`w-full p-2 rounded-3xl text-sm text-neutral-100 ${isValid ? 'bg-primary-500' : 'bg-neutral-400'
+                              disabled={!isValid || isLoading}
+                              className={`w-full p-2 rounded-3xl text-sm text-neutral-100 ${isValid && !isLoading ? 'bg-primary-500' : 'bg-neutral-400'
                                     }`}
                         >
-                              Masuk
+                              {isLoading ? "Loading..." : "Masuk"}
                         </button>
                   </form>
 
@@ -78,6 +141,8 @@ export function LoginComponent() {
                               Belum punya akun? <Link href="/auth/register" className="text-primary-500 font-semibold">Daftar</Link>
                         </p>
                   </div>
+
+                  <PopupOTP isOpen={isPopupOpen} email={email} onClose={closePopUp} requestKey={requestKey} />
             </section>
       );
 }

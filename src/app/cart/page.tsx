@@ -1,7 +1,7 @@
 import { TotalShoppingBox } from "@/components/Cart/TotalShoppingBox";
 import { CartSection } from "@/containers/cart";
 import { LastSeenCartSection } from "@/containers/cart/last-seen";
-import { CartProvider } from "@/utils/CartContext";
+import { CartProvider } from "@/context/CartContext";
 import { cartItemData } from "@/lib/cart-data";
 
 export default function CartPage() {

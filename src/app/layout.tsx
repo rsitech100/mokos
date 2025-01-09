@@ -20,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${plusJakartaSans.className} bg-white`}>
-        <ClientWrapper>{children}</ClientWrapper>
+        <ClientWrapper>
+          {children}
+          </ClientWrapper>
       </body>
     </html>
   );

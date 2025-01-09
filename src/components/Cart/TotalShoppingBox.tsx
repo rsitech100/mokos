@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useCartContext } from "@/utils/CartContext";
+import { useCartContext } from "@/context/CartContext";
 import Link from 'next/link';
 
 export function TotalShoppingBox() {

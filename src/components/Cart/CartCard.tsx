@@ -4,7 +4,7 @@ import { Product } from "@/types/cart";
 import Image from "next/image";
 import { FaMinus } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
-import { useCartContext } from "@/utils/CartContext";
+import { useCartContext } from "@/context/CartContext";
 
 interface CartCardProps {
       storeName: string;

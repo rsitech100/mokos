@@ -4,15 +4,20 @@ import { useState, useEffect } from "react";
 import { IoIosClose } from "react-icons/io";
 import OTPInput from "./OTPInput";
 import CountdownTimer from "./CountDownTimer";
-
+import { useRouter } from "next/navigation";
 interface PopupOTPProps {
   isOpen: boolean;
   onClose: () => void;
+  email: string;
+  requestKey: string | null;
 }
 
-export function PopupOTP({ isOpen, onClose }: PopupOTPProps) {
+export function PopupOTP({ email, isOpen, onClose, requestKey }: PopupOTPProps) {
+  const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [otp, setOtp] = useState(""); // State untuk menyimpan OTP
+  const [isLoading, setIsLoading] = useState(false); // State untuk loading
 
   // Cek apakah tampilan adalah mobile
   useEffect(() => {
@@ -37,8 +42,52 @@ export function PopupOTP({ isOpen, onClose }: PopupOTPProps) {
   if (!isOpen) return null;
 
   const handleComplete = (pin: string) => {
-    setIsValid(pin.length === 6);
+    setOtp(pin); // Simpan OTP ke state
+    setIsValid(pin.length === 5); // Validasi panjang OTP
   };
+
+  const handleVerification = async () => {
+    // debugging
+    // console.log("Request Key in PopupOTP:", requestKey);
+
+    setIsLoading(true);
+    // console.log("Request body:", {
+    //   requestKey,
+    //   secretValue: otp,
+    // });
+
+    try {
+      const response = await fetch("/api/v1/auth/login/verification", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          requestKey,
+          secretValue: otp,
+        }),
+      });
+
+      const text = await response.text();
+
+      if (!response.ok) {
+        throw new Error(text || 'Verifikasi gagal');
+      }
+
+      const data = text ? JSON.parse(text) : {};
+      console.log("Parsed response:", data);
+
+      alert("Verifikasi berhasil!");
+      onClose();
+      router.push("/");
+    } catch (error) {
+      console.error("Error during verification:", error);
+      alert(error.message || "Terjadi kesalahan saat verifikasi");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   return (
     <div
@@ -53,12 +102,13 @@ export function PopupOTP({ isOpen, onClose }: PopupOTPProps) {
         </div>
         <p className="text-gray-700 text-sm">
           Kode verifikasi telah dikirim melalui email ke{" "}
-          <span className="font-bold">repo@email.com</span>
+          <span className="font-bold">{email}</span>
         </p>
-        <OTPInput length={6} onComplete={handleComplete} />
+        <OTPInput length={5} onComplete={handleComplete} />
         <button
           type="submit"
-          disabled={!isValid}
+          disabled={!isValid || isLoading}
+          onClick={handleVerification}
           className={`w-full p-2 mt-3 rounded-3xl text-sm text-neutral-100 ${isValid ? "bg-primary-500" : "bg-neutral-400"}`}
         >
           Verifikasi

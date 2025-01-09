@@ -4,15 +4,19 @@ import Link from "next/link";
 import Image from "next/image";
 import { InputField } from "../Input/InputField";
 import { PopupOTP } from "../Popup/Register/PopupOTP";
+import { registerUser } from "@/app/api/v1/auth/register/auth.register";
 
 // Main RegisterComponent
 export function RegisterComponent() {
+      const [name, setName] = useState<string>("");
       const [email, setEmail] = useState<string>("");
       const [password, setPassword] = useState<string>("");
       const [confirmationPassword, setConfirmationPassword] = useState<string>("");
       const [showPassword, setShowPassword] = useState<boolean>(false);
       const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
       const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // State for control the popup
+      const [loading, setLoading] = useState<boolean>(false);
+      const [requestKey, setRequestKey] = useState<string | null>(null);
 
       // function to open and close the pop up
       const openPopUp = () => setIsPopupOpen(true);
@@ -23,15 +27,50 @@ export function RegisterComponent() {
       const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
       // Check if all required fields are filled to enable the button
-      const isValid = email.trim() !== "" && password.trim() !== "" && confirmationPassword.trim() !== "";
+      const isValid = name.trim() !== "" && email.trim() !== "" && password.trim() !== "" && confirmationPassword.trim() !== "";
+
 
       // function for handle form submission
-      const handleRegister = (e: React.FormEvent) => {
-            e.preventDefault(); 
-            if (isValid) {
-                  openPopUp();
+      const handleRegister = async (e: React.FormEvent) => {
+            e.preventDefault();
+            if (!isValid) return;
+
+            if (password !== confirmationPassword) {
+                  alert("Password dan konfirmasi password tidak sama!");
+                  return;
             }
-      }
+
+            setLoading(true);
+            try {
+                  const data = { email, password, fullName: name };
+                  const result = await registerUser(data);
+
+                  // debugging
+                  // console.log("Registration success:", result);
+
+                  // Ambil requestKey dari respons API
+                  const key = result.data?.requestKey;
+
+                  // debugging
+                  // console.log("Request Key:", key);
+
+                  if (key) {
+                        setRequestKey(key); // Simpan requestKey di state
+                        openPopUp(); 
+                  } else {
+                        alert("Request Key tidak ditemukan!");
+                  }
+            } catch (error: unknown) {
+                  if (error instanceof Error) {
+                        alert(error.message || "Terjadi kesalahan saat mendaftar");
+                  } else {
+                        alert("Terjadi kesalahan yang tidak diketahui");
+                  }
+            } finally {
+                  setLoading(false); // Selesai loading
+            }
+      };
+
       return (
             <section className="w-full lg:w-1/2 p-5 lg:p-0 h-screen flex flex-col items-center justify-center gap-4">
                   <div className="flex flex-col items-center">
@@ -41,6 +80,15 @@ export function RegisterComponent() {
                   </div>
 
                   <form className="flex flex-col justify-start text-left w-full max-w-[360px] sm:w-[400px] gap-4" onSubmit={handleRegister}>
+                        {/* Input Full Name */}
+                        <InputField
+                              label="Full Name"
+                              type="text"
+                              placeholder="Masukkan nama panjang"
+                              value={name}
+                              onChange={setName}
+                        />
+
                         {/* Input Email */}
                         <InputField
                               label="Email / Nomor HP"
@@ -77,16 +125,17 @@ export function RegisterComponent() {
                         {/* Submit Button */}
                         <button
                               type="submit"
-                              disabled={!isValid}
-                              className={`w-full p-2 rounded-3xl text-sm text-neutral-100 ${isValid ? 'bg-primary-500' : 'bg-neutral-400'}`}
+                              disabled={!isValid || loading}
+                              className={`w-full p-2 rounded-3xl text-sm text-neutral-100 ${isValid ? 'bg-primary-500' : 'bg-neutral-400'} ${loading ? 'opacity-50' : ''
+                                    }`}
                         >
-                              Daftar
+                              {loading ? 'Mengirim...' : 'Daftar'}
                         </button>
                   </form>
 
                   <div className="flex flex-col text-center w-full max-w-[360px] sm:w-[400px] gap-4">
                         <div className="flex items-center">
-                        <hr className="border-neutral-400 border w-full h-[1px]" />
+                              <hr className="border-neutral-400 border w-full h-[1px]" />
                               <p className="text-neutral-600 text-xs sm:text-sm w-full whitespace-nowrap px-2">atau daftar dengan</p>
                               <hr className="border-neutral-400 border w-full" />
                         </div>
@@ -99,7 +148,7 @@ export function RegisterComponent() {
                         </p>
                   </div>
 
-                  <PopupOTP isOpen={isPopupOpen} onClose={closePopUp} />                  
+                  <PopupOTP isOpen={isPopupOpen} email={email} onClose={closePopUp} requestKey={requestKey} />
             </section>
       );
 }
