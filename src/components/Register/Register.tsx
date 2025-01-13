@@ -49,8 +49,7 @@ export function RegisterComponent() {
                   // console.log("Registration success:", result);
 
                   // Ambil requestKey dari respons API
-                  const key = result.data?.requestKey;
-
+                  const key = result.data.requestKey;
                   // debugging
                   // console.log("Request Key:", key);
 

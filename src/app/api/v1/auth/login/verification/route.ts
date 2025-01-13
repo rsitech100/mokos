@@ -1,18 +1,10 @@
 import { NextResponse } from 'next/server';
-
+import apiService from '@/app/api/api';
 export async function POST(req: Request) {
       if (req.method === 'POST') {
             const { requestKey, secretValue } = await req.json();
-
             try {
-                  const response = await fetch('http://47.245.95.207:8000/api/v1/auth/login/verification', {
-                        method: 'POST',
-                        headers: {
-                              'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ requestKey, secretValue }),
-                  });
-
+                  const response = await apiService.post<any>("/auth/login/verification", { requestKey, secretValue })
                   const data = await response.json(); // Directly parse JSON
 
                   if (!response.ok) {

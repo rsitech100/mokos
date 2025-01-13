@@ -5,6 +5,7 @@ import { InputField } from "../Input/InputField";
 import Image from "next/image";
 // import { useRouter } from "next/navigation";
 import { PopupOTP } from "../Popup/Register/PopupOTP";
+import apiService from "@/app/api/api";
 
 export function LoginComponent() {
       // const router = useRouter();
@@ -29,16 +30,8 @@ export function LoginComponent() {
             e.preventDefault();
             setIsLoading(true);
             setErrorMessage("");
-
             try {
-                  const response = await fetch("/api/v1/auth/login", {
-                        method: "POST",
-                        headers: {
-                              "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ username: email, password }),
-                  });
-
+                  const response = await apiService.post<any>("/v1/auth/login", { username: email, password })
                   const responseData = await response.json();
                   const key = responseData?.data?.data?.requestKey; // Akses requestKey dari data.data
                   if (!responseData.success) {

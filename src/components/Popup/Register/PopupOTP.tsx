@@ -5,6 +5,9 @@ import { IoIosClose } from "react-icons/io";
 import OTPInput from "./OTPInput";
 import CountdownTimer from "./CountDownTimer";
 import { useRouter } from "next/navigation";
+import apiService from "@/app/api/api";
+import Cookies from 'js-cookie';
+
 interface PopupOTPProps {
   isOpen: boolean;
   onClose: () => void;
@@ -57,27 +60,26 @@ export function PopupOTP({ email, isOpen, onClose, requestKey }: PopupOTPProps) 
     // });
 
     try {
-      const response = await fetch("/api/v1/auth/login/verification", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          requestKey,
-          secretValue: otp,
-        }),
-      });
+      const body = {
+        "requestKey": requestKey,
+        "secretValue": otp,
+      }
+      
+      const response = await apiService.post<any>("/v1/auth/login/verification", body)
 
-      const text = await response.text();
-
-      if (!response.ok) {
-        throw new Error(text || 'Verifikasi gagal');
+      if (!response.success) {
+        throw new Error(response.message || 'Verifikasi gagal');
       }
 
-      const data = text ? JSON.parse(text) : {};
-      console.log("Parsed response:", data);
+      /* set token into cookies */
+      console.log("Parsed response:", response.data);
+      Cookies.set('token', response.data.token, {
+        httpOnly: false, // Cannot use httpOnly on the client-side
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Strict',
+        expires: 7 // 7 days
+      });
 
-      alert("Verifikasi berhasil!");
       onClose();
       router.push("/");
     } catch (error) {
