@@ -42,8 +42,8 @@ export function MenuAfterLogin({ isOpen, setIsOpen }: ProfileAfterLoginProps) {
         <div className="flex items-center">
           <NotificationButton />
           <hr className="bg-neutral-400 w-8 rotate-90 hidden lg:flex" />
-         
-         <ButtonProfile />
+
+          <ButtonProfile />
         </div>
       )}
     </div>

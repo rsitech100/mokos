@@ -147,7 +147,7 @@ export function RegisterComponent() {
                         </p>
                   </div>
 
-                  <PopupOTP isOpen={isPopupOpen} email={email} onClose={closePopUp} requestKey={requestKey} />
+                  <PopupOTP isOpen={isPopupOpen} email={email} onClose={closePopUp} requestKey={requestKey} type="register" />
             </section>
       );
 }

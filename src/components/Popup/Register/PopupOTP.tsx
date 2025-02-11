@@ -1,21 +1,19 @@
-// File: components/PopupOTP.tsx
 'use client';
 import { useState, useEffect } from "react";
 import { IoIosClose } from "react-icons/io";
 import OTPInput from "./OTPInput";
 import CountdownTimer from "./CountDownTimer";
+import { handleVerification } from "@/app/api/v1/auth/login/verification/handleVerification";
 import { useRouter } from "next/navigation";
-import apiService from "@/app/api/api";
-import Cookies from 'js-cookie';
-
 interface PopupOTPProps {
   isOpen: boolean;
   onClose: () => void;
   email: string;
   requestKey: string | null;
+  type: "register" | "login"; // Menambahkan tipe untuk membedakan registrasi dan login
 }
 
-export function PopupOTP({ email, isOpen, onClose, requestKey }: PopupOTPProps) {
+export function PopupOTP({ email, isOpen, onClose, requestKey, type }: PopupOTPProps) {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [isValid, setIsValid] = useState(false);
@@ -33,6 +31,7 @@ export function PopupOTP({ email, isOpen, onClose, requestKey }: PopupOTPProps) 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
   // Cegah scroll di background saat modal terbuka
   useEffect(() => {
     if (isOpen) {
@@ -49,47 +48,16 @@ export function PopupOTP({ email, isOpen, onClose, requestKey }: PopupOTPProps) 
     setIsValid(pin.length === 5); // Validasi panjang OTP
   };
 
-  const handleVerification = async () => {
-    // debugging
-    // console.log("Request Key in PopupOTP:", requestKey);
-
-    setIsLoading(true);
-    // console.log("Request body:", {
-    //   requestKey,
-    //   secretValue: otp,
-    // });
-
-    try {
-      const body = {
-        "requestKey": requestKey,
-        "secretValue": otp,
-      }
-      
-      const response = await apiService.post<any>("/v1/auth/login/verification", body)
-
-      if (!response.success) {
-        throw new Error(response.message || 'Verifikasi gagal');
-      }
-
-      /* set token into cookies */
-      console.log("Parsed response:", response.data);
-      Cookies.set('token', response.data.token, {
-        httpOnly: false, // Cannot use httpOnly on the client-side
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Strict',
-        expires: 7 // 7 days
-      });
-
-      onClose();
-      router.push("/");
-    } catch (error) {
-      console.error("Error during verification:", error);
-      alert(error.message || "Terjadi kesalahan saat verifikasi");
-    } finally {
-      setIsLoading(false);
-    }
+  const handleVerificationProcess = () => {
+    handleVerification({
+      requestKey,
+      otp,
+      type,
+      onClose,
+      router,
+      setIsLoading,
+    });
   };
-
 
   return (
     <div
@@ -110,7 +78,7 @@ export function PopupOTP({ email, isOpen, onClose, requestKey }: PopupOTPProps) 
         <button
           type="submit"
           disabled={!isValid || isLoading}
-          onClick={handleVerification}
+          onClick={handleVerificationProcess}
           className={`w-full p-2 mt-3 rounded-3xl text-sm text-neutral-100 ${isValid ? "bg-primary-500" : "bg-neutral-400"}`}
         >
           Verifikasi

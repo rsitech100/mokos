@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { ApiService } from "@/app/api/api"
 
-var apiService = new ApiService()
+const apiService = new ApiService()
 
 export async function POST(req: Request) {
       try {
             const body = await req.json();
-            const response = await apiService.get<any>('/v1/auth/login', body);
+            const response = await apiService.post<any>('/v1/auth/login', body);
             const data = response;
 
             return NextResponse.json({ success: true, data });
