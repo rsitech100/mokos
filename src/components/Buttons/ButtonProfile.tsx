@@ -5,10 +5,13 @@ import Image from "next/image";
 import { IoIosArrowDown } from "react-icons/io";
 import { PopupMenuProfile } from "@/components/Popup/Header/Profile/PopupMenuProfile";
 import { motion } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
 
 export function ButtonProfile() {
       const [isPopUpVisible, setIsPopUpVisible] = useState(false);
       const popupRef = useRef<HTMLDivElement>(null);
+      const { user } = useAuth();
+
       const togglePopUp = () => {
             setIsPopUpVisible(!isPopUpVisible);
       };
@@ -30,7 +33,7 @@ export function ButtonProfile() {
                                     className="w-5 h-5"
                               />
                               <p className="text-sm font-semibold text-neutral-700 whitespace-nowrap">
-                                    Martin Paes
+                                    {user?.fullName || "Guest"}
                               </p>
                         </div>
                         <IoIosArrowDown color="#191717" />

@@ -49,8 +49,7 @@ export function RegisterComponent() {
                   // console.log("Registration success:", result);
 
                   // Ambil requestKey dari respons API
-                  const key = result.data?.requestKey;
-
+                  const key = result.data.requestKey;
                   // debugging
                   // console.log("Request Key:", key);
 
@@ -148,7 +147,7 @@ export function RegisterComponent() {
                         </p>
                   </div>
 
-                  <PopupOTP isOpen={isPopupOpen} email={email} onClose={closePopUp} requestKey={requestKey} />
+                  <PopupOTP isOpen={isPopupOpen} email={email} onClose={closePopUp} requestKey={requestKey} type="register" />
             </section>
       );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "@/utils/ClientWrapper";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Mini E-Commerce",
@@ -20,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${plusJakartaSans.className} bg-white`}>
-        <ClientWrapper>
-          {children}
+        <AuthProvider>
+          <ClientWrapper>
+            {children}
           </ClientWrapper>
+        </AuthProvider>
       </body>
     </html>
   );

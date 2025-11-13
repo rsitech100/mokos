@@ -1,28 +1,17 @@
 import { NextResponse } from "next/server";
+import { ApiService } from "@/app/api/api"
+
+const apiService = new ApiService()
 
 export async function POST(req: Request) {
       try {
             const body = await req.json();
-
-            const response = await fetch("http://47.245.95.207:8000/api/v1/auth/login", {
-                  method: "POST",
-                  headers: {
-                        "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(body),
-            });
-            
-            const data = await response.json();
-
-            if (!response.ok) {
-                  return NextResponse.json(
-                        { success: false, message: data.message || "Login failed" },
-                        { status: response.status }
-                  );
-            }
+            const response = await apiService.post<any>('/v1/auth/login', body);
+            const data = response;
 
             return NextResponse.json({ success: true, data });
       } catch (error: unknown) {
+            console.log(error, "error")
             if (error instanceof Error) {
                   return NextResponse.json(
                         { success: false, message: error.message || "Something went wrong" },
