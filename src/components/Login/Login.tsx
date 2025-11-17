@@ -15,7 +15,7 @@ export function LoginComponent() {
       const [errorMessage, setErrorMessage] = useState("");
       const [isPopupOpen, setIsPopupOpen] = useState(false);
       const [requestKey, setRequestKey] = useState(null);
-      
+
       // Check Google OAuth config setiap render
       const isGoogleConfigured = isGoogleOAuthConfigured();
 
@@ -33,8 +33,8 @@ export function LoginComponent() {
                   const response: any = await apiService.post("/v1/auth/login", { username: email, password });
                   if (!response.success) throw new Error(response.message || "Login failed");
 
-                  const requestKey  = response.data.requestKey;
-                  if (!requestKey ) throw new Error("kode OTP tidak ditemukan.");
+                  const requestKey = response.data.requestKey;
+                  if (!requestKey) throw new Error("kode OTP tidak ditemukan.");
 
                   if (requestKey) {
                         setRequestKey(requestKey);
@@ -51,9 +51,6 @@ export function LoginComponent() {
       };
 
       const handleGoogleLogin = () => {
-            console.log('=== DEBUG Google OAuth ===');
-            console.log('isGoogleConfigured:', isGoogleConfigured);
-            console.log('GOOGLE_CLIENT_ID:', process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
             loginWithGoogle();
       };
 
@@ -79,15 +76,14 @@ export function LoginComponent() {
                               <p className="text-neutral-600 text-xs sm:text-sm w-full px-2 whitespace-nowrap">atau masuk dengan</p>
                               <hr className="border-neutral-400 border w-full" />
                         </div>
-                        <button 
+                        <button
                               type="button"
                               onClick={handleGoogleLogin}
                               disabled={!isGoogleConfigured}
-                              className={`flex items-center justify-center gap-2 rounded-3xl border border-neutral-400 text-neutral-700 text-sm p-2 transition-colors ${
-                                    isGoogleConfigured 
-                                          ? 'hover:bg-neutral-50 cursor-pointer' 
+                              className={`flex items-center justify-center gap-2 rounded-3xl border border-neutral-400 text-neutral-700 text-sm p-2 transition-colors ${isGoogleConfigured
+                                          ? 'hover:bg-neutral-50 cursor-pointer'
                                           : 'opacity-50 cursor-not-allowed'
-                              }`}
+                                    }`}
                               title={isGoogleConfigured ? "Login dengan Google" : "Google OAuth belum dikonfigurasi"}
                         >
                               <Image src="/image/login/google-icon.svg" alt="google-icon" width={20} height={20} className="w-5" />
