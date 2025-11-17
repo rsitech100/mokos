@@ -1,152 +1,163 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa";
 
-interface PopupPersonalDetailsProps  {
+interface PopupPersonalDetailsProps {
       data: {
             name: string;
-            birthDate: string;
-            gender: string;
+            dob: string;     // YYYY-MM-DD
+            gender: string;  // "m" | "f"
       };
       onClose: () => void;
       onSave: (updatedData: {
             name: string;
-            birthDate: string;
+            dob: string;
             gender: string;
       }) => void;
-};
+      saving?: boolean;
+}
 
 export function PopupPersonalDetails({
       data,
       onClose,
       onSave,
+      saving = false,
 }: PopupPersonalDetailsProps) {
       const [isMobile, setIsMobile] = useState(false);
-      const [formData, setFormData] = useState(data); // Form data state
+      const [formData, setFormData] = useState(data);
 
-      // Cek apakah tampilan adalah mobile
+      // Detect mobile screen size
       useEffect(() => {
             const handleResize = () => {
                   setIsMobile(window.innerWidth <= 768);
             };
-            handleResize(); // Cek saat komponen pertama kali dirender
+            handleResize();
             window.addEventListener("resize", handleResize);
-
             return () => window.removeEventListener("resize", handleResize);
       }, []);
-
-      // Format date to string
-      const formatDate = (dateString: string): string => {
-            const options: Intl.DateTimeFormatOptions = {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-            };
-            const date = new Date(dateString);
-            return new Intl.DateTimeFormat("id-ID", options).format(date);
-      };
 
       const handleChange = (
             e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
       ) => {
             const { name, value } = e.target;
-
             setFormData((prev) => ({
                   ...prev,
-                  [name]: name === "birthDate" ? formatDate(value) : value, // Format date only for birthDate
+                  [name]: value,
             }));
       };
 
+      // Always send YYYY-MM-DD format
       const handleSubmit = () => {
-            onSave(formData); // Pass updated data to parent
+            onSave({
+                  ...formData,
+                  dob: formData.dob, // type="date" already gives YYYY-MM-DD
+            });
       };
 
       return (
-            <div className={`fixed inset-0 flex items-center justify-center ${isMobile ? "bg-white" : "bg-black bg-opacity-50 px-2"}  z-50`}>
-                  <div className={`${isMobile ? 'w-full h-full flex flex-col justify-between pb-5' : 'bg-white rounded-xl p-5 shadow-md w-[468px]'}`}>
-                        <div className="flex flex-col">                    
-                        <div className="inline-flex w-full justify-start items-center md:justify-between shadow-md lg:shadow-none p-5 md:p-0 gap-3 md:gap-0">
-                        <div onClick={onClose} className="flex md:hidden cursor-pointer">
-                                    <FaArrowLeft size={14} color="#00000" />
-                              </div>   
-                              <h3 className="textmd font-bold mb-0 lg:mb-4 text-center">Ubah Biodata</h3>
-                              <div onClick={onClose} className="hidden md:flex cursor-pointer">
-                                    <IoClose size={24} color="#00000" />
-                              </div>
-                        </div>
-                        <div className="flex flex-col gap-4 p-5 md:p-0">
-                              {/* Name Input */}
-                              <div className="flex flex-col gap-2">
-                                    <label className="text-sm text-neutral-700 font-bold">Nama</label>
-                                    <input
-                                          type="text"
-                                          name="name"
-                                          value={formData.name}
-                                          onChange={handleChange}
-                                          className="w-full p-2 border border-neutral-400 rounded-lg text-neutral-700 text-sm focus:outline-none"
-                                    />
-                              </div>
-
-                              {/* Birth Date Input */}
-                              <div className="flex flex-col gap-2">
-                                    <label className="text-sm text-neutral-700 font-bold">
-                                          Tanggal Lahir
-                                    </label>
-                                    <input
-                                          type="date"
-                                          name="birthDate"
-                                          onChange={handleChange}
-                                          className="w-full p-2 border border-neutral-400 rounded-lg text-neutral-700 text-sm focus:outline-none"
-                                    />
-                                    <p className="mt-2 text-sm text-neutral-500">
-                                          Tanggal Lahir: {formData.birthDate}
-                                    </p>
+            <div
+                  className={`fixed inset-0 flex items-center justify-center ${isMobile ? "bg-white" : "bg-black bg-opacity-50 px-2"
+                        } z-50`}
+            >
+                  <div
+                        className={`${isMobile
+                                    ? "w-full h-full flex flex-col justify-between pb-5"
+                                    : "bg-white rounded-xl p-5 shadow-md w-[468px]"
+                              }`}
+                  >
+                        <div className="flex flex-col">
+                              {/* Header */}
+                              <div className="inline-flex w-full justify-start items-center md:justify-between shadow-md lg:shadow-none p-5 md:p-0 gap-3 md:gap-0">
+                                    <div onClick={onClose} className="flex md:hidden cursor-pointer">
+                                          <FaArrowLeft size={14} color="#000000" />
+                                    </div>
+                                    <h3 className="text-md font-bold mb-0 lg:mb-4 text-center">
+                                          Ubah Biodata
+                                    </h3>
+                                    <div onClick={onClose} className="hidden md:flex cursor-pointer">
+                                          <IoClose size={24} color="#000000" />
+                                    </div>
                               </div>
 
-                              {/* Gender Select */}
-                              <div className="flex flex-col gap-2">
-                                    <label className="text-sm text-neutral-700 font-bold">
-                                          Jenis Kelamin
-                                    </label>
-                                    <div className="flex flex-row gap-6">
-                                          <div className="inline-flex items-center justify-start">
-                                                <input
-                                                      type="radio"
-                                                      name="gender"
-                                                      value="Laki-laki"
-                                                      checked={formData.gender === "Laki-laki"}
-                                                      onChange={handleChange}
-                                                      className="w-4 h-4 text-primary-500 bg-neutral-100 border-neutral-400 focus:ring-primary-500"
-                                                />
-                                                <label
-                                                      htmlFor="laki-laki"
-                                                      className="ms-2 text-sm font-medium text-neutral-700"
-                                                >
-                                                      Laki-laki
+                              {/* Form */}
+                              <div className="flex flex-col gap-4 p-5 md:p-0">
+                                    {/* Nama */}
+                                    <div className="flex flex-col gap-2">
+                                          <label className="text-sm text-neutral-700 font-bold">Nama</label>
+                                          <input
+                                                type="text"
+                                                name="name"
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                className="w-full p-2 border border-neutral-400 rounded-lg text-neutral-700 text-sm focus:outline-none"
+                                          />
+                                    </div>
+
+                                    {/* Tanggal Lahir */}
+                                    <div className="flex flex-col gap-2">
+                                          <label className="text-sm text-neutral-700 font-bold">
+                                                Tanggal Lahir
+                                          </label>
+                                          <input
+                                                type="date"
+                                                name="dob"
+                                                value={formData.dob}
+                                                onChange={handleChange}
+                                                className="w-full p-2 border border-neutral-400 rounded-lg text-neutral-700 text-sm focus:outline-none"
+                                          />
+
+                                          {formData.dob && (
+                                                <p className="mt-2 text-sm text-neutral-500">
+                                                      Tanggal Lahir:{" "}
+                                                      {new Date(formData.dob).toLocaleDateString("id-ID", {
+                                                            day: "2-digit",
+                                                            month: "long",
+                                                            year: "numeric",
+                                                      })}
+                                                </p>
+                                          )}
+                                    </div>
+
+                                    {/* Gender */}
+                                    <div className="flex flex-col gap-2">
+                                          <label className="text-sm text-neutral-700 font-bold">
+                                                Jenis Kelamin
+                                          </label>
+                                          <div className="flex flex-row gap-6">
+                                                <label className="inline-flex items-center justify-start">
+                                                      <input
+                                                            type="radio"
+                                                            name="gender"
+                                                            value="m"
+                                                            checked={formData.gender === "m"}
+                                                            onChange={handleChange}
+                                                            className="w-4 h-4"
+                                                      />
+                                                      <span className="ms-2 text-sm font-medium text-neutral-700">
+                                                            Laki-laki
+                                                      </span>
                                                 </label>
-                                          </div>
 
-                                          <div className="inline-flex items-center justify-start">
-                                                <input
-                                                      type="radio"
-                                                      name="gender"
-                                                      value="Perempuan"
-                                                      checked={formData.gender === "Perempuan"}
-                                                      onChange={handleChange}
-                                                      className="w-4 h-4 text-primary-500 bg-neutral-100 border-neutral-400 focus:ring-primary-500"
-                                                />
-                                                <label
-                                                      htmlFor="Perempuan"
-                                                      className="ms-2 text-sm font-medium text-neutral-700"
-                                                >
-                                                      Perempuan
+                                                <label className="inline-flex items-center justify-start">
+                                                      <input
+                                                            type="radio"
+                                                            name="gender"
+                                                            value="f"
+                                                            checked={formData.gender === "f"}
+                                                            onChange={handleChange}
+                                                            className="w-4 h-4"
+                                                      />
+                                                      <span className="ms-2 text-sm font-medium text-neutral-700">
+                                                            Perempuan
+                                                      </span>
                                                 </label>
                                           </div>
                                     </div>
                               </div>
                         </div>
-                        </div>
+
                         {/* Buttons */}
                         <div className="flex justify-end gap-3 mt-5 px-5 lg:px-0">
                               <button
@@ -157,9 +168,11 @@ export function PopupPersonalDetails({
                               </button>
                               <button
                                     onClick={handleSubmit}
-                                    className="w-full lg:w-fit px-10 py-2 bg-primary-500 rounded-3xl text-white font-semibold text-sm"
+                                    disabled={saving}
+                                    className={`w-full lg:w-fit px-10 py-2 rounded-3xl text-white font-semibold text-sm ${saving ? "bg-neutral-400 cursor-not-allowed" : "bg-primary-500"
+                                          }`}
                               >
-                                    Simpan
+                                    {saving ? "Menyimpan..." : "Simpan"}
                               </button>
                         </div>
                   </div>

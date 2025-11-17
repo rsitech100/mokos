@@ -2,18 +2,21 @@
 
 import { useEffect, useState } from "react";
 
-const CountdownTimer = () => {
-      const [seconds, setSeconds] = useState(60); // Inisialization with 60 seconds
+const CountdownTimer = ({ onFinish }: { onFinish: () => void }) => {
+      const [seconds, setSeconds] = useState(60);
 
       useEffect(() => {
-            if (seconds <= 0) return;
+            if (seconds <= 0) {
+                  onFinish(); // ⬅️ panggil callback
+                  return;
+            }
 
             const interval = setInterval(() => {
-                  setSeconds((prevSeconds) => prevSeconds - 1);
+                  setSeconds((prev) => prev - 1);
             }, 1000);
 
             return () => clearInterval(interval);
-      }, [seconds]);
+      }, [seconds, onFinish]);
 
       return (
             <p className="font-normal text-xs text-neutral-700 text-center mt-1">

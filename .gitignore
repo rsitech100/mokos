@@ -29,6 +29,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+GOOGLE_LOGIN_INSTRUKSI.txt
+BACKEND_GOOGLE_OAUTH.md
+BACKEND_GOOGLE_LOGIN_REQUIRED.md
+SETUP_GOOGLE_LOGIN.md
+GOOGLE_OAUTH_SETUP.md
+components.json
+
 # env files (can opt-in for commiting if needed)
 .env*
 

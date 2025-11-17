@@ -7,12 +7,15 @@ import apiService from "@/app/api/api";
 type User = {
       fullName: string;
       email: string;
+      phone?: string;
       role: {
             name: string;
             privileges: string[];
             merchant: string | null;
       };
       profilePhoto: string | null;
+      dob?: string;
+      gender?: string;
 };
 
 type AuthContextType = {
@@ -20,7 +23,8 @@ type AuthContextType = {
       user: User | null;
       token: string | null;
       login: (token: string) => void;
-      logout: () => void;
+      logout: (callback?: () => void) => void;
+      updateUser: (userData: Partial<User>) => void;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -29,6 +33,7 @@ const AuthContext = createContext<AuthContextType>({
       token: null,
       login: () => { },
       logout: () => { },
+      updateUser: () => { },
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -39,7 +44,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       useEffect(() => {
             const storedToken = Cookies.get("token") || localStorage.getItem("token");  // ✅ Cek juga di localStorage
-            // console.log("AuthProvider - Token ditemukan:", storedToken);
  
             if (storedToken) {
                   setToken(storedToken);
@@ -47,13 +51,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             } else {
                   setLoading(false);
             }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
 
       const fetchUserData = async (authToken: string) => {
             try {
-                  console.log("Fetching user dengan token:", authToken);  // ✅ Debug token sebelum dikirim
-
-                  const response = await apiService.get("/v1/user", {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  const response: any = await apiService.get("/v1/user", {
                         headers: {
                               Authorization: `Bearer ${authToken}`,
                               Accept: "*/*",
@@ -66,7 +70,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                   setUser(response.data);
             } catch (error) {
                   console.error("Gagal fetch user:", error);
-                  logout();
+                  // Token invalid atau expired, logout dan redirect ke login
+                  logout(() => {
+                        if (typeof window !== 'undefined') {
+                              window.location.href = '/auth/login';
+                        }
+                  });
             } finally {
                   setLoading(false);
             }
@@ -84,14 +93,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       };
 
 
-      const logout = () => {
+      const logout = (callback?: () => void) => {
             Cookies.remove("token");
+            localStorage.removeItem("token");
             setUser(null);
             setToken(null);
+            
+            // Call callback jika ada (untuk redirect)
+            if (callback) {
+                  callback();
+            }
+      };
+
+      const updateUser = (userData: Partial<User>) => {
+            setUser((prevUser) => (prevUser ? { ...prevUser, ...userData } : null));
       };
 
       return (
-            <AuthContext.Provider value={{ isAuthenticated: !!token, user, token, login, logout }}>
+            <AuthContext.Provider value={{ isAuthenticated: !!token && !!user, user, token, login, logout, updateUser }}>
                   {!loading && children}
             </AuthContext.Provider>
       );

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { InputField } from "../Input/InputField";
 import { PopupOTP } from "../Popup/Register/PopupOTP";
 import { registerUser } from "@/app/api/v1/auth/register/auth.register";
+import { loginWithGoogle, isGoogleOAuthConfigured } from "@/lib/google-auth";
 
 // Main RegisterComponent
 export function RegisterComponent() {
@@ -17,6 +18,9 @@ export function RegisterComponent() {
       const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // State for control the popup
       const [loading, setLoading] = useState<boolean>(false);
       const [requestKey, setRequestKey] = useState<string | null>(null);
+      
+      // Check Google OAuth config setiap render
+      const isGoogleConfigured = isGoogleOAuthConfigured();
 
       // function to open and close the pop up
       const openPopUp = () => setIsPopupOpen(true);
@@ -29,6 +33,10 @@ export function RegisterComponent() {
       // Check if all required fields are filled to enable the button
       const isValid = name.trim() !== "" && email.trim() !== "" && password.trim() !== "" && confirmationPassword.trim() !== "";
 
+      // Handle Google registration/login
+      const handleGoogleAuth = () => {
+            loginWithGoogle();
+      };
 
       // function for handle form submission
       const handleRegister = async (e: React.FormEvent) => {
@@ -138,9 +146,19 @@ export function RegisterComponent() {
                               <p className="text-neutral-600 text-xs sm:text-sm w-full whitespace-nowrap px-2">atau daftar dengan</p>
                               <hr className="border-neutral-400 border w-full" />
                         </div>
-                        <button className="flex items-center justify-center gap-2 rounded-3xl border border-neutral-400 text-neutral-700 text-sm p-2">
+                        <button 
+                              type="button"
+                              onClick={handleGoogleAuth}
+                              disabled={!isGoogleConfigured}
+                              className={`flex items-center justify-center gap-2 rounded-3xl border border-neutral-400 text-neutral-700 text-sm p-2 transition-colors ${
+                                    isGoogleConfigured 
+                                          ? 'hover:bg-neutral-50 cursor-pointer' 
+                                          : 'opacity-50 cursor-not-allowed'
+                              }`}
+                              title={isGoogleConfigured ? "Daftar dengan Google" : "Google OAuth belum dikonfigurasi"}
+                        >
                               <Image src="/image/login/google-icon.svg" alt="google-icon" width={20} height={20} className="w-5" />
-                              Google
+                              {isGoogleConfigured ? 'Google' : 'Google (Belum Tersedia)'}
                         </button>
                         <p className="text-sm text-neutral-700">
                               Sudah punya akun? <Link href="/auth/login" className="text-primary-500 font-semibold">Masuk</Link>

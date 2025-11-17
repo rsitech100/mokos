@@ -1,25 +1,32 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { PopupOTP } from "../Popup/Register/PopupOTP";
+import { useAuth } from "@/context/AuthContext";
 
 type ContactInformationType = {
       title: string;
       value: string;
 };
 
-const ContactInformationItem: ContactInformationType[] = [
-      { title: "Nomor HP", value: "123456789" },
-      { title: "Email", value: "martinpaes@email.com" },
-];
-
 export function ContactInformation() {
-      const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // State for controlling the popup
-      const [editIndex, setEditIndex] = useState<number | null>(null); // Index of the item being edited
-      // State to store updated values
+      const { user, updateUser } = useAuth();
+      const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+      const [editIndex, setEditIndex] = useState<number | null>(null);
+      
+      // State to store updated values dari user
       const [updatedValues, setUpdatedValues] = useState<ContactInformationType[]>([
-            ...ContactInformationItem,
-      ]); 
+            { title: "Nomor HP", value: user?.phone || "" },
+            { title: "Email", value: user?.email || "" },
+      ]);
+
+      // Update state saat user data berubah
+      useEffect(() => {
+            setUpdatedValues([
+                  { title: "Nomor HP", value: user?.phone || "" },
+                  { title: "Email", value: user?.email || "" },
+            ]);
+      }, [user]); 
 
       const openPopUp = () => setIsPopupOpen(true);
       const closePopUp = () => setIsPopupOpen(false);
@@ -36,7 +43,13 @@ export function ContactInformation() {
 
       const handleInputKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
             if (event.key === "Enter") {
-                  setEditIndex(null); // Exit edit mode when Enter is pressed
+                  setEditIndex(null);
+                  // Update user context saat Enter ditekan
+                  if (index === 0) {
+                        updateUser({ phone: updatedValues[0].value });
+                  } else if (index === 1) {
+                        updateUser({ email: updatedValues[1].value });
+                  }
             }
       };
 
@@ -91,7 +104,7 @@ export function ContactInformation() {
                         Ubah Kata Sandi
                   </button>
 
-                  <PopupOTP isOpen={isPopupOpen} onClose={closePopUp} />
+                  {/* <PopupOTP isOpen={isPopupOpen} onClose={closePopUp} email={user?.email || ""} requestKey={null} type="login" /> */}
             </div>
       );
 }

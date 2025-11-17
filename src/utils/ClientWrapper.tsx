@@ -27,7 +27,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
 
       // Tentukan background color berdasarkan halaman
       const bgNeutralPages = new Set(["/cart", "/checkout", "/pay", "/payment"]);
-      const backgroundColor = bgNeutralPages.has(pathname) ? "bg-neutral-200" : "bg-white";
+      const backgroundColor = bgNeutralPages.has(pathname) ? "bg-neutral-200" : "";
 
       // Cek apakah sidebar harus ditampilkan
       const shouldShowSidebar = useMemo(

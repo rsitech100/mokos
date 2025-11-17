@@ -42,7 +42,7 @@ export function ProfileItems({ onClose }: ProfileItemsProps) {
                         const isActive = pathname === item.href; // Compare current path with item.href
                         return (
                               <Link
-                                    href={item.href || "#"} // Tambahkan fallback href jika kosong
+                                    href={item.href || "#"} 
                                     key={item.alt}
                                     passHref
                                     onClick={(e) => {
@@ -58,7 +58,7 @@ export function ProfileItems({ onClose }: ProfileItemsProps) {
                                           icon={item.icon}
                                           alt={item.alt}
                                           title={item.title}
-                                          isActive={isActive} // Pass active state to ProfileItem
+                                          isActive={isActive} 
                                     />
                               </Link>
                         );

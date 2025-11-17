@@ -12,7 +12,7 @@ interface PopupAddAddressProps {
       onClose: () => void;
       onSave?: (updatedData: {
             name: string;
-            birthDate: string;
+            dob: string;
       }) => void;
 }
 

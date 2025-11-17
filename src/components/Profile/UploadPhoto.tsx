@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import { useState, useRef } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export function UploadPhoto() {
+      const { user, updateUser } = useAuth();
       const [file, setFile] = useState<File | null>(null);
-      const [preview, setPreview] = useState<string | null>(null);
+      const [preview, setPreview] = useState<string | null>(user?.profilePhoto || null);
       const fileInputRef = useRef<HTMLInputElement>(null);
 
       const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +29,10 @@ export function UploadPhoto() {
                         const data = await response.json();
 
                         if (response.ok) {
+                              // Update user context dengan foto baru
+                              if (data.photoUrl) {
+                                    updateUser({ profilePhoto: data.photoUrl });
+                              }
                               alert("Foto berhasil diunggah!");
                         } else {
                               console.error(data.error);

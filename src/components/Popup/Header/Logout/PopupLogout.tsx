@@ -1,8 +1,22 @@
+"use client";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+
 interface LogoutPopupProps {
       onClose: () => void;
 }
 
-export function LogoutPopup({onClose }: LogoutPopupProps) {
+export function LogoutPopup({ onClose }: LogoutPopupProps) {
+      const { logout } = useAuth();
+      const router = useRouter();
+
+      const handleLogout = () => {
+            logout(() => {
+                  // Redirect ke login page setelah logout
+                  router.push("/auth/login");
+            });
+            onClose();
+      };
 
       return (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -17,8 +31,8 @@ export function LogoutPopup({onClose }: LogoutPopupProps) {
                                     Batal
                               </button>
                               <button
-                                    className="px-12 py-2 bg-danger-200 text-white font-semibold rounded-3xl"
-                                    // onClick={onConfirm}
+                                    className="px-12 py-2 bg-danger-200 text-white font-semibold rounded-3xl hover:bg-danger-300 transition-colors"
+                                    onClick={handleLogout}
                               >
                                     Keluar
                               </button>

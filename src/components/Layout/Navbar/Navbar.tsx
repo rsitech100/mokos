@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { disableNavWithFooter } from "@/utils/DisableNavWithFooter";
+import { disableNavWithFooter } from "@/utils/disableNavWithFooter";
 import { CartButton } from "@/components/Buttons/CartButton";
 import { CategoryButton } from "@/components/Buttons/CategoryButton";
 import { useAuth } from "@/context/AuthContext";
@@ -18,9 +18,6 @@ export function Navbar() {
       const { isAuthenticated, user, token } = useAuth();
 
       useEffect(() => {
-            console.log("Navbar Mounted - isAuthenticated:", isAuthenticated);
-            console.log("Navbar Mounted - Token:", token);
-            console.log("Navbar Mounted - User:", user);
       }, [isAuthenticated, token, user]);
 
       const toggleMenu = () => {
@@ -30,8 +27,8 @@ export function Navbar() {
       return (
             <>
                   {!disableNavWithFooter.includes(path) && (
-                        <nav className="shadow-card bg-white">
-                              <div className="shadow-card sticky z-50 flex flex-row px-0 lg:px-20 lg:py-4 w-full justify-between max-w-[1440px] mx-auto items-center">
+                        <nav className="shadow-card z-50">
+                              <div className="sticky z-50 flex flex-row px-0 lg:px-20 lg:py-4 w-full justify-between max-w-[1440px] mx-auto items-center">
                                     <div className="flex flex-col lg:flex-row w-full justify-around">
                                           <div className="flex flex-row gap-3 lg:gap-0 w-full items-center justify-between shadow-card py-4 lg:py-0 px-5 lg:px-0 lg:shadow-none bg-white">
                                                 {/* Logo Profile */}

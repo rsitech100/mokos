@@ -5,6 +5,7 @@ import OTPInput from "./OTPInput";
 import CountdownTimer from "./CountDownTimer";
 import { handleVerification } from "@/app/api/v1/auth/login/verification/handleVerification";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 interface PopupOTPProps {
   isOpen: boolean;
   onClose: () => void;
@@ -15,6 +16,7 @@ interface PopupOTPProps {
 
 export function PopupOTP({ email, isOpen, onClose, requestKey, type }: PopupOTPProps) {
   const router = useRouter();
+  const { login } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [otp, setOtp] = useState(""); // State untuk menyimpan OTP
@@ -56,6 +58,7 @@ export function PopupOTP({ email, isOpen, onClose, requestKey, type }: PopupOTPP
       onClose,
       router,
       setIsLoading,
+      login,
     });
   };
 
@@ -79,11 +82,12 @@ export function PopupOTP({ email, isOpen, onClose, requestKey, type }: PopupOTPP
           type="submit"
           disabled={!isValid || isLoading}
           onClick={handleVerificationProcess}
-          className={`w-full p-2 mt-3 rounded-3xl text-sm text-neutral-100 ${isValid ? "bg-primary-500" : "bg-neutral-400"}`}
+          className={`w-full p-3 mt-4 rounded-3xl text-sm font-semibold text-neutral-100 transition-all ${isValid && !isLoading ? "bg-primary-500 hover:bg-primary-600 cursor-pointer" : "bg-neutral-400 cursor-not-allowed"
+            }`}
         >
-          Verifikasi
+          {isLoading ? "Memverifikasi..." : "Verifikasi"}
         </button>
-        <CountdownTimer />
+        <CountdownTimer onFinish={onClose} />
       </div>
     </div>
   );

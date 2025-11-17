@@ -1,7 +1,6 @@
 // handleVerification.ts
 import apiService from "@/app/api/api";
-import Cookies from "js-cookie";
-import { NextRouter } from "next/router";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import toast from "react-hot-toast";
 
 interface VerificationParams {
@@ -9,8 +8,9 @@ interface VerificationParams {
       otp: string;
       type: "register" | "login";
       onClose: () => void;
-      router: NextRouter;
+      router: AppRouterInstance;
       setIsLoading: (loading: boolean) => void;
+      login?: (token: string) => void; // Tambahkan fungsi login dari AuthContext
 }
 
 interface ApiResponse<T = unknown> {
@@ -35,6 +35,7 @@ export async function handleVerification({
       onClose,
       router,
       setIsLoading,
+      login,
 }: VerificationParams) {
       setIsLoading(true);
 
@@ -60,12 +61,10 @@ export async function handleVerification({
             else if (type === "login") {
                   const response = await apiService.post<ApiResponse<LoginResponse>>("/v1/auth/login/verification", body);
                   if (response.success && response.data) {
-                        Cookies.set("token", response.data.token, {
-                              httpOnly: false,
-                              secure: process.env.NODE_ENV === "production",
-                              sameSite: "Strict",
-                              expires: 7,
-                        });
+                        const token = response.data.token;
+                        if (login) {
+                              login(token); // Panggil fungsi login dari AuthContext
+                        }
                         toast.success("Berhasil login");
                         onClose();
                         router.push("/");
