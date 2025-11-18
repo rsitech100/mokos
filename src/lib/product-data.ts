@@ -1,6 +1,6 @@
-import { ProductCardType } from "@/types/product-card";
+// import { ProductCardType } from "@/types/product-card";
 
-export const productsData: ProductCardType[] = [
+export const productsData = [
   {
     id: 1,  
     image: '/image/product/shoes-dummy.svg',

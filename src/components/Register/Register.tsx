@@ -18,7 +18,7 @@ export function RegisterComponent() {
       const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // State for control the popup
       const [loading, setLoading] = useState<boolean>(false);
       const [requestKey, setRequestKey] = useState<string | null>(null);
-      
+
       // Check Google OAuth config setiap render
       const isGoogleConfigured = isGoogleOAuthConfigured();
 
@@ -51,7 +51,10 @@ export function RegisterComponent() {
             setLoading(true);
             try {
                   const data = { email, password, fullName: name };
-                  const result = await registerUser(data);
+                  const result = await registerUser(data) as {
+                        data: { requestKey: string };
+                  };
+
 
                   // debugging
                   // console.log("Registration success:", result);
@@ -62,8 +65,8 @@ export function RegisterComponent() {
                   // console.log("Request Key:", key);
 
                   if (key) {
-                        setRequestKey(key); // Simpan requestKey di state
-                        openPopUp(); 
+                        setRequestKey(key);
+                        openPopUp();
                   } else {
                         alert("Request Key tidak ditemukan!");
                   }
@@ -146,15 +149,14 @@ export function RegisterComponent() {
                               <p className="text-neutral-600 text-xs sm:text-sm w-full whitespace-nowrap px-2">atau daftar dengan</p>
                               <hr className="border-neutral-400 border w-full" />
                         </div>
-                        <button 
+                        <button
                               type="button"
                               onClick={handleGoogleAuth}
                               disabled={!isGoogleConfigured}
-                              className={`flex items-center justify-center gap-2 rounded-3xl border border-neutral-400 text-neutral-700 text-sm p-2 transition-colors ${
-                                    isGoogleConfigured 
-                                          ? 'hover:bg-neutral-50 cursor-pointer' 
+                              className={`flex items-center justify-center gap-2 rounded-3xl border border-neutral-400 text-neutral-700 text-sm p-2 transition-colors ${isGoogleConfigured
+                                          ? 'hover:bg-neutral-50 cursor-pointer'
                                           : 'opacity-50 cursor-not-allowed'
-                              }`}
+                                    }`}
                               title={isGoogleConfigured ? "Daftar dengan Google" : "Google OAuth belum dikonfigurasi"}
                         >
                               <Image src="/image/login/google-icon.svg" alt="google-icon" width={20} height={20} className="w-5" />

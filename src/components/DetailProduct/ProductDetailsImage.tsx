@@ -7,23 +7,45 @@ import { Thumbs } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/thumbs';
 import Image from 'next/image';
+import { useProductDetail } from '@/context/ProductDetailContext';
 
-type ProductImageType = {
-      image: string;
-      alt: string;
-};
-
-const ProductImageItem: ProductImageType[] = [
-      { image: '/image/detail-product/dummy-1.svg', alt: 'dummy-1' },
-      { image: '/image/detail-product/dummy-2.svg', alt: 'dummy-2' },
-      { image: '/image/detail-product/dummy-1.svg', alt: 'dummy-3' },
-      { image: '/image/detail-product/dummy-2.svg', alt: 'dummy-4' },
-      { image: '/image/detail-product/dummy-1.svg', alt: 'dummy-5' },
-      { image: '/image/detail-product/dummy-2.svg', alt: 'dummy-6' },
-];
+const BASE_API = process.env.NEXT_PUBLIC_BASE_API || '';
 
 export function ProductDetailsImage() {
       const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+      const { product, loading } = useProductDetail();
+
+      if (loading) {
+            return (
+                  <div className="flex flex-col items-center gap-4 justify-start w-full">
+                        <div className="w-full md:max-w-[320px] h-[320px] bg-gray-300 animate-pulse rounded-[12px]"></div>
+                        <div className="flex gap-2 w-full md:max-w-[320px]">
+                              {[...Array(4)].map((_, i) => (
+                                    <div key={i} className="w-[72px] h-[72px] bg-gray-300 animate-pulse rounded-lg"></div>
+                              ))}
+                        </div>
+                  </div>
+            );
+      }
+
+      if (!product || !product.pictureFiles || product.pictureFiles.length === 0) {
+            return (
+                  <div className="flex flex-col items-center gap-4 justify-start w-full">
+                        <Image
+                              src="/image/product/shoes-dummy.svg"
+                              alt="No image"
+                              className="w-full h-auto rounded-[12px]"
+                              width={320}
+                              height={320}
+                        />
+                  </div>
+            );
+      }
+
+      const images = product.pictureFiles.map((file) => ({
+            image: `${BASE_API}${file.uri}`,
+            alt: file.name || product.title,
+      }));
 
       return (
             <div className="flex flex-col items-center gap-4 justify-start w-full">
@@ -36,15 +58,17 @@ export function ProductDetailsImage() {
                         slidesPerView={1}
                         className="main-slider w-full md:max-w-[320px]"
                   >
-                        {ProductImageItem.map((item, index) => (
+                        {images.map((item, index) => (
                               <SwiperSlide key={index}>
-                                    <Image
-                                          src={item.image}
-                                          alt={item.alt}
-                                          className="w-full h-auto rounded-[12px]"
-                                          width={320}
-                                          height={320}
-                                    />
+                                    <div className="relative w-full" style={{ paddingBottom: '100%' }}>
+                                          <Image
+                                                src={item.image}
+                                                alt={item.alt}
+                                                fill
+                                                className="object-cover rounded-[12px]"
+                                                unoptimized
+                                          />
+                                    </div>
                               </SwiperSlide>
                         ))}
                   </Swiper>
@@ -67,15 +91,17 @@ export function ProductDetailsImage() {
                               }
                         }}
                   >
-                        {ProductImageItem.map((item, index) => (
+                        {images.map((item, index) => (
                               <SwiperSlide key={index}>
-                                    <Image
-                                          src={item.image}
-                                          alt={item.alt}
-                                          width={72}
-                                          height={72}
-                                          className="cursor-pointer rounded-lg opacity-60 hover:opacity-100 transition-opacity"
-                                    />
+                                    <div className="relative w-[72px] h-[72px]">
+                                          <Image
+                                                src={item.image}
+                                                alt={item.alt}
+                                                fill
+                                                className="cursor-pointer rounded-lg opacity-60 hover:opacity-100 transition-opacity object-cover"
+                                                unoptimized
+                                          />
+                                    </div>
                               </SwiperSlide>
                         ))}
                   </Swiper>

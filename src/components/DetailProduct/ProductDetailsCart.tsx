@@ -3,9 +3,13 @@ import { useState } from "react";
 import Image from "next/image";
 import { FaMinus } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
+import { useProductDetail } from "@/context/ProductDetailContext";
+
+const BASE_API = process.env.NEXT_PUBLIC_BASE_API || '';
 
 export function ProductDetailsCart() {
       const [quantity, setQuantity] = useState(1);
+      const { product, loading } = useProductDetail();
 
       const handleDecrement = () => {
             if (quantity > 1) setQuantity(quantity - 1);
@@ -15,14 +19,41 @@ export function ProductDetailsCart() {
             setQuantity(quantity + 1);
       };
 
+      if (loading || !product) {
+            return null;
+      }
+
+      const formattedPrice = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+      }).format(product.price);
+
+      const totalPrice = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+      }).format(product.price * quantity);
+
+      const productImage = product.pictureFiles && product.pictureFiles.length > 0 
+            ? `${BASE_API}${product.pictureFiles[0].uri}` 
+            : '/image/detail-product/dummy-2.svg';
 
       return (
             <div className="z-50 shadow-md fixed bottom-0 bg-neutral-100 w-full">
                   <div className="flex flex-row justify-center md:justify-between items-center px-5 md:px-0 py-5 w-full mx-auto max-w-[1200px]">
                         <div className="hidden md:flex flex-row gap-3 items-center">
-                              <Image src="/image/detail-product/dummy-2.svg" alt="dummy" width={48} height={48} />
-                              <p className="text-sm text-neutral-700 font-medium">
-                                    Sepatu Hitam Bagus <br /> dan Berkualitas
+                              <div className="relative w-12 h-12 rounded overflow-hidden">
+                                    <Image 
+                                          src={productImage} 
+                                          alt={product.title} 
+                                          fill
+                                          className="object-cover"
+                                          unoptimized
+                                    />
+                              </div>
+                              <p className="text-sm text-neutral-700 font-medium line-clamp-2 max-w-[200px]">
+                                    {product.title}
                               </p>
                         </div>
                         <div className="hidden md:flex flex-row gap-5">
@@ -33,13 +64,13 @@ export function ProductDetailsCart() {
                               </div>
                               <div className="flex flex-col gap-[3px]">
                                     <p className="text-xs text-neutral-700">Total Harga</p>
-                                    <p className="text-base font-extrabold text-neutral-700">Rp200.000</p>
+                                    <p className="text-base font-extrabold text-neutral-700">{totalPrice}</p>
                               </div>
                         </div>
 
                         <div className="inline-flex gap-3">
-                              <button className="rounded-2xl px-10 py-3 text-primary-500 border border-primary-500 bg-neutral-100 text-xs sm:text-sm font-semibold">Beli Sekarang</button>
-                              <button className="rounded-2xl px-10 py-3 text-neutral-100 border bg-primary-500 text-xs sm:text-sm font-semibold">Tambah ke Keranjang</button>
+                              <button className="rounded-2xl px-10 py-3 text-primary-500 border border-primary-500 bg-neutral-100 text-xs sm:text-sm font-semibold hover:bg-primary-50 transition-colors">Beli Sekarang</button>
+                              <button className="rounded-2xl px-10 py-3 text-neutral-100 border bg-primary-500 text-xs sm:text-sm font-semibold hover:bg-primary-600 transition-colors">Tambah ke Keranjang</button>
                         </div>
                   </div>
             </div>

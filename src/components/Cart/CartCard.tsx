@@ -55,7 +55,8 @@ export function CartCard({ storeName, storeId, products }: CartCardProps) {
                                                             checked={selectedProduct?.isSelected || false}
                                                             onChange={() => {
                                                                   console.log('Checkbox clicked', { storeId, itemId: item.id });
-                                                                  updateProductSelection(storeId, item.id);
+                                                                  updateProductSelection(storeId, item.id, !selectedProduct?.isSelected);
+
                                                             }}
                                                       />
                                                       <div className="flex flex-row gap-3">

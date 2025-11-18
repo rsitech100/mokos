@@ -4,11 +4,12 @@ import { DropdownTemplate } from "./Address/DropdownTemplate";
 
 interface DropdownKabupatenProps {
       provinsiId: string | null; // ID Provinsi untuk fetch data
-      onChange: (value: string) => void;
+      onChange: (value: string, label: string) => void;
+      initialValue?: string | null; // Nilai awal
 }
 
 
-export function DropdownKabupaten({ provinsiId, onChange }: DropdownKabupatenProps) {
+export function DropdownKabupaten({ provinsiId, onChange, initialValue }: DropdownKabupatenProps) {
       const [kabupaten, setKabupaten] = useState<{ value: string; label: string }[]>([]);
 
       useEffect(() => {
@@ -28,6 +29,7 @@ export function DropdownKabupaten({ provinsiId, onChange }: DropdownKabupatenPro
                   placeholder="Pilih Kabupaten"
                   options={kabupaten}
                   onChange={onChange}
+                  initialValue={initialValue}
             />
       );
 }

@@ -6,11 +6,11 @@ import toast from "react-hot-toast";
 interface VerificationParams {
       requestKey: string | null;
       otp: string;
-      type: "register" | "login";
+      type: "register" | "login" | "forgot-password";
       onClose: () => void;
       router: AppRouterInstance;
       setIsLoading: (loading: boolean) => void;
-      login?: (token: string) => void; // Tambahkan fungsi login dari AuthContext
+      login?: (token: string) => void; 
 }
 
 interface ApiResponse<T = unknown> {

@@ -1,19 +1,25 @@
-import { ApiLocalType } from "@/types/api-local";
-import { getDataAddress } from "./source/api-source";
-
 export async function fetchProvinsi() {
-      const data = await getDataAddress({ source: "provinsi" });
-      // console.log("Data Provinsi:", data); // Debug isi data dari API
+      try {
+            const response = await fetch("/api/v1/wilayah/provinsi");
+            
+            if (!response.ok) {
+                  throw new Error("Failed to fetch provinsi");
+            }
 
-      // Pastikan data.result adalah array sebelum menggunakan map
-      if (data && typeof data === "object" && Array.isArray(data.result)) {
-                  return data.result.map((item: ApiLocalType) => ({
-                  value: item.id,
-                  label: item.text,
-            }));
+            const result = await response.json();
+            const data = result.data || result;
+
+            if (Array.isArray(data)) {
+                  return data.map((item: { code: string; name: string }) => ({
+                        value: item.code,
+                        label: item.name,
+                  }));
+            }
+
+            console.error("Data Provinsi tidak valid:", result);
+            return [];
+      } catch (error) {
+            console.error("Error fetching provinsi:", error);
+            return [];
       }
-
-      // Jika data.result bukan array, log error dan kembalikan array kosong
-      console.error("Data Provinsi tidak valid:", data);
-      return [];
 }

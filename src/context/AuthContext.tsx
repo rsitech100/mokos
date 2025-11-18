@@ -13,7 +13,7 @@ type User = {
             privileges: string[];
             merchant: string | null;
       };
-      profilePhoto: string | null;
+      profilePhoto: string | null | { id: string; uri: string; name?: string; module?: string };
       dob?: string;
       gender?: string;
 };
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
       useEffect(() => {
-            const storedToken = Cookies.get("token") || localStorage.getItem("token");  // ✅ Cek juga di localStorage
+            const storedToken = Cookies.get("token") || localStorage.getItem("token");  
  
             if (storedToken) {
                   setToken(storedToken);

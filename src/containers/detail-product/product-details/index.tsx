@@ -26,7 +26,10 @@ export function ProductDetailsSection() {
                   <div className="flex flex-col gap-5">
                         <ProductDetailsInfo />
                         <ProductDetailsBar infoProductDetails={infoProductDetails} activeInfoProductDetails={activeInfoProducts} onTabClick={handleTabClick} />
-                        <ProductDetailsDescription infoProductDetails={infoProductData[activeInfoProducts] || []} />
+                        <ProductDetailsDescription 
+                              infoProductDetails={infoProductData[activeInfoProducts] || []} 
+                              activeTab={activeInfoProducts}
+                        />
 
                         <div className="flex flex-col w-full border border-neutral-400 rounded-xl">
                               <SellerInfo />

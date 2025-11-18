@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { PopupCart } from "../Popup/Header/Cart/PopupCart";
 import { useOutsideClick } from "@/utils/useOutsideClick";
+import { PopupCart } from "../Popup/Header/Cart/PopUpCart";
 
 export function CartButton() {
       const [isPopUpVisible, setIsPopUpVisible] = useState(false);

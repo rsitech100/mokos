@@ -1,21 +1,26 @@
-// import { getDataAddress } from "./source/api-source";
-import { ApiLocalType } from "@/types/api-local";
-
 export async function fetchKabupatenKota(provinsiId: string) {
-      const response = await fetch(`https://alamat.thecloudalert.com/api/kabkota/get/?d_provinsi_id=${provinsiId}`);
-      const data = await response.json();
-      // debugging -->
-      // console.log("Data Kabupaten Kota:", data); 
+      try {
+            const response = await fetch(`/api/v1/wilayah/kabupaten/${provinsiId}`);
+            
+            if (!response.ok) {
+                  throw new Error("Failed to fetch kabupaten/kota");
+            }
 
-      // Pastikan data.result adalah array sebelum menggunakan map
-      if (data && typeof data === "object" && Array.isArray(data.result)) {
-            return data.result.map((item: ApiLocalType) => ({
-                  value: item.id,
-                  label: item.text,
-            }));
+            const result = await response.json();
+            const data = result.data || result;
+
+            if (Array.isArray(data)) {
+                  return data.map((item: { code: string; name: string }) => ({
+                        value: item.code,
+                        label: item.name,
+                  }));
+            }
+
+            console.error("Data Kabupaten/Kota tidak valid:", result);
+            return [];
+      } catch (error) {
+            console.error("Error fetching kabupaten/kota:", error);
+            return [];
       }
-
-      // console.error("Data Kabupaten/Kota tidak valid:", data);
-      return [];
 }
 

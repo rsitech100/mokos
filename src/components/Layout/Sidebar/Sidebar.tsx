@@ -7,7 +7,7 @@ export function Sidebar() {
                   <UserProfile />
                   <div className="border-t-[1px] border-dashed border-neutral-400"></div>
                   <div className="flex flex-col">
-                  <ProfileItems />
+                  <ProfileItems onClose={() => {}} />
                   </div>
             </div>
       )

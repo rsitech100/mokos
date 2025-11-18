@@ -36,11 +36,22 @@ export function Navbar() {
                                                       <Link href="/" passHref>
                                                             <div className="w-10 sm:w-[48px] sm:h-fit flex items-center justify-center">
                                                                   <Image
-                                                                        src={user?.profilePhoto || "/image/nav/profile-dummy.svg"}
+                                                                        src={
+                                                                              user?.profilePhoto
+                                                                                    ? (typeof user.profilePhoto === 'object' && user.profilePhoto.uri
+                                                                                          ? `${process.env.NEXT_PUBLIC_BASE_API}${user.profilePhoto.uri}`
+                                                                                          : typeof user.profilePhoto === 'string' && user.profilePhoto !== ""
+                                                                                                ? (user.profilePhoto.startsWith('http') 
+                                                                                                      ? user.profilePhoto 
+                                                                                                      : `${process.env.NEXT_PUBLIC_BASE_API}/v1/file/${user.profilePhoto}`)
+                                                                                                : "/image/nav/profile-dummy.svg")
+                                                                                    : "/image/nav/profile-dummy.svg"
+                                                                        }
                                                                         alt="profile"
                                                                         width={48}
                                                                         height={48}
-                                                                        className="rounded-full w-10 sm:w-[48px]"
+                                                                        className="rounded-full w-10 sm:w-[48px] h-10 sm:h-[48px] object-cover"
+                                                                        unoptimized={user?.profilePhoto && user.profilePhoto !== "" ? true : false}
                                                                   />
                                                             </div>
                                                       </Link>

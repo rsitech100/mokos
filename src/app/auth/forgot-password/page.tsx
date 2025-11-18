@@ -26,7 +26,7 @@ export default function ForgotPasswordPage() {
             setErrorMessage("");
 
             try {
-                  const response = await apiService.post("/v1/auth/forgot-password", { email });
+                  const response = await apiService.post("/v1/auth/forgot-password", { email }) as any;
                   const requestKey = response.data.requestKey;
 
                   if (requestKey) {

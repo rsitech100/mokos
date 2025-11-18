@@ -22,7 +22,7 @@ interface SelectableProduct extends Product {
 interface CartContextType {
       cartItems: SelectableCartItem[];
       setCartItems: React.Dispatch<React.SetStateAction<SelectableCartItem[]>>;
-      updateProductSelection: (cartId: number, productId: number) => void;
+      updateProductSelection: (cartId: number, productId: number, isSelected: boolean) => void;
       calculateTotalPrice: () => number;
       updateProductQuantity: (cartId: number, productId: number, newQuantity: number) => void;
 }
@@ -50,31 +50,21 @@ export function CartProvider({
       );
 
       // Toggle product selection within a cart
-      const updateProductSelection = (cartId: number, productId: number) => {
-            console.log(`Toggling product ${productId} in cart ${cartId}`);
-            console.log('Current cart items before selection:', cartItems);
-
-            setCartItems(prevCartItems => {
-                  const updatedCartItems = prevCartItems.map(cart => {
-                        if (cart.id === cartId) {
-                              return {
+      const updateProductSelection = (cartId: number, productId: number, isSelected: boolean) => {
+            setCartItems(prev =>
+                  prev.map(cart =>
+                        cart.id === cartId
+                              ? {
                                     ...cart,
                                     products: cart.products.map(product =>
                                           product.id === productId
-                                                ? {
-                                                      ...product,
-                                                      isSelected: !product.isSelected
-                                                }
+                                                ? { ...product, isSelected }
                                                 : product
                                     )
-                              };
-                        }
-                        return cart;
-                  });
-
-                  console.log('Updated cart items after selection:', updatedCartItems);
-                  return updatedCartItems;
-            });
+                              }
+                              : cart
+                  )
+            );
       };
 
       // Calculate total price of selected products across all carts

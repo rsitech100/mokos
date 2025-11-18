@@ -3,7 +3,11 @@ import { useState } from "react";
 import { PopupAddAddress } from "../Popup/Address/PopupAddAddress";
 import { FaPlus } from "react-icons/fa6";
 
-export function AddAddressButton() {
+interface AddAddressButtonProps {
+      onSuccess?: () => void;
+}
+
+export function AddAddressButton({ onSuccess }: AddAddressButtonProps) {
       const [showPopup, setShowPopup] = useState(false);
 
       const togglePopUp = () => {
@@ -12,7 +16,11 @@ export function AddAddressButton() {
 
       const handleClose = () => {
             setShowPopup(false);
-            console.log("pop up closed");
+      };
+
+      const handleSuccess = () => {
+            setShowPopup(false);
+            if (onSuccess) onSuccess();
       };
 
       return (
@@ -22,7 +30,7 @@ export function AddAddressButton() {
                   {showPopup && (
                         <PopupAddAddress
                               onClose={handleClose}
-                        // onSave={onSave}
+                              onSuccess={handleSuccess}
                         />
                   )}
             </div>

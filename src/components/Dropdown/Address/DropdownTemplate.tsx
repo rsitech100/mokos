@@ -12,14 +12,22 @@ interface DropdownProps {
       label: string;
       placeholder: string;
       options: { value: string; label: string }[]; // Array untuk opsi dropdown
-      onChange?: (value: string) => void; // Callback opsional
+      onChange?: (value: string, label: string) => void; // Callback dengan value dan label
+      initialValue?: string | null; // Nilai awal
 }
 
-export function DropdownTemplate({ label, placeholder, options, onChange }: DropdownProps) {
+export function DropdownTemplate({ label, placeholder, options, onChange, initialValue }: DropdownProps) {
+      const handleChange = (value: string) => {
+            const selectedOption = options.find(opt => opt.value === value);
+            if (onChange && selectedOption) {
+                  onChange(value, selectedOption.label);
+            }
+      };
+
       return (
             <div className="flex flex-col gap-2">
                   <label className="text-sm text-neutral-700 font-bold">{label}</label>
-                  <Select onValueChange={onChange}> 
+                  <Select onValueChange={handleChange} value={initialValue || undefined}> 
                         <SelectTrigger className="w-full border border-neutral-400 rounded-lg text-neutral-700">
                               <SelectValue placeholder={placeholder} />
                         </SelectTrigger>

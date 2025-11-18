@@ -11,7 +11,7 @@ interface PopupOTPProps {
   onClose: () => void;
   email: string;
   requestKey: string | null;
-  type: "register" | "login"; // Menambahkan tipe untuk membedakan registrasi dan login
+  type: "register" | "login" | "forgot-password";
 }
 
 export function PopupOTP({ email, isOpen, onClose, requestKey, type }: PopupOTPProps) {
@@ -20,7 +20,7 @@ export function PopupOTP({ email, isOpen, onClose, requestKey, type }: PopupOTPP
   const [isMobile, setIsMobile] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [otp, setOtp] = useState(""); // State untuk menyimpan OTP
-  const [isLoading, setIsLoading] = useState(false); // State untuk loading
+  const [isLoading, setIsLoading] = useState(false);
 
   // Cek apakah tampilan adalah mobile
   useEffect(() => {

@@ -1,24 +1,18 @@
-// app/order/order-details/[id]/page.tsx
-
 import { OrderDetailsSection } from "@/containers/order/order-details";
 import { orderData } from "@/lib/order-data";
 
-interface OrderDetailsPageProps {
-  params: {
-    id: string; // id dari URL
-  };
-}
+export default async function OrderDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
 
-export default async function OrderDetailsPage({ params }: OrderDetailsPageProps) {
-  const { id } = params;
+  const orderId = Number(id);
+  const order = orderData.find((order) => order.id === orderId);
 
-  // Ambil data order berdasarkan ID
-  const orderId = parseInt(id, 10);
-  const order = orderData.find((order) => order.id === orderId)
-
-  // if the data is not found
   if (!order) {
-    throw new Error("Order not found");
+    return <div>Order not found</div>;
   }
 
   return <OrderDetailsSection order={order} />;

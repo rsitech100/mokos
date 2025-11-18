@@ -1,10 +1,10 @@
 export type ProductCardType = {
-      id: number,
+      id: string;
       image: string;
       title: string;
-      price: string;
+      price: number;
       location: string;
-      ratings: string;
-      sold: string;
+      ratings: number;
+      sold: number;
 }
 

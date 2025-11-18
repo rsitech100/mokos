@@ -4,16 +4,17 @@ import { DropdownTemplate } from "./Address/DropdownTemplate";
 
 interface DropdownKecamatanProps {
       kabupatenId: string | null; // ID Kabupaten untuk fetch data
-      onChange: (value: string) => void;
+      onChange: (value: string, label: string) => void;
+      initialValue?: string | null; // Nilai awal
 }
 
-export function DropdownKecamatan({ kabupatenId, onChange }: DropdownKecamatanProps) {
+export function DropdownKecamatan({ kabupatenId, onChange, initialValue }: DropdownKecamatanProps) {
       const [kecamatan, setKecamatan] = useState<{ value: string; label: string }[]>([]);
 
       useEffect(() => {
             async function loadData() {
                   if (kabupatenId) {
-                        const data = await fetchKecamatan(kabupatenId); // Fetch data berdasarkan kabupatenId
+                        const data = await fetchKecamatan(kabupatenId); 
                         setKecamatan(data);
                   }
             }
@@ -27,6 +28,7 @@ export function DropdownKecamatan({ kabupatenId, onChange }: DropdownKecamatanPr
                   placeholder="Pilih Kecamatan"
                   options={kecamatan}
                   onChange={onChange}
+                  initialValue={initialValue}
             />
       );
 }

@@ -3,11 +3,12 @@ import { fetchProvinsi } from "@/lib/api/fetch-provinsi";
 import { DropdownTemplate } from "./Address/DropdownTemplate";
 
 interface DropdownProvinsiProps {
-      onChange: (value: string) => void; // Callback untuk mengirim ID Provinsi
+      onChange: (value: string, label: string) => void; // Callback untuk mengirim ID dan Nama Provinsi
+      initialValue?: string | null; // Nilai awal
     }
 
 
-export default function DropdownProvinsi({onChange}: DropdownProvinsiProps) {
+export default function DropdownProvinsi({onChange, initialValue}: DropdownProvinsiProps) {
       const [provinsi, setProvinsi] = useState<{ value: string; label: string }[]>([]);
 
       useEffect(() => {
@@ -26,6 +27,7 @@ export default function DropdownProvinsi({onChange}: DropdownProvinsiProps) {
                   placeholder="Pilih Provinsi"
                   options={provinsi}
                   onChange={onChange}
+                  initialValue={initialValue}
             />
       );
 }

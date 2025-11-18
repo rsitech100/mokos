@@ -32,10 +32,13 @@ export default function ResetPasswordPage() {
             if (!isValid) return;
 
             try {
-                  const response = await apiService.post("/v1/auth/update-password", {
-                        recoveryCode,
-                        newPassword: password,
-                  });
+                  const response = await apiService.post<{ success: boolean; message: string }>(
+                        "/v1/auth/update-password",
+                        {
+                              recoveryCode,
+                              newPassword: password,
+                        }
+                  );
 
                   if (response.success) {
                         toast.success('Password berhasil direset. Silakan login.');
@@ -44,8 +47,8 @@ export default function ResetPasswordPage() {
                         toast.error('Gagal mengatur ulang password');
                         // throw new Error(response.message || "Gagal mengatur ulang password.");
                   }
-            } catch (error: any) {
-                  toast.error('Gagal mengatur ulang password');
+            } catch (error : any) {
+                  toast.error('Gagal mengatur ulang password', error);
             }
       };
 
