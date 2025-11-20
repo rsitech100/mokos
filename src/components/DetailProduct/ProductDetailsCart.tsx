@@ -1,15 +1,20 @@
 'use client';
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { FaMinus } from "react-icons/fa6";
-import { FaPlus } from "react-icons/fa6";
+import { FaMinus, FaPlus } from "react-icons/fa6";
 import { useProductDetail } from "@/context/ProductDetailContext";
+import { addToCart } from "@/lib/api/fetch-cart";
+import toast from "react-hot-toast";
 
 const BASE_API = process.env.NEXT_PUBLIC_BASE_API || '';
 
 export function ProductDetailsCart() {
       const [quantity, setQuantity] = useState(1);
+      const [addingToCart, setAddingToCart] = useState(false);
+      const [buyingNow, setBuyingNow] = useState(false);
       const { product, loading } = useProductDetail();
+      const router = useRouter();
 
       const handleDecrement = () => {
             if (quantity > 1) setQuantity(quantity - 1);
@@ -19,15 +24,58 @@ export function ProductDetailsCart() {
             setQuantity(quantity + 1);
       };
 
+      const handleAddToCart = async () => {
+            if (!product) return;
+            
+            setAddingToCart(true);
+            try {
+                  const response = await addToCart({
+                        productId: product.id,
+                        quantity: quantity,
+                  });
+
+                  if (response.success) {
+                        toast.success("Produk berhasil ditambahkan ke keranjang");
+                        setQuantity(1); // Reset quantity
+                  } else {
+                        throw new Error(response.message || "Gagal menambahkan ke keranjang");
+                  }
+            } catch (error) {
+                  const msg = error instanceof Error ? error.message : "Terjadi kesalahan";
+                  toast.error(msg);
+            } finally {
+                  setAddingToCart(false);
+            }
+      };
+
+      const handleBuyNow = async () => {
+            if (!product) return;
+            
+            setBuyingNow(true);
+            try {
+                  // Add to cart first
+                  const response = await addToCart({
+                        productId: product.id,
+                        quantity: quantity,
+                  });
+
+                  if (response.success) {
+                        // Redirect to cart or checkout
+                        router.push('/cart');
+                  } else {
+                        throw new Error(response.message || "Gagal memproses pesanan");
+                  }
+            } catch (error) {
+                  const msg = error instanceof Error ? error.message : "Terjadi kesalahan";
+                  toast.error(msg);
+            } finally {
+                  setBuyingNow(false);
+            }
+      };
+
       if (loading || !product) {
             return null;
       }
-
-      const formattedPrice = new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0,
-      }).format(product.price);
 
       const totalPrice = new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -69,8 +117,24 @@ export function ProductDetailsCart() {
                         </div>
 
                         <div className="inline-flex gap-3">
-                              <button className="rounded-2xl px-10 py-3 text-primary-500 border border-primary-500 bg-neutral-100 text-xs sm:text-sm font-semibold hover:bg-primary-50 transition-colors">Beli Sekarang</button>
-                              <button className="rounded-2xl px-10 py-3 text-neutral-100 border bg-primary-500 text-xs sm:text-sm font-semibold hover:bg-primary-600 transition-colors">Tambah ke Keranjang</button>
+                              <button 
+                                    onClick={handleBuyNow}
+                                    disabled={buyingNow}
+                                    className={`rounded-2xl px-10 py-3 text-primary-500 border border-primary-500 bg-neutral-100 text-xs sm:text-sm font-semibold transition-colors ${
+                                          buyingNow ? "opacity-50 cursor-not-allowed" : "hover:bg-primary-50"
+                                    }`}
+                              >
+                                    {buyingNow ? "Memproses..." : "Beli Sekarang"}
+                              </button>
+                              <button 
+                                    onClick={handleAddToCart}
+                                    disabled={addingToCart}
+                                    className={`rounded-2xl px-10 py-3 text-neutral-100 border bg-primary-500 text-xs sm:text-sm font-semibold transition-colors ${
+                                          addingToCart ? "opacity-50 cursor-not-allowed" : "hover:bg-primary-600"
+                                    }`}
+                              >
+                                    {addingToCart ? "Menambahkan..." : "Tambah ke Keranjang"}
+                              </button>
                         </div>
                   </div>
             </div>

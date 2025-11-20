@@ -71,7 +71,14 @@ export function SellerInfo() {
                   <hr className="border-neutral-400 w-full " />
                   <div className="inline-flex items-center p-4 gap-1.5">
                         <IoLocationOutline size={16} color="#191717" />
-                        <p className="text-xs sm:text-sm text-neutral-700 font-semibold">Lokasi Toko: <span className="font-normal">{product.merchant.name}</span></p>
+                        <p className="text-xs sm:text-sm text-neutral-700 font-semibold">
+                              Lokasi Toko: <span className="font-normal">
+                                    {product.merchant.city && product.merchant.province 
+                                          ? `${product.merchant.city}, ${product.merchant.province}`
+                                          : product.merchant.address || product.merchant.name
+                                    }
+                              </span>
+                        </p>
                   </div>
                   <hr className="border-neutral-400 w-full " />
             </div>

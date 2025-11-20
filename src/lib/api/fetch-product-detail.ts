@@ -18,6 +18,9 @@ export interface ProductDetail {
     url: string;
     phone: string;
     pictureFile: unknown;
+    address?: string;
+    city?: string;
+    province?: string;
   };
   weight: number;
   unitWeight: string;
@@ -34,6 +37,9 @@ export interface ProductDetail {
   soldStock: number;
   viewsCount: number;
   price: number;
+  stock?: number;
+  minOrder?: number;
+  condition?: string;
   videoFiles: unknown[];
   pictureFiles: Array<{
     id: string;

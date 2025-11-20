@@ -1,6 +1,7 @@
 'use client';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ProductDetail, fetchProductDetail } from '@/lib/api/fetch-product-detail';
+import { fetchProducts } from '@/lib/api/fetch-products';
 
 interface ProductDetailContextType {
   product: ProductDetail | null;
@@ -20,8 +21,20 @@ export function ProductDetailProvider({ children, productId }: { children: React
     try {
       setLoading(true);
       setError(null);
+
+      // Fetch from product list to get images
+      const listResponse = await fetchProducts({ page: 1, size: 100 });
+      const productFromList = listResponse.data.find(p => p.id === id);
+      
+      // Fetch detail
       const response = await fetchProductDetail(id);
-      setProduct(response.data);
+      
+      // Merge: use images from list if available, otherwise from detail
+      const mergedProduct = {
+        ...response.data,
+        pictureFiles: productFromList?.pictureFiles || response.data.pictureFiles
+      };
+      setProduct(mergedProduct);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load product');
       console.error('Error loading product:', err);

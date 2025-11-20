@@ -25,11 +25,15 @@ export function ProductDetailsInfo() {
             minimumFractionDigits: 0,
       }).format(product.price);
 
-      const stock = 100; // Default, adjust based on your API if available
+      const stock = product.stock || 0;
 
       return (
             <div className="flex flex-col gap-2">
-                  <p className="text-danger-200 text-xs sm:text-sm font-semibold">SISA STOK {stock}</p>
+                  {stock > 0 ? (
+                        <p className="text-danger-200 text-xs sm:text-sm font-semibold">SISA STOK {stock}</p>
+                  ) : (
+                        <p className="text-neutral-500 text-xs sm:text-sm font-semibold">STOK HABIS</p>
+                  )}
                   <div className="inline-flex gap-2 text-xs sm:text-sm text-neutral-700 items-center">
                         <Image src="/image/product/icon/star-icon.svg" alt="star icon" width={16} height={16} />
                         <p>{product.totalRating.toFixed(1)}</p>
