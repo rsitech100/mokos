@@ -45,7 +45,10 @@ export function useProductHandler() {
   const calculateTotalPrice = () => {
     return selectedProducts
       .filter(product => product.isSelected)
-      .reduce((total, product) => total + (product.price * product.quantity), 0);
+      .reduce((total, product) => {
+        const price = Number(product.price) || 0; 
+        return total + price * product.quantity;
+      }, 0);
   };
 
   // Function to update product quantity

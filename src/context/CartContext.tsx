@@ -75,9 +75,11 @@ export function CartProvider({
                         .filter(product => product.isSelected)
                         .reduce((cartTotal, product) => {
                               console.log('Selected product:', product);
-                              return cartTotal + (product.price * product.quantity);
+                              return cartTotal + (Number(product.price) * product.quantity);
+
                         }, 0);
                   return totalPrice + cartTotal;
+
             }, 0);
 
             console.log('Calculated total:', total);
