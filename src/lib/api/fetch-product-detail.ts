@@ -47,6 +47,14 @@ export interface ProductDetail {
     module: string;
     uri: string;
   }>;
+  productPrices?: Array<{
+    id: string;
+    isMainView: boolean;
+    price: number;
+    stock: number;
+    primaryVariant: string | null;
+    secondaryVariant: string | null;
+  }>;
 }
 
 export interface ProductDetailResponse {
@@ -62,6 +70,38 @@ export async function fetchProductDetail(id: string): Promise<ProductDetailRespo
     return response;
   } catch (error) {
     console.error('Error fetching product detail:', error);
+    throw error;
+  }
+}
+
+// Fetch product prices
+export interface ProductPriceResponse {
+  message: string;
+  success: boolean;
+  data: Array<{
+    id: string;
+    isMainView: boolean;
+    price: number;
+    stock: number;
+    primaryVariant: string | null;
+    secondaryVariant: string | null;
+    product: {
+      id: string;
+      title: string;
+      description: string;
+      totalRating: number;
+      category: unknown;
+    };
+  }>;
+  result: null;
+}
+
+export async function fetchProductPrices(productId: string): Promise<ProductPriceResponse> {
+  try {
+    const response = await apiService.get<ProductPriceResponse>(`/v1/product/price/product/${productId}`);
+    return response;
+  } catch (error) {
+    console.error('Error fetching product prices:', error);
     throw error;
   }
 }

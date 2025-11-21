@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { ProductDetail, fetchProductDetail } from '@/lib/api/fetch-product-detail';
+import { ProductDetail, fetchProductDetail, fetchProductPrices } from '@/lib/api/fetch-product-detail';
 import { fetchProducts } from '@/lib/api/fetch-products';
 
 interface ProductDetailContextType {
@@ -29,10 +29,22 @@ export function ProductDetailProvider({ children, productId }: { children: React
       // Fetch detail
       const response = await fetchProductDetail(id);
       
+      // Fetch product prices
+      let productPrices = undefined;
+      try {
+        const pricesResponse = await fetchProductPrices(id);
+        if (pricesResponse.success && pricesResponse.data.length > 0) {
+          productPrices = pricesResponse.data;
+        }
+      } catch (priceError) {
+        console.log('No product prices available or error fetching prices');
+      }
+      
       // Merge: use images from list if available, otherwise from detail
       const mergedProduct = {
         ...response.data,
-        pictureFiles: productFromList?.pictureFiles || response.data.pictureFiles
+        pictureFiles: productFromList?.pictureFiles || response.data.pictureFiles,
+        productPrices: productPrices
       };
       setProduct(mergedProduct);
     } catch (err) {

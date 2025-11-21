@@ -33,7 +33,7 @@ export function Footer() {
   return (
     <>
       {!disableNavWithFooter.includes(path) && (
-        <footer className="border border-t-neutral-400">
+        <footer className="border border-t-neutral-400 pb-[80px]">
           <div className="flex flex-col lg:flex-row justify-between px-5 lg:px-20 py-12 max-w-[1440px] w-full mx-auto gap-10 lg:gap-0">
             <div className="flex flex-col w-full lg:max-w-[325px] gap-3">
               <Image

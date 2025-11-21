@@ -1,36 +1,95 @@
 import apiService from "@/app/api/api";
 
-export interface CartProduct {
+export interface CartProductItem {
   id: string;
-  name: string;
-  category: string;
-  price: number;
-  imageUrl: string;
-  quantity: number;
+  productPrice: {
+    id: string;
+    isMainView: boolean;
+    price: number;
+    stock: number;
+    primaryVariant: string | null;
+    secondaryVariant: string | null;
+    product: {
+      id: string;
+      title: string;
+      description: string;
+      totalRating: number;
+      category: {
+        id: string;
+        name: string;
+        description: string;
+        isChild: boolean;
+      };
+      merchant: {
+        id: string;
+        name: string;
+        description: string;
+        url: string;
+        phone: string;
+        pictureFile: unknown;
+      };
+      weight: number;
+      unitWeight: string;
+      lengthDimension: number;
+      widthDimension: number;
+      heightDimension: number;
+      unitDimension: string;
+      isNew: boolean;
+      useVariant: boolean;
+      primaryVariantName: string | null;
+      useSecondaryVariant: boolean;
+      secondaryVariantName: string | null;
+      publishStatus: string;
+      soldStock: number;
+      viewsCount: number;
+      price: number;
+      pictureFiles?: Array<{
+        id: string;
+        name: string;
+        module: string;
+        uri: string;
+      }>;
+    };
+  };
+  qty: number;
+  finalTotalPrice: number;
 }
 
-export interface CartStore {
-  id: string;
-  storeName: string;
-  products: CartProduct[];
+export interface CartMerchant {
+  merchant: {
+    id: string;
+    name: string;
+    description: string;
+    url: string;
+    phone: string;
+    pictureFile: unknown;
+  };
+  productsCart: CartProductItem[];
+  finalPriceTotal: number;
 }
 
 export interface CartResponse {
   message: string;
   success: boolean;
-  data: CartStore[];
+  data: CartMerchant[];
   result: null;
 }
 
 export interface AddToCartRequest {
-  productId: string;
-  quantity: number;
+  id?: string;
+  productPriceId: string;
+  qty: number;
+}
+
+export interface UpdateCartRequest {
+  id: string;
+  qty: number;
 }
 
 export interface AddToCartResponse {
   message: string;
   success: boolean;
-  data: unknown;
+  data: CartProductItem;
   result: null;
 }
 
@@ -57,9 +116,9 @@ export async function addToCart(data: AddToCartRequest): Promise<AddToCartRespon
 }
 
 // Update cart item quantity
-export async function updateCartQuantity(cartId: string, quantity: number): Promise<AddToCartResponse> {
+export async function updateCart(data: UpdateCartRequest): Promise<AddToCartResponse> {
   try {
-    const response = await apiService.put<AddToCartResponse>(`/v1/cart/${cartId}`, { quantity });
+    const response = await apiService.put<AddToCartResponse>('/v1/cart', data);
     return response;
   } catch (error) {
     console.error('Error updating cart:', error);

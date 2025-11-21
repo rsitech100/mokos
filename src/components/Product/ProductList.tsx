@@ -13,7 +13,7 @@ interface ProductsListProps {
 export function ProductList({ products, showAllProducts, gridClass, FeaturedProducts, loading }: ProductsListProps) {
 
   const displayedProducts = showAllProducts ? products : products.slice(0, FeaturedProducts);
-  
+
   if (loading) {
     return (
       <div className={`grid gap-5 ${gridClass}`}>

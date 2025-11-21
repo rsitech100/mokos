@@ -41,7 +41,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
             <>
                   <Navbar />
                   <main
-                        className={`max-w-[1440px] w-full mx-auto ${backgroundColor} ${shouldShowSidebar ? "flex flex-row p-5 lg:pt-12 lg:py-[120px] lg:px-20 gap-10" : ""
+                        className={` ${backgroundColor} ${shouldShowSidebar ? "flex flex-row p-5 lg:pt-12 lg:py-[120px] lg:px-20 gap-10" : ""
                               }`}
                   >
                         {shouldShowSidebar && <Sidebar />}

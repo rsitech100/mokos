@@ -1,12 +1,15 @@
+'use client';
 import { CartList } from "@/components/Cart/CartList";
 import { SelectAllBox } from "@/components/Cart/SelectAllBox";
-import { cartItemData } from "@/lib/cart-data";
+import { useCartContext } from "@/context/CartContext";
 
 export function CartSection() {
+      const { cartItems } = useCartContext();
+
       return (
             <section className="flex flex-col gap-4">
-                  <SelectAllBox count={cartItemData.length} />
-                  <CartList items={cartItemData} />
+                  <SelectAllBox count={cartItems.length} />
+                  <CartList items={cartItems} />
             </section>
-      )
+      );
 }
