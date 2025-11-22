@@ -27,9 +27,8 @@ export function ProductDetailsCart() {
       const handleAddToCart = async () => {
             if (!product) return;
             
-            // Get productPriceId from productPrices array (use the main/default one)
             const productPriceId = product.productPrices && product.productPrices.length > 0
-                  ? product.productPrices.find(p => p.isMainView)?.id || product.productPrices[0].id
+                  ? product.productPrices.find((p: { isMainView: boolean; id: string }) => p.isMainView)?.id || product.productPrices[0].id
                   : product.id; // Fallback to product id
             
             setAddingToCart(true);
@@ -58,9 +57,8 @@ export function ProductDetailsCart() {
       const handleBuyNow = async () => {
             if (!product) return;
             
-            // Get productPriceId from productPrices array (use the main/default one)
             const productPriceId = product.productPrices && product.productPrices.length > 0
-                  ? product.productPrices.find(p => p.isMainView)?.id || product.productPrices[0].id
+                  ? product.productPrices.find((p: { isMainView: boolean; id: string }) => p.isMainView)?.id || product.productPrices[0].id
                   : product.id; // Fallback to product id
             
             setBuyingNow(true);
@@ -101,7 +99,7 @@ export function ProductDetailsCart() {
 
       return (
             <>
-                  <div className="z-50 shadow-md fixed bottom-0  bg-neutral-100 w-full border-t border-t-neutral-400">
+                  <div className="z-50 shadow-md fixed bottom-0 bg-neutral-100 w-full border-t border-t-neutral-400">
                         <div className="flex flex-row justify-center md:justify-between items-center px-5 md:px-20 py-5 w-full mx-auto max-w-[1440px]">
                               <div className="hidden md:flex flex-row gap-3 items-center">
                                     <div className="relative w-12 h-12 rounded overflow-hidden">

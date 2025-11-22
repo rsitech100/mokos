@@ -42,7 +42,7 @@ export function ProductDetailsImage() {
             );
       }
 
-      const images = product.pictureFiles.map((file) => ({
+      const images = product.pictureFiles.map((file: { uri: string; name?: string }) => ({
             image: `${BASE_API}${file.uri}`,
             alt: file.name || product.title,
       }));
@@ -58,7 +58,7 @@ export function ProductDetailsImage() {
                         slidesPerView={1}
                         className="main-slider w-full md:max-w-[320px]"
                   >
-                        {images.map((item, index) => (
+                        {images.map((item: { image: string; alt: string }, index: number) => (
                               <SwiperSlide key={index}>
                                     <div className="relative w-full" style={{ paddingBottom: '100%' }}>
                                           <Image
@@ -91,7 +91,7 @@ export function ProductDetailsImage() {
                               }
                         }}
                   >
-                        {images.map((item, index) => (
+                        {images.map((item: { image: string; alt: string }, index: number) => (
                               <SwiperSlide key={index}>
                                     <div className="relative w-[72px] h-[72px]">
                                           <Image

@@ -1,49 +1,102 @@
 import apiService from "@/app/api/api";
 
-export interface OrderProduct {
+export interface ProductPrice {
   id: string;
-  productTitle: string;
-  productImage: string;
-  quantity: number;
+  isMainView: boolean;
   price: number;
-  finalPrice: number;
+  stock: number;
+  primaryVariant: string | null;
+  secondaryVariant: string | null;
+  product: {
+    id: string;
+    title: string;
+    description: string;
+    totalRating: number;
+    category: {
+      id: string;
+      name: string;
+      description: string;
+      isChild: boolean;
+    };
+    merchant: {
+      id: string;
+      name: string;
+      description: string;
+      url: string;
+      phone: string;
+      pictureFile: string | null;
+    };
+    weight: number;
+    unitWeight: string;
+    lengthDimension: number;
+    widthDimension: number;
+    heightDimension: number;
+    unitDimension: string;
+    isNew: boolean;
+    useVariant: boolean;
+    primaryVariantName: string | null;
+    useSecondaryVariant: boolean;
+    secondaryVariantName: string | null;
+    publishStatus: string;
+    soldStock: number;
+    viewsCount: number;
+    price: number;
+  };
 }
 
-export interface OrderMerchant {
-  merchantId: string;
-  merchantName: string;
-  products: OrderProduct[];
-  subtotal: number;
-  shippingCost: number;
-  totalPrice: number;
+export interface OrdersProduct {
+  id: string;
+  createdDate: number;
+  productPrice: ProductPrice;
+  qty: number;
+  description: string | null;
+  finalTotalPrice: number;
+}
+
+export interface Address {
+  id: string;
+  type: string;
+  isPrimary: boolean;
+  label: string;
+  receiveName: string;
+  phone: string;
+  provinceCode: string;
+  provinceName: string;
+  cityCode: string;
+  cityName: string;
+  districtCode: string;
+  districtName: string;
+  villageCode: string | null;
+  villageName: string | null;
+  postalCode: string;
+  street: string;
+  lat: number;
+  lon: number;
+}
+
+export interface Merchant {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  phone: string;
+  pictureFile: string | null;
 }
 
 export interface Order {
   id: string;
+  createdDate: number;
   orderNumber: string;
-  orderDate: string;
-  progressStatus: string;
-  paymentStatus: string;
-  shippingAddress: {
-    recipientName: string;
-    recipientPhone: string;
-    addressLine: string;
-    kecamatan: string;
-    kabupaten: string;
-    provinsi: string;
-    postalCode: string;
-  };
-  paymentMethod: {
-    id: string;
-    name: string;
-    type: string;
-  };
-  merchants: OrderMerchant[];
-  totalProduct: number;
-  totalShipping: number;
-  totalPrice: number;
-  createdAt: string;
-  updatedAt: string;
+  merchant: Merchant;
+  fromAddress: Address;
+  toAddress: Address;
+  totalWeight: number;
+  shippingMap: Record<string, unknown> | null;
+  paymentMethod: Record<string, unknown> | null;
+  finalTotalPrice: number;
+  processStatus: string;
+  ordersProduct: OrdersProduct[];
+  shippingTotalPrice: number;
 }
 
 export interface CreateOrderResponse {
@@ -60,8 +113,9 @@ export interface OrderListResponse {
   result: {
     page: number;
     size: number;
-    totalElements: number;
-    totalPages: number;
+    total: number;
+    sort: string | null;
+    order: string | null;
   };
 }
 
@@ -112,7 +166,7 @@ export async function getOrders(params?: GetOrdersParams): Promise<OrderListResp
 // Get order detail
 export async function getOrderDetail(orderId: string): Promise<OrderDetailResponse> {
   try {
-    const response = await apiService.get<OrderDetailResponse>(`/v1/order/customer/detail/${orderId}`);
+    const response = await apiService.get<OrderDetailResponse>(`/v1/order/customer/${orderId}`);
     return response;
   } catch (error) {
     console.error('Error fetching order detail:', error);

@@ -25,14 +25,14 @@ export default function CartPage() {
                         // Fetch product images
                         const imageMap: Record<string, string> = {};
                         const allItems = response.data.flatMap(m => m.productsCart);
-                        
+
                         const imagePromises = allItems.map(async (item) => {
                               const productId = item.productPrice.product.id;
                               try {
                                     const productResponse = await fetch(
                                           `${BASE_API}/v1/product?id=${productId}`,
-                                          { 
-                                                credentials: 'include', 
+                                          {
+                                                credentials: 'include',
                                                 cache: 'no-store',
                                                 headers: {
                                                       'Cache-Control': 'no-cache',
@@ -53,21 +53,19 @@ export default function CartPage() {
                                     console.error(`Error fetching product ${productId}:`, error);
                               }
                         });
-                        
+
                         await Promise.all(imagePromises);
 
-                        // Convert to CartItem format
                         const items: CartItem[] = response.data.map((merchantData) => ({
                               id: parseInt(merchantData.merchant.id),
                               storeName: merchantData.merchant.name,
                               products: merchantData.productsCart.map((item) => {
                                     const product = item.productPrice.product;
-                                    const productId = product.id;
-                                    
-                                    const productImage = imageMap[productId] || 
-                                          (product.pictureFiles && product.pictureFiles.length > 0
-                                                ? `${BASE_API}${product.pictureFiles[0].uri}`
-                                                : '/image/product/shoes-dummy.svg');
+
+                                    const picture = product.pictureFiles?.[0]?.uri;
+                                    const productImage = picture
+                                          ? `${BASE_API}${picture}`
+                                          : '/image/product/shoes-dummy.svg';
 
                                     return {
                                           id: parseInt(item.id),

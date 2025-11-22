@@ -7,9 +7,34 @@ export interface CheckoutRequest {
 export interface ShippingOption {
   id: string;
   name: string;
-  description: string;
+  description: string | null;
   cost: number;
   estimatedDays: string;
+  providerId?: string;
+  providerCaption?: string;
+  serviceName?: string;
+}
+
+export interface ShippingService {
+  name: string;
+  price: number;
+  description: string | null;
+  etd: string;
+}
+
+export interface ShippingProvider {
+  provider: {
+    providerId: string;
+    caption: string;
+  };
+  services: ShippingService[];
+}
+
+export interface ShippingOptionsApiResponse {
+  message: string;
+  success: boolean;
+  data: ShippingProvider[];
+  result: null;
 }
 
 export interface PaymentMethod {
@@ -22,6 +47,10 @@ export interface PaymentMethod {
 export interface CheckoutProduct {
   id: string;
   productPriceId: string;
+  productPrice: {
+    price: number;
+  }
+  qty: number;
   productTitle: string;
   productImage: string;
   quantity: number;
@@ -72,6 +101,8 @@ export interface CheckoutGroup {
   }>;
   paymentMethods?: PaymentMethod[];
   selectedPaymentMethodId?: string;
+  totalProduct?: number;
+  totalShipping?: number;
   finalTotalPrice: number;
 }
 
@@ -84,8 +115,8 @@ export interface CheckoutResponse {
 
 export interface UpdateShippingRequest {
   checkoutId: string;
-  shippingId: string;
-  shippingServiceName: string;
+  providerId: string;
+  serviceName: string;
 }
 
 export interface UpdatePaymentRequest {
@@ -96,6 +127,13 @@ export interface UpdatePaymentRequest {
 export interface UpdateAddressRequest {
   checkoutGroupId: string;
   toAddressId: string;
+}
+
+export interface ShippingOptionsResponse {
+  message: string;
+  success: boolean;
+  data: ShippingProvider[];
+  result: null;
 }
 
 // Create checkout
@@ -109,6 +147,17 @@ export async function createCheckout(request: CheckoutRequest): Promise<Checkout
   }
 }
 
+// Get shipping options for a checkout
+export async function getShippingOptions(checkoutId: string): Promise<ShippingOptionsResponse> {
+  try {
+    const response = await apiService.get<ShippingOptionsResponse>(`/v1/checkout/shipping/${checkoutId}`);
+    return response;
+  } catch (error) {
+    console.error('Error fetching shipping options:', error);
+    throw error;
+  }
+}
+
 // Update shipping method for a merchant
 export async function updateShipping(request: UpdateShippingRequest): Promise<CheckoutResponse> {
   try {
@@ -116,8 +165,8 @@ export async function updateShipping(request: UpdateShippingRequest): Promise<Ch
       '/v1/checkout/shipping', 
       {
         checkoutId: request.checkoutId,
-        shippingId: request.shippingId,
-        shippingServiceName: request.shippingServiceName
+        providerId: request.providerId,
+        serviceName: request.serviceName
       }
     );
     return response;

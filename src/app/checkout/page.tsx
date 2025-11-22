@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getCheckout, updateShipping, updatePayment, CheckoutGroup } from "@/lib/api/fetch-checkout";
 import { createOrder } from "@/lib/api/fetch-order";
@@ -17,6 +17,7 @@ function CheckoutContent() {
       const [checkout, setCheckout] = useState<CheckoutGroup | null>(null);
       const [loading, setLoading] = useState(true);
       const [processingOrder, setProcessingOrder] = useState(false);
+      const [selectedShippingCosts, setSelectedShippingCosts] = useState<Record<string, number>>({});
 
       const loadCheckout = async () => {
             if (!checkoutGroupId) return;
@@ -46,15 +47,22 @@ function CheckoutContent() {
             // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [checkoutGroupId]);
 
-      const handleShippingChange = async (checkoutId: string, shippingId: string, shippingServiceName: string) => {
+      const handleShippingChange = async (checkoutId: string, providerId: string, serviceName: string, shippingCost: number) => {
+            console.log('handleShippingChange called:', { checkoutId, providerId, serviceName, shippingCost });
+            
             try {
+                  setSelectedShippingCosts(prev => ({
+                        ...prev,
+                        [checkoutId]: shippingCost
+                  }));
+
                   const response = await updateShipping({
                         checkoutId,
-                        shippingId,
-                        shippingServiceName
+                        providerId,
+                        serviceName
                   });
+                  
                   if (response.success) {
-                        await loadCheckout();
                         toast.success('Metode pengiriman diperbarui');
                   }
             } catch (error) {
@@ -87,9 +95,13 @@ function CheckoutContent() {
             setProcessingOrder(true);
             try {
                   const response = await createOrder(checkoutGroupId);
+
                   if (response.success) {
-                        toast.success('Pesanan berhasil dibuat');
-                        router.push(`/pay?orderId=${response.data.id}`);
+                        toast.success('Pesanan berhasil dibuat!');
+
+                        setTimeout(() => {
+                              router.push('/');
+                        }, 800);
                   }
             } catch (error) {
                   console.error('Error creating order:', error);
@@ -98,6 +110,55 @@ function CheckoutContent() {
                   setProcessingOrder(false);
             }
       };
+
+      // const handleCreateOrder = async () => {
+      //       if (!checkoutGroupId) return;
+
+      //       setProcessingOrder(true);
+      //       try {
+      //             const response = await createOrder(checkoutGroupId);
+      //             if (response.success) {
+      //                   toast.success('Pesanan berhasil dibuat');
+      //                   router.push(`/pay?orderId=${response.data.id}`);
+      //             }
+      //       } catch (error) {
+      //             console.error('Error creating order:', error);
+      //             toast.error('Gagal membuat pesanan');
+      //       } finally {
+      //             setProcessingOrder(false);
+      //       }
+      // };
+
+     const { totalItems, subtotal, shippingCost } = useMemo(() => {
+      if (!checkout) return { totalItems: 0, subtotal: 0, shippingCost: 0 };
+
+      // Total barang berdasarkan qty
+      const items = checkout.productsCheckout?.reduce((sum, merchant) => {
+            return sum + merchant.products.reduce((a, p) => a + (p.qty || 1), 0);
+      }, 0) || 0;
+
+      // Subtotal = harga produk × qty
+      const calculatedSubtotal = checkout.productsCheckout?.reduce((sum, merchant) => {
+            const merchantSubtotal = merchant.products.reduce((s, product) => {
+                  const price = product.productPrice?.price || 0;
+                  const qty = product.qty || 1;
+                  return s + (price * qty);
+            }, 0);
+            return sum + merchantSubtotal;
+      }, 0) || 0;
+
+      const calculatedShipping = Object.values(selectedShippingCosts)
+            .reduce((s, c) => s + c, 0);
+
+      return {
+            totalItems: items,
+            subtotal: calculatedSubtotal,
+            shippingCost: calculatedShipping
+      };
+}, [checkout, selectedShippingCosts]);
+
+
+      const hasAnyShippingSelected = Object.keys(selectedShippingCosts).length > 0;
 
       if (loading) {
             return (
@@ -125,7 +186,7 @@ function CheckoutContent() {
                         <h2 className="text-neutral-700 font-extrabold text-lg md:text-2xl">Pengiriman</h2>
 
                         {/* Address */}
-                        <AddressCard 
+                        <AddressCard
                               address={checkout.toAddress}
                               onAddAddress={() => router.push('/address')}
                         />
@@ -155,10 +216,12 @@ function CheckoutContent() {
 
                   {/* Summary */}
                   <CheckoutSummary
-                        total={checkout.finalTotalPrice}
+                        subtotal={subtotal}
+                        shippingCost={shippingCost}
+                        totalItems={totalItems}
                         onCreateOrder={handleCreateOrder}
                         isProcessing={processingOrder}
-                        isDisabled={!checkout.selectedPaymentMethodId}
+                        isDisabled={!hasAnyShippingSelected}
                   />
             </main>
       );

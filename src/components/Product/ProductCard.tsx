@@ -34,7 +34,7 @@ export function ProductCard({ id, image, title, price, location, ratings, sold }
   }).format(price);
 
   return (
-    <Link href={`/detail-product?id=${id}`} passHref>
+    <Link href={`/detail-product/${id}`} passHref>
       <div className="flex flex-col shadow-card rounded-lg">
         <div className="w-full relative" style={{ paddingBottom: '100%' }}>
           <Image

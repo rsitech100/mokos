@@ -38,8 +38,14 @@ export function ProductCheckoutCard({ product }: ProductCheckoutCardProps) {
                   }
 
                   try {
+                        // Get token from localStorage
+                        const token = localStorage.getItem('token');
+                        
                         const response = await fetch(`${BASE_API}/v1/product?id=${productId}`, {
-                              credentials: 'include',
+                              headers: {
+                                    'Authorization': token ? `Bearer ${token}` : '',
+                                    'Content-Type': 'application/json'
+                              },
                               cache: 'no-store'
                         });
 
@@ -48,7 +54,9 @@ export function ProductCheckoutCard({ product }: ProductCheckoutCardProps) {
                               if (data.success && data.data && data.data.length > 0) {
                                     const product = data.data[0];
                                     if (product.pictureFiles && product.pictureFiles.length > 0) {
-                                          setProductImage(`${BASE_API}${product.pictureFiles[0].uri}`);
+                                          const imageUri = product.pictureFiles[0].uri;
+                                          setProductImage(`${BASE_API}${imageUri}`);
+                                          console.log('Product image loaded:', `${BASE_API}${imageUri}`);
                                     }
                               }
                         }

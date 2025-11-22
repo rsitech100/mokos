@@ -1,10 +1,21 @@
-import { OrderCardType } from "@/types/order-card";
+import { Order } from "@/lib/api/fetch-order";
 
 interface OrderInvoiceProps {
-      order: OrderCardType;
+      order: Order;
       stepIndex: number;
       currentStep: number;
 }
+
+const formatDate = (timestamp: number) => {
+      const date = new Date(timestamp);
+      return date.toLocaleDateString('id-ID', { 
+            day: '2-digit', 
+            month: 'long', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+      });
+};
 
 const StatusDelivery = ({ order, stepIndex, currentStep }: OrderInvoiceProps) => {
       const isActive = stepIndex <= currentStep; // Status aktif jika langkah lebih kecil/sama dengan langkah saat ini
@@ -23,26 +34,25 @@ const StatusDelivery = ({ order, stepIndex, currentStep }: OrderInvoiceProps) =>
                               {stepIndex === 3 && "Dalam Perjalanan"}
                               {stepIndex === 4 && "Pesanan Selesai"}
                         </p>
-                        <p>{order.date}</p>
+                        <p>{formatDate(order.createdDate)}</p>
                   </div>
             </div>
       );
 };
 
-export function TrackOrder({ order }: { order: OrderCardType }) {
-      // Tentukan langkah saat ini berdasarkan status pesanan
-      const currentStep =
-            order.status === "Pesanan dibuat"
-                  ? 0
-                  : order.status === "Sedang Dikemas"
-                        ? 1
-                        : order.status === "Dikirim"
-                              ? 2
-                              : order.status === "Dalam Perjalanan"
-                                    ? 3
-                                    : order.status === "Pesanan Selesai"
-                                          ? 4
-                                          : 0;
+export function TrackOrder({ order }: { order: Order }) {
+      // Map API processStatus to step number
+      const statusToStep: Record<string, number> = {
+            'PENDING_PAYMENT': 0,
+            'PAID': 1,
+            'PROCESSING': 1,
+            'SHIPPED': 2,
+            'IN_TRANSIT': 3,
+            'DELIVERED': 4,
+            'CANCELLED': 0
+      };
+      
+      const currentStep = statusToStep[order.processStatus] || 0;
 
       return (
             <div className="flex flex-col bg-white p-5 gap-5 rounded-xl shadow-md">

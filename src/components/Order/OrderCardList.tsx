@@ -1,11 +1,15 @@
 import { OrderCard } from "./OrderCard";
-import { orderData } from "@/lib/order-data";
+import { Order } from "@/lib/api/fetch-order";
 
-export function OrderCardList() {
+interface OrderCardListProps {
+      orders: Order[];
+}
+
+export function OrderCardList({ orders }: OrderCardListProps) {
       return (
             <div className="flex flex-col gap-4">
-                  {orderData.map((item) => (
-                        <OrderCard key={item.id} order={item} />
+                  {orders.map((order) => (
+                        <OrderCard key={order.id} order={order} />
                   ))}
             </div>
       )

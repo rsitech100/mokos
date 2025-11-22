@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { OrderInvoice } from "@/components/Order/Order-Details/OrderInvoice";
 import { IoArrowBack } from "react-icons/io5";
-import { OrderCardType } from "@/types/order-card";
+import { Order } from "@/lib/api/fetch-order";
 import { TrackOrder } from "@/components/Order/Order-Details/TrackOrder";
 import { DetailProduct } from "@/components/Order/Order-Details/DetailProduct";
 import { InfoSellerAndDelivery } from "@/components/Order/Order-Details/InfoSellerAndDelivery";
 
 interface OrderDetailsSectionProps {
-      order: OrderCardType;
+      order: Order;
 }
 
 export function OrderDetailsSection({ order }: OrderDetailsSectionProps) {
@@ -24,9 +24,9 @@ export function OrderDetailsSection({ order }: OrderDetailsSectionProps) {
                         <div className="flex flex-col md:flex-row gap-5 w-full">
                               <div className="flex flex-col gap-5 w-full">
                                     <TrackOrder order={order} />
-                                    <DetailProduct />
+                                    <DetailProduct order={order} />
                               </div>
-                              <InfoSellerAndDelivery />
+                              <InfoSellerAndDelivery order={order} />
                         </div>
                   </div>
             </main>

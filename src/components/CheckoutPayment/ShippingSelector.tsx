@@ -19,13 +19,15 @@ interface ShippingOption {
 interface ShippingSelectorProps {
       shippings?: ShippingOption[];
       selectedShippingId?: string;
-      onShippingChange: (shippingId: string, shippingName: string) => void;
+      onShippingChange: (shippingId: string) => void;
+      loading?: boolean;
 }
 
 export function ShippingSelector({
       shippings = [],
       selectedShippingId,
       onShippingChange,
+      loading = false,
 }: ShippingSelectorProps) {
 
       const [selectedLabel, setSelectedLabel] = useState<string>("Pilih Pengiriman");
@@ -34,9 +36,19 @@ export function ShippingSelector({
             const shipping = shippings.find((s) => s.id === shippingId);
             if (shipping) {
                   setSelectedLabel(shipping.name);
-                  onShippingChange(shippingId, shipping.name);
+                  onShippingChange(shippingId);
             }
       };
+
+      if (loading) {
+            return (
+                  <div className="mt-4">
+                        <div className="animate-pulse">
+                              <div className="h-12 bg-gray-300 rounded-xl"></div>
+                        </div>
+                  </div>
+            );
+      }
 
       return (
             <div className="mt-4">
@@ -74,10 +86,10 @@ export function ShippingSelector({
 
                                                             <div className="flex flex-col gap-1">
                                                                   <p className="font-semibold text-sm text-neutral-700">
-                                                                        {shipping.name}
+                                                                        {shipping.name || 'Pengiriman'}
                                                                   </p>
                                                                   <p className="text-sm text-neutral-600">
-                                                                        {shipping.estimatedDays}
+                                                                        {shipping.estimatedDays || '-'}
                                                                   </p>
                                                             </div>
                                                       </div>

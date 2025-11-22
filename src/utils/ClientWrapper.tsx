@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Layout/Navbar/Navbar";
 import { Footer } from "@/components/Layout/Footer";
 import { Sidebar } from "@/components/Layout/Sidebar/Sidebar";
 import { useAuth } from "@/context/AuthContext"; // Import AuthContext
+import { Toaster } from "react-hot-toast";
 
 export default function ClientWrapper({ children }: { children: React.ReactNode }) {
       const pathname = usePathname();
@@ -40,6 +41,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
       return (
             <>
                   <Navbar />
+                  <Toaster position="top-center" />
                   <main
                         className={` ${backgroundColor} ${shouldShowSidebar ? "flex flex-row p-5 lg:pt-12 lg:py-[120px] lg:px-20 gap-10" : ""
                               }`}

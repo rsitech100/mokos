@@ -1,7 +1,8 @@
 'use client';
+
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { ProductDetail, fetchProductDetail, fetchProductPrices } from '@/lib/api/fetch-product-detail';
-import { fetchProducts } from '@/lib/api/fetch-products';
+import { fetchProductPrices, ProductDetail } from '@/lib/api/fetch-product-detail';
+import { getProductDetailById, getProductImages } from '@/lib/api/product-detail';
 
 interface ProductDetailContextType {
   product: ProductDetail | null;
@@ -22,43 +23,43 @@ export function ProductDetailProvider({ children, productId }: { children: React
       setLoading(true);
       setError(null);
 
-      // Fetch from product list to get images
-      const listResponse = await fetchProducts({ page: 1, size: 100 });
-      const productFromList = listResponse.data.find(p => p.id === id);
-      
-      // Fetch detail
-      const response = await fetchProductDetail(id);
-      
-      // Fetch product prices
-      let productPrices = undefined;
+      // 🟦 Fetch semua data secara parallel
+      const [productDetail, images] = await Promise.all([
+        getProductDetailById(id),
+        getProductImages(id)
+      ]);
+
+      if (!productDetail) throw new Error("Product not found");
+
+      // 🟦 Ambil harga (optional)
+      let productPrices: unknown = undefined;
       try {
         const pricesResponse = await fetchProductPrices(id);
         if (pricesResponse.success && pricesResponse.data.length > 0) {
           productPrices = pricesResponse.data;
         }
-      } catch (priceError) {
-        console.log('No product prices available or error fetching prices');
+      } catch {
+        console.log("No prices available");
       }
-      
-      // Merge: use images from list if available, otherwise from detail
+
       const mergedProduct = {
-        ...response.data,
-        pictureFiles: productFromList?.pictureFiles || response.data.pictureFiles,
-        productPrices: productPrices
+        ...productDetail,
+        pictureFiles: images.length > 0 ? images : productDetail.pictureFiles || [],
+        productPrices,
       };
+
       setProduct(mergedProduct);
+
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load product');
-      console.error('Error loading product:', err);
+      console.error("Error loading product:", err);
+      setError(err instanceof Error ? err.message : "Failed to load product");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (productId) {
-      loadProduct(productId);
-    }
+    if (productId) loadProduct(productId);
   }, [productId]);
 
   return (
@@ -70,7 +71,7 @@ export function ProductDetailProvider({ children, productId }: { children: React
 
 export function useProductDetail() {
   const context = useContext(ProductDetailContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useProductDetail must be used within a ProductDetailProvider');
   }
   return context;
