@@ -52,9 +52,8 @@ export function PopupCart() {
                               }
                         });
                         
-                        // Wait for all images to be fetched
                         await Promise.all(imagePromises);
-                        console.log('Final imageMap:', imageMap);
+                        // console.log('Final imageMap:', imageMap);
                         
                         setProductImages(imageMap);
                         setCartMerchants(response.data);

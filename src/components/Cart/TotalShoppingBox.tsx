@@ -24,9 +24,6 @@ export function TotalShoppingBox() {
                         .map(p => p.cartItemId!)
             );
 
-            console.log('Selected cart IDs:', selectedCartIds);
-            console.log('Cart items:', cartItems);
-
             if (selectedCartIds.length === 0) {
                   toast.error('Pilih produk terlebih dahulu');
                   return;
@@ -34,16 +31,16 @@ export function TotalShoppingBox() {
 
             setLoading(true);
             try {
-                  console.log('Creating checkout with:', { cartsId: selectedCartIds });
-                  // Create checkout with cart IDs
+                  console.log('Waiting for cart updates to complete...');
+                  await new Promise(resolve => setTimeout(resolve, 1500));
+                  
+                  console.log('Creating checkout with cart IDs:', selectedCartIds);
+                  
                   const response = await createCheckout({
                         cartsId: selectedCartIds
                   });
 
-                  console.log('Checkout response:', response);
-
                   if (response.success) {
-                        // Redirect to checkout page with checkoutGroupId
                         router.push(`/checkout?id=${response.data.checkoutGroupId}`);
                   } else {
                         throw new Error(response.message || 'Gagal membuat checkout');
@@ -51,7 +48,6 @@ export function TotalShoppingBox() {
             } catch (error: unknown) {
                   console.error('Checkout error:', error);
                   
-                  // Check if unauthorized
                   if (error instanceof Error && (error.message.includes('Invalid Token') || error.message.includes('401'))) {
                         toast.error('Silakan login terlebih dahulu');
                         router.push('/auth/login');

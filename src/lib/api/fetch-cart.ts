@@ -115,13 +115,22 @@ export async function addToCart(data: AddToCartRequest): Promise<AddToCartRespon
   }
 }
 
-// Update cart item quantity
+// Update cart item quantity - Backend expects absolute quantity, not increment
 export async function updateCart(data: UpdateCartRequest): Promise<AddToCartResponse> {
   try {
-    const response = await apiService.put<AddToCartResponse>('/v1/cart', data);
+    console.log('📤 Sending PUT /v1/cart with:', { id: data.id, qty: data.qty });
+    
+    // Send absolute quantity to backend
+    const response = await apiService.put<AddToCartResponse>('/v1/cart', {
+      id: data.id,
+      qty: data.qty
+    });
+    
+    console.log('📥 PUT /v1/cart response:', response);
+    
     return response;
   } catch (error) {
-    console.error('Error updating cart:', error);
+    console.error('❌ Error updating cart:', error);
     throw error;
   }
 }

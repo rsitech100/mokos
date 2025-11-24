@@ -22,7 +22,6 @@ export default function CartPage() {
                   setLoading(true);
                   const response = await fetchCart();
                   if (response.success) {
-                        // Fetch product images
                         const imageMap: Record<string, string> = {};
                         const allItems = response.data.flatMap(m => m.productsCart);
 
@@ -64,7 +63,7 @@ export default function CartPage() {
 
                                     const picture = product.pictureFiles?.[0]?.uri;
                                     const productImage = picture
-                                          ? `${BASE_API}${picture}`
+                                          ? `${picture}`
                                           : '/image/product/shoes-dummy.svg';
 
                                     return {

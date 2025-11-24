@@ -17,7 +17,6 @@ export function LastSeenCartSection() {
             try {
                   setLoading(true);
                   
-                  // Get recently viewed product IDs from localStorage
                   const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
                   
                   if (recentlyViewed.length === 0) {
@@ -25,7 +24,6 @@ export function LastSeenCartSection() {
                         return;
                   }
 
-                  // Fetch details for each product (max 4)
                   const productPromises = recentlyViewed.slice(0, 4).map(async (productId: string) => {
                         try {
                               const response = await fetch(`${BASE_API}/v1/product?id=${productId}`, {
@@ -41,7 +39,7 @@ export function LastSeenCartSection() {
                               return {
                                     id: product.id,
                                     image: product.pictureFiles && product.pictureFiles.length > 0
-                                          ? `${BASE_API}${product.pictureFiles[0].uri}`
+                                          ? `${product.pictureFiles[0].uri}`
                                           : '/image/product/shoes-dummy.svg',
                                     title: product.title,
                                     price: product.price,

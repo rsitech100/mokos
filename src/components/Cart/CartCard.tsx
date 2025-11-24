@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Product } from "@/types/cart";
 import Image from "next/image";
 import { FaMinus, FaPlus } from "react-icons/fa6";
@@ -14,9 +14,10 @@ interface CartCardProps {
 }
 
 export function CartCard({ storeName, storeId, products }: CartCardProps) {
-      const { updateProductSelection, cartItems } = useCartContext();
+      const { updateProductSelection, updateProductQuantity, cartItems } = useCartContext();
       const [isStoreSelected, setIsStoreSelected] = useState(false);
       const [updatingItems, setUpdatingItems] = useState<Set<string>>(new Set());
+      const updateTimers = useRef<Record<string, NodeJS.Timeout>>({});
 
       const toggleAllProducts = (isSelected: boolean) => {
             setIsStoreSelected(isSelected);
@@ -25,19 +26,13 @@ export function CartCard({ storeName, storeId, products }: CartCardProps) {
             });
       };
 
-      const handleUpdateQuantity = async (cartItemId: string, currentQty: number, increment: boolean) => {
-            const newQty = increment ? currentQty + 1 : currentQty - 1;
-            if (newQty < 1) return;
-
+      // Debounced API sync function
+      const syncToAPI = useCallback(async (productId: number, cartItemId: string, newQty: number) => {
             setUpdatingItems(prev => new Set(prev).add(cartItemId));
             try {
-                  const response = await updateCart({ id: cartItemId, qty: newQty });
-                  if (response.success) {
-                        toast.success('Jumlah berhasil diperbarui');
-                        // Reload page to refresh cart
-                        window.location.reload();
-                  }
-            } catch {
+                  await updateCart({ id: cartItemId, qty: newQty });
+            } catch (error) {
+                  console.error('Error syncing to API:', error);
                   toast.error('Gagal memperbarui jumlah');
             } finally {
                   setUpdatingItems(prev => {
@@ -46,7 +41,25 @@ export function CartCard({ storeName, storeId, products }: CartCardProps) {
                         return newSet;
                   });
             }
-      };
+      }, []);
+
+      const handleUpdateQuantity = useCallback((productId: number, cartItemId: string, currentQty: number, increment: boolean) => {
+            const newQty = increment ? currentQty + 1 : currentQty - 1;
+            if (newQty < 1) return;
+
+            // Update local state immediately for instant feedback
+            updateProductQuantity(storeId, productId, newQty);
+
+            // Clear existing timer for this item
+            if (updateTimers.current[cartItemId]) {
+                  clearTimeout(updateTimers.current[cartItemId]);
+            }
+
+            // Set new timer to sync with API after 1 second
+            updateTimers.current[cartItemId] = setTimeout(() => {
+                  syncToAPI(productId, cartItemId, newQty);
+            }, 1000);
+      }, [storeId, syncToAPI, updateProductQuantity]);
 
       const handleRemove = async (cartItemId: string) => {
             if (!confirm('Hapus produk dari keranjang?')) return;
@@ -55,7 +68,6 @@ export function CartCard({ storeName, storeId, products }: CartCardProps) {
                   const response = await removeFromCart(cartItemId);
                   if (response.success) {
                         toast.success('Produk dihapus dari keranjang');
-                        // Reload page to refresh cart
                         window.location.reload();
                   }
             } catch {
@@ -118,15 +130,38 @@ export function CartCard({ storeName, storeId, products }: CartCardProps) {
                                                             />
                                                             <div className="inline-flex gap-4">
                                                                   <div
-                                                                        className={`w-6 h-6 flex justify-center items-center bg-neutral-400 rounded-full p-2 ${isUpdating || item.quantity <= 1 ? 'opacity-50' : 'cursor-pointer'}`}
-                                                                        onClick={() => !isUpdating && item.quantity > 1 && item.cartItemId && handleUpdateQuantity(item.cartItemId, item.quantity, false)}
+                                                                        className={`w-6 h-6 flex justify-center items-center bg-neutral-400 rounded-full p-2 ${isUpdating ? 'opacity-50' : 'cursor-pointer'}`}
+                                                                        onClick={() => {
+                                                                              if (!isUpdating && item.cartItemId) {
+                                                                                    const currentItem = cartItems
+                                                                                          .find(cart => cart.id === storeId)
+                                                                                          ?.products.find(p => p.id === item.id);
+                                                                                    const currentQty = currentItem?.quantity || item.quantity;
+                                                                                    if (currentQty > 1) {
+                                                                                          handleUpdateQuantity(item.id, item.cartItemId, currentQty, false);
+                                                                                    }
+                                                                              }
+                                                                        }}
                                                                   >
                                                                         <FaMinus color="#315879" />
                                                                   </div>
-                                                                  <span className="text-base">{item.quantity}</span>
+                                                                  <span className="text-base">
+                                                                        {isUpdating ? '...' : 
+                                                                              cartItems.find(cart => cart.id === storeId)
+                                                                                    ?.products.find(p => p.id === item.id)?.quantity || item.quantity
+                                                                        }
+                                                                  </span>
                                                                   <div
                                                                         className={`w-6 h-6 flex justify-center items-center bg-primary-500 rounded-full p-2 ${isUpdating ? 'opacity-50' : 'cursor-pointer'}`}
-                                                                        onClick={() => !isUpdating && item.cartItemId && handleUpdateQuantity(item.cartItemId, item.quantity, true)}
+                                                                        onClick={() => {
+                                                                              if (!isUpdating && item.cartItemId) {
+                                                                                    const currentItem = cartItems
+                                                                                          .find(cart => cart.id === storeId)
+                                                                                          ?.products.find(p => p.id === item.id);
+                                                                                    const currentQty = currentItem?.quantity || item.quantity;
+                                                                                    handleUpdateQuantity(item.id, item.cartItemId, currentQty, true);
+                                                                              }
+                                                                        }}
                                                                   >
                                                                         <FaPlus color="#ffffff" />
                                                                   </div>

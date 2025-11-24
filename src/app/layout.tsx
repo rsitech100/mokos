@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { cookies } from "next/headers";
+import apiService from "@/app/api/api";
 import ClientWrapper from "@/utils/ClientWrapper";
-import { AuthProvider } from "@/context/AuthContext";
+import AuthProvider from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Mini E-Commerce",
@@ -15,16 +17,28 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   display: "swap",
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value || null;
+
+  let user = null;
+
+  if (token) {
+    try {
+      const res = await apiService.get<{ data: any }>("/v1/user", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      user = res.data;
+    } catch (err) {
+      console.log("Token invalid di SSR", err);
+    }
+  }
+
   return (
     <html lang="en">
       <body className={`${plusJakartaSans.className} bg-white`}>
-        <AuthProvider>
-          <ClientWrapper>
-            {children}
-          </ClientWrapper>
+        <AuthProvider initialUser={user} initialToken={token}>
+          <ClientWrapper>{children}</ClientWrapper>
         </AuthProvider>
       </body>
     </html>
