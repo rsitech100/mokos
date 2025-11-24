@@ -27,6 +27,14 @@ export function ProductDetailsCart() {
       const handleAddToCart = async () => {
             if (!product) return;
             
+            // Check if user is logged in
+            const token = localStorage.getItem('token');
+            if (!token) {
+                  toast.error("Silakan login terlebih dahulu");
+                  router.push('/auth/login');
+                  return;
+            }
+            
             const productPriceId = product.productPrices && product.productPrices.length > 0
                   ? product.productPrices.find((p: { isMainView: boolean; id: string }) => p.isMainView)?.id || product.productPrices[0].id
                   : product.id; // Fallback to product id
@@ -56,6 +64,14 @@ export function ProductDetailsCart() {
 
       const handleBuyNow = async () => {
             if (!product) return;
+            
+            // Check if user is logged in
+            const token = localStorage.getItem('token');
+            if (!token) {
+                  toast.error("Silakan login terlebih dahulu");
+                  router.push('/auth/login');
+                  return;
+            }
             
             const productPriceId = product.productPrices && product.productPrices.length > 0
                   ? product.productPrices.find((p: { isMainView: boolean; id: string }) => p.isMainView)?.id || product.productPrices[0].id

@@ -13,24 +13,23 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
       const router = useRouter();
       const { isAuthenticated } = useAuth();
 
-      // Cek apakah halaman merupakan public route
-      const isPublicRoute = useMemo(
-            () => pathname.startsWith("/auth") || ["/", "/category", "/detail-product"].includes(pathname),
-            [pathname]
-      );
+      const isPublicRoute = useMemo(() => {
+            if (pathname.startsWith("/auth")) return true;
+            if (pathname === "/" || pathname === "/category") return true;
+            if (pathname.startsWith("/detail-product/")) return true; 
+            
+            return false;
+      }, [pathname]);
 
-      // Redirect ke login jika user tidak terautentikasi dan mengakses halaman private
       useEffect(() => {
             if (!isAuthenticated && !isPublicRoute) {
                   router.push("/auth/login");
             }
       }, [isAuthenticated, isPublicRoute, router]);
 
-      // Tentukan background color berdasarkan halaman
       const bgNeutralPages = new Set(["/cart", "/checkout", "/pay", "/payment"]);
       const backgroundColor = bgNeutralPages.has(pathname) ? "bg-neutral-200" : "";
 
-      // Cek apakah sidebar harus ditampilkan
       const shouldShowSidebar = useMemo(
             () =>
                   ["/profile", "/address", "/order", "/notification", "/review"].includes(pathname) ||
