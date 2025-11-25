@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import {
       Select,
       SelectContent,
@@ -13,41 +12,46 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 interface PaginationProps {
       totalProducts: number;
       rowsPerPageOptions: number[];
+      page: number;
+      setPage: (page: number) => void;
+      rowsPerPage: number;
+      setRowsPerPage: (val: number) => void;
 }
 
-export function Pagination({ totalProducts, rowsPerPageOptions }: PaginationProps) {
-      const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
-      const [currentPage, setCurrentPage] = useState(1);
+export function Pagination({
+      totalProducts,
+      rowsPerPageOptions,
+      page,
+      setPage,
+      rowsPerPage,
+      setRowsPerPage
+}: PaginationProps) {
 
       const totalPages = Math.ceil(totalProducts / rowsPerPage);
 
-      // Function to handle changing the number of rows per page
       const handleRowsPerPageChange = (value: string) => {
             setRowsPerPage(parseInt(value));
-            setCurrentPage(1); // Reset to first page when rows per page change
+            setPage(1);
       };
 
-      // Function to handle page navigation
       const goToPreviousPage = () => {
-            if (currentPage > 1) {
-                  setCurrentPage(currentPage - 1);
-            }
+            if (page > 1) setPage(page - 1);
       };
 
       const goToNextPage = () => {
-            if (currentPage < totalPages) {
-                  setCurrentPage(currentPage + 1);
-            }
+            if (page < totalPages) setPage(page + 1);
       };
 
       return (
-            <div className="py-2 px-6 flex justify-end">
-            <div className="inline-flex items-center justify-between md:justify-end text-sm gap-1 md:gap-3.5 text-neutral-700 w-full">
+            <div className="py-2 px-0 md:px-6 flex w-full justify-end">
+                  <div className="flex items-center text-xs md:text-sm gap-3.5 text-neutral-700">
                         <p>Rows per page</p>
+
                         <Select onValueChange={handleRowsPerPageChange}>
-                              <SelectTrigger className="bg-neutral-200 rounded-3xl w-[66px] py-2 px-3">
+                              <SelectTrigger className="bg-neutral-200 rounded-xl md:rounded-3xl w-[66px] py-2 px-3">
                                     <SelectValue placeholder={String(rowsPerPage)} />
                               </SelectTrigger>
+
                               <SelectContent>
                                     <SelectGroup>
                                           {rowsPerPageOptions.map((option) => (
@@ -58,20 +62,23 @@ export function Pagination({ totalProducts, rowsPerPageOptions }: PaginationProp
                                     </SelectGroup>
                               </SelectContent>
                         </Select>
+
                         <p>
-                              {`${(currentPage - 1) * rowsPerPage + 1}-${Math.min(
-                                    currentPage * rowsPerPage,
+                              {`${(page - 1) * rowsPerPage + 1}-${Math.min(
+                                    page * rowsPerPage,
                                     totalProducts
                               )} of ${totalProducts}`}
                         </p>
+
                         <div
-                              className={`cursor-pointer ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+                              className={`cursor-pointer ${page === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
                               onClick={goToPreviousPage}
                         >
                               <MdKeyboardArrowLeft size={20} color="#191717" />
                         </div>
+
                         <div
-                              className={`cursor-pointer ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}`}
+                              className={`cursor-pointer ${page === totalPages ? "opacity-50 cursor-not-allowed" : ""}`}
                               onClick={goToNextPage}
                         >
                               <MdKeyboardArrowRight size={20} color="#191717" />

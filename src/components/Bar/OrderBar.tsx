@@ -1,5 +1,4 @@
 'use client';
-import { useState } from "react";
 
 type OrderNavigationType = {
       title: string;
@@ -17,25 +16,19 @@ const OrderNavigationItems: OrderNavigationType[] = [
 ];
 
 interface OrderBarProps {
+      activeStatus: string;
       onStatusChange: (status: string) => void;
 }
 
-export function OrderBar({ onStatusChange }: OrderBarProps) {
-      const [activeStatus, setActiveStatus] = useState("");
-
-      const handleStatusClick = (status: string) => {
-            setActiveStatus(status);
-            onStatusChange(status);
-      };
+export function OrderBar({ activeStatus, onStatusChange }: OrderBarProps) {
 
       return (
             <div className="flex flex-col overflow-hidden">
-                  {/* Wrapper for scrolling */}
                   <div className="flex flex-row gap-8 justify-start lg:justify-around overflow-x-auto w-full scrollbar-hide">
                         {OrderNavigationItems.map((item) => (
                               <button
                                     key={item.title}
-                                    onClick={() => handleStatusClick(item.status)}
+                                    onClick={() => onStatusChange(item.status)}
                                     className={`text-sm whitespace-nowrap pb-2 transition-colors ${
                                           activeStatus === item.status
                                                 ? "text-primary-500 font-semibold border-b-2 border-primary-500"

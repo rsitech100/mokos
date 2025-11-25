@@ -23,7 +23,7 @@ export function DetailProduct({ order }: DetailProductProps) {
 
                   {order.ordersProduct.map((item, index) => (
                         <div key={item.id}>
-                              <div className="inline-flex justify-between px-5 items-center">
+                              <div className="inline-flex justify-between px-5 items-center w-full">
                                     <div className="inline-flex gap-2 items-center">
                                           <Image 
                                                 src="/image/order/dummy.png" 
@@ -32,11 +32,11 @@ export function DetailProduct({ order }: DetailProductProps) {
                                                 height={60} 
                                           />
                                           <div className="flex flex-col gap-[4px] text-sm text-neutral-700">
-                                                <p className="font-bold">{item.productPrice.product.title}</p>
+                                                <p className="font-bold pe-5">{item.productPrice.product.title}</p>
                                                 <p>{item.productPrice.product.category.name}</p>
                                           </div>
                                     </div>
-                                    <p className="text-neutral-700 font-sm">x{item.qty}</p>
+                                    <p className="text-neutral-700 font-sm pe-2">x{item.qty}</p>
                                     <p className="font-bold text-neutral-700 font-sm">{formatPrice(item.finalTotalPrice)}</p>
                               </div>
                               {index < order.ordersProduct.length - 1 && (
@@ -59,7 +59,7 @@ export function DetailProduct({ order }: DetailProductProps) {
                               <p className="font-bold">{formatPrice(order.shippingTotalPrice)}</p>
                         </div>
 
-                        <div className="inline-flex justify-between items-center text-sm text-primary-500">
+                        <div className="inline-flex justify-between font-semibold items-center text-sm text-primary-500">
                               <p>Total</p>
                               <p className="font-bold">{formatPrice(order.finalTotalPrice)}</p>
                         </div>

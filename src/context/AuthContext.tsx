@@ -70,6 +70,7 @@ export default function AuthProvider({
     } else {
       setLoading(false);
     }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchUserData = async (authToken: string) => {
