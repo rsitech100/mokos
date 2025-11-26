@@ -52,7 +52,7 @@ export function SellerInfo() {
                                           unoptimized
                                     />
                               </div>
-                              <div className="flex flex-col gap-1 text-xs sm:text-sm justify-center">
+                              <div className="flex flex-col gap-1 text-sm justify-center">
                                     <div className="inline-flex font-bold text-neutral-700 gap-1.5">
                                           {product.merchant.name}
                                           <RiVerifiedBadgeFill color="#315879" size={20} />
@@ -70,9 +70,9 @@ export function SellerInfo() {
                   </div>
                   <hr className="border-neutral-400 w-full " />
                   <div className="inline-flex items-center p-4 gap-1.5">
-                        <IoLocationOutline size={16} color="#191717" />
-                        <p className="text-xs sm:text-sm text-neutral-700 font-semibold">
-                              Lokasi Toko: <span className="font-normal">
+                        <IoLocationOutline size={18} color="#191717" />
+                        <p className="text-sm text-neutral-700 font-semibold">
+                              Lokasi Toko: &nbsp;<span className="font-normal">
                                     {product.merchant.city && product.merchant.province 
                                           ? `${product.merchant.city}, ${product.merchant.province}`
                                           : product.merchant.address || product.merchant.name

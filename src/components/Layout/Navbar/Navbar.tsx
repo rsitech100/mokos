@@ -17,6 +17,11 @@ export function Navbar() {
       const [isOpen, setIsOpen] = useState(false);
       const { isAuthenticated, user, token } = useAuth();
 
+      // Close menu when route changes
+      useEffect(() => {
+            setIsOpen(false);
+      }, [path]);
+
       useEffect(() => {
       }, [isAuthenticated, token, user]);
 

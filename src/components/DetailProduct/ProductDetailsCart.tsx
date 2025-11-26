@@ -115,7 +115,7 @@ export function ProductDetailsCart() {
 
       return (
             <>
-                  <div className="z-50 shadow-md fixed bottom-0 bg-neutral-100 w-full border-t border-t-neutral-400">
+                  <div className="z-40 shadow-md fixed bottom-0 bg-neutral-100 w-full border-t border-t-neutral-400">
                         <div className="flex flex-row justify-center md:justify-between items-center px-5 md:px-20 py-5 w-full mx-auto max-w-[1440px]">
                               <div className="hidden md:flex flex-row gap-3 items-center">
                                     <div className="relative w-12 h-12 rounded overflow-hidden">
@@ -143,11 +143,11 @@ export function ProductDetailsCart() {
                                     </div>
                               </div>
 
-                              <div className="inline-flex gap-3">
+                              <div className="inline-flex gap-3 w-full md:w-auto">
                                     <button 
                                           onClick={handleBuyNow}
                                           disabled={buyingNow}
-                                          className={`rounded-2xl px-10 py-3 text-primary-500 border border-primary-500 bg-neutral-100 text-xs sm:text-sm font-semibold transition-colors ${
+                                          className={`rounded-xl w-full md:w-fit md:rounded-2xl md:px-10 py-3 text-primary-500 border border-primary-500 bg-neutral-100 text-xs sm:text-sm font-semibold transition-colors ${
                                                 buyingNow ? "opacity-50 cursor-not-allowed" : "hover:bg-primary-50"
                                           }`}
                                     >
@@ -156,7 +156,7 @@ export function ProductDetailsCart() {
                                     <button 
                                           onClick={handleAddToCart}
                                           disabled={addingToCart}
-                                          className={`rounded-2xl px-10 py-3 text-neutral-100 border bg-primary-500 text-xs sm:text-sm font-semibold transition-colors ${
+                                          className={`rounded-xl w-full md:w-fit md:rounded-2xl md:px-10 py-3 text-neutral-100 border bg-primary-500 text-xs sm:text-sm font-semibold transition-colors ${
                                                 addingToCart ? "opacity-50 cursor-not-allowed" : "hover:bg-primary-600"
                                           }`}
                                     >

@@ -39,7 +39,7 @@ export function ContactInformation() {
       } | null>(null);
       const [editIndex, setEditIndex] = useState<number | null>(null);
       const [saving, setSaving] = useState<number | null>(null);
-      
+
       // State to store updated values dari user
       const [updatedValues, setUpdatedValues] = useState<ContactInformationType[]>([
             { title: "Nomor HP", value: user?.phone || "", field: "phone" },
@@ -52,13 +52,13 @@ export function ContactInformation() {
                   { title: "Nomor HP", value: user?.phone || "", field: "phone" },
                   { title: "Email", value: user?.email || "", field: "email" },
             ]);
-      }, [user]); 
+      }, [user]);
 
       const openPopUp = () => setIsPopupOpen(true);
       const closePopUp = () => setIsPopupOpen(false);
 
       const handleEditClick = (index: number) => {
-            setEditIndex(index); 
+            setEditIndex(index);
       };
 
       const handleInputChange = (index: number, newValue: string) => {
@@ -85,7 +85,7 @@ export function ContactInformation() {
                               email: item.value,
                         });
                         if (!response.success) throw new Error(response.message || "Gagal update email");
-                        
+
                         // Check if verification is required
                         if (response.data?.requestKey) {
                               // Store verification data and open popup
@@ -151,7 +151,7 @@ export function ContactInformation() {
                                     key={index}
                               >
                                     <p className="w-fit sm:w-[150px]">{item.title}</p>
-                                    <div className="inline-flex gap-3 items-center">
+                                    <div className="flex flex-col md:flex-row gap-3 items-end">
                                           {editIndex === index ? (
                                                 <>
                                                       <input
@@ -162,27 +162,29 @@ export function ContactInformation() {
                                                             onKeyDown={(e) => handleInputKeyDown(index, e)}
                                                             autoFocus
                                                       />
-                                                      <button
-                                                            onClick={() => handleSaveContact(index)}
-                                                            disabled={saving === index}
-                                                            className={`px-3 py-1 rounded-md text-xs font-semibold text-white ${
-                                                                  saving === index ? "bg-neutral-400" : "bg-primary-500 hover:bg-primary-600"
-                                                            }`}
-                                                      >
-                                                            {saving === index ? "..." : "Simpan"}
-                                                      </button>
-                                                      <button
-                                                            onClick={() => {
-                                                                  setEditIndex(null);
-                                                                  setUpdatedValues([
-                                                                        { title: "Nomor HP", value: user?.phone || "", field: "phone" },
-                                                                        { title: "Email", value: user?.email || "", field: "email" },
-                                                                  ]);
-                                                            }}
-                                                            className="text-neutral-500 text-xs"
-                                                      >
-                                                            Batal
-                                                      </button>
+                                                      <div className="flex flex-row gap-3 justify-end items-center">
+                                                            <button
+                                                                  onClick={() => handleSaveContact(index)}
+                                                                  disabled={saving === index}
+                                                                  className={`px-3 py-1 rounded-md text-xs font-semibold text-white ${saving === index ? "bg-neutral-400" : "bg-primary-500 hover:bg-primary-600"
+                                                                        }`}
+                                                            >
+                                                                  {saving === index ? "..." : "Simpan"}
+                                                            </button>
+                                                            <button
+                                                                  onClick={() => {
+                                                                        setEditIndex(null);
+                                                                        setUpdatedValues([
+                                                                              { title: "Nomor HP", value: user?.phone || "", field: "phone" },
+                                                                              { title: "Email", value: user?.email || "", field: "email" },
+                                                                        ]);
+                                                                  }}
+                                                                  className="text-neutral-500 text-xs"
+                                                            >
+                                                                  Batal
+                                                            </button>
+                                                      </div>
+
                                                 </>
                                           ) : (
                                                 <>
@@ -214,7 +216,7 @@ export function ContactInformation() {
                   </button>
 
                   <PopupChangePassword isOpen={isPopupOpen} onClose={closePopUp} />
-                  
+
                   {emailVerificationData && (
                         <PopupVerifyEmail
                               isOpen={isVerifyEmailOpen}

@@ -20,17 +20,23 @@ const OTPInput = ({ length = 5, onComplete }: InputProps) => {
 
     // Pindahkan fokus ke input berikutnya
     if (value && index < length - 1) {
-      inputRefs.current[index + 1]?.focus();
+      setTimeout(() => {
+        inputRefs.current[index + 1]?.focus();
+      }, 0);
     }
 
-    // Pindahkan fokus ke input sebelumnya jika dihapus
-    if (!value && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-
-    // Jika semua input terisi, panggil onComplete
+    // Jika semua input terisi, panggil onComplete dan blur untuk zoom out di mobile
     if (newOTP.every((digit) => digit !== "")) {
       onComplete(newOTP.join(""));
+      // Blur semua input untuk zoom out di mobile
+      inputRefs.current.forEach(input => input?.blur());
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    // Handle backspace
+    if (e.key === 'Backspace' && !OTP[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
     }
   };
 
@@ -40,9 +46,12 @@ const OTPInput = ({ length = 5, onComplete }: InputProps) => {
         <input
           key={index}
           type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
           value={OTP[index]}
           maxLength={1}
           onChange={(e) => handleTextChange(e.target.value, index)}
+          onKeyDown={(e) => handleKeyDown(e, index)}
           ref={(ref) => { inputRefs.current[index] = ref; }}
           className="w-12 h-12 border border-gray-300 rounded-lg text-center text-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />

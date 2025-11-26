@@ -47,7 +47,7 @@ export function ProfileItems({ onClose }: ProfileItemsProps) {
                                     passHref
                                     onClick={(e) => {
                                           if (item.title === "Keluar") {
-                                                e.preventDefault(); // Cegah navigasi untuk item logout
+                                                e.preventDefault(); 
                                                 handleLogoutClick(e);
                                           } else {
                                                 onClose(); 

@@ -21,7 +21,7 @@ export default async function DetailProductPage({ params }: { params: Promise<{ 
       ];
 
       return (
-            <main className="flex flex-col lg:py-12 gap-10 w-full">
+            <main className="flex flex-col lg:py-12 gap-10 w-full mt-6 md:mt-0">
                   <div className="w-full max-w-[1440px] mx-auto px-5 lg:px-20">
                         <Breadcrumb items={breadcrumbItems} />
                   </div>

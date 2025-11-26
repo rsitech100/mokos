@@ -14,7 +14,7 @@ const ImagesItem: ImagesType[] = [
 
 export function Hero() {
       return (
-            <section className="px-5 lg:px-20 w-full h-[190px] sm:h-fit lg:h-[300px] flex items-center justify-center">
+            <section className="px-5 lg:px-20 w-full h-full sm:h-fit lg:h-[300px] flex items-center justify-center">
                   <Swiper
                         modules={[Autoplay, Pagination]}
                         pagination={{ clickable: true }}

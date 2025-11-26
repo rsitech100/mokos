@@ -27,7 +27,7 @@ export function PopupOTP({ email, isOpen, onClose, requestKey, type }: PopupOTPP
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    handleResize(); // Cek saat komponen pertama kali dirender
+    handleResize(); 
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);

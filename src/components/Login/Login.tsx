@@ -26,6 +26,12 @@ export function LoginComponent() {
 
       const handleLogin = async (e: React.FormEvent) => {
             e.preventDefault();
+            
+            // Blur active element to zoom out on mobile
+            if (document.activeElement instanceof HTMLElement) {
+                  document.activeElement.blur();
+            }
+            
             setIsLoading(true);
             setErrorMessage("");
             try {

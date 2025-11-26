@@ -46,7 +46,7 @@ export function NotificationButton() {
                   {!isMobile && isPopUpVisible && (
                         <div 
                         ref={popupRef}
-                        className="absolute top-[53px] right-[720px] z-50">
+                        className="absolute top-[50px] right-[660px] z-50">
                               <PopupNotification />
                         </div>
                   )}

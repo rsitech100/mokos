@@ -22,11 +22,10 @@ export function ProductDetailsDescription({infoProductDetails, activeTab}: Produ
 
       if (!product) return null;
 
-      // Detail tab - show product description
       if (activeTab === 'Detail') {
             return (
                   <div 
-                        className="text-xs sm:text-sm prose prose-sm max-w-none text-neutral-700"
+                        className="text-sm prose prose-sm max-w-none text-neutral-700"
                         dangerouslySetInnerHTML={{ __html: product.description || 'Tidak ada deskripsi' }}
                   />
             );
@@ -38,8 +37,8 @@ export function ProductDetailsDescription({infoProductDetails, activeTab}: Produ
                   <div className="flex flex-col gap-3">
                         {product.weight && product.unitWeight && (
                               <div className="flex flex-col gap-1">
-                                    <p className="text-xs sm:text-sm font-semibold text-neutral-700">Berat</p>
-                                    <p className="text-xs sm:text-sm text-neutral-600">{product.weight} {product.unitWeight}</p>
+                                    <p className="text-sm font-semibold text-neutral-700">Berat</p>
+                                    <p className="text-sm text-neutral-600">{product.weight} {product.unitWeight}</p>
                               </div>
                         )}
                         {product.lengthDimension && product.widthDimension && product.heightDimension && product.unitDimension && (

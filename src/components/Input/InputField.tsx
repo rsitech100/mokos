@@ -33,7 +33,8 @@ export function InputField({
                               placeholder={placeholder}
                               value={value}
                               onChange={(e) => onChange(e.target.value)}
-                              className="py-[10px] px-3 rounded-lg text-neutral-700 text-sm w-full focus:outline-none"
+                              className="py-[10px] px-3 rounded-lg text-neutral-700 w-full focus:outline-none"
+                              style={{ fontSize: '16px' }}
                               required
                         />
                         {showPasswordToggle && togglePassword && (
