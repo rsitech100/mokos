@@ -30,7 +30,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       });
       user = res.data;
     } catch (err) {
-      console.log("Token invalid di SSR", err);
+      console.error("Failed to fetch user in SSR:", err);
+      // Don't throw error, just continue without user data
     }
   }
 

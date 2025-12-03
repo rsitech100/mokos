@@ -9,40 +9,51 @@ export class ApiService {
     }
 
     // Generic GET request
-    async   get<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
-        const url = this.constructUrl(endpoint, params);
-        return this.request<T>('GET', url);
+    async   get<T>(endpoint: string, options?: { params?: Record<string, any>; headers?: Record<string, string> }): Promise<T> {
+        const url = this.constructUrl(endpoint, options?.params);
+        return this.request<T>('GET', url, undefined, options?.headers);
     }
 
     // Generic POST request
-    async post<T>(endpoint: string, body?: Record<string, any>): Promise<T> {
+    async post<T>(endpoint: string, body?: Record<string, any>, headers?: Record<string, string>): Promise<T> {
         const url = `${this.baseURL}${endpoint}`;
-        return this.request<T>('POST', url, body);
+        return this.request<T>('POST', url, body, headers);
     }
 
     // Generic PUT request
-    async put<T>(endpoint: string, body?: Record<string, any>): Promise<T> {
+    async put<T>(endpoint: string, body?: Record<string, any>, headers?: Record<string, string>): Promise<T> {
         const url = `${this.baseURL}${endpoint}`;
-        return this.request<T>('PUT', url, body);
+        return this.request<T>('PUT', url, body, headers);
     }
 
     // Generic DELETE request
-    async delete<T>(endpoint: string): Promise<T> {
+    async delete<T>(endpoint: string, headers?: Record<string, string>): Promise<T> {
         const url = `${this.baseURL}${endpoint}`;
-        return this.request<T>('DELETE', url);
+        return this.request<T>('DELETE', url, undefined, headers);
     }
 
     // Core request handler using fetch API
     private async request<T>(
         method: 'GET' | 'POST' | 'PUT' | 'DELETE',
         url: string,
-        body?: Record<string, any>
+        body?: Record<string, any>,
+        customHeaders?: Record<string, string>
     ): Promise<T> {
+        // Use custom headers if provided (SSR), otherwise use cookies (client-side)
+        const token = typeof window === 'undefined' ? null : Cookies.get('token');
+        const defaultHeaders: Record<string, string> = {
+            'Content-Type': 'application/json',
+        };
+        
+        if (token && !customHeaders?.Authorization) {
+            defaultHeaders['Authorization'] = `Bearer ${token}`;
+        }
+
         const options: RequestInit = {
             method,
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+Cookies.get('token')
+                ...defaultHeaders,
+                ...customHeaders,
             },
             ...(body ? { body: JSON.stringify(body) } : {}),
         };

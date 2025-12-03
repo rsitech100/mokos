@@ -57,7 +57,7 @@ export function ProductsSection() {
                         FeaturedProducts={12}
                         loading={loading}
                   />
-                  {totalProducts > 12 && !showAllProducts && (
+                  {/* {totalProducts > 12 && !showAllProducts && (
                         <button
                               className="rounded-full text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white text-xs sm:text-sm px-14 py-3 font-semibold mx-auto mt-5"
                               aria-label="Show All Product Button"
@@ -65,7 +65,7 @@ export function ProductsSection() {
                         >
                               Muat Lainnya
                         </button>
-                  )}
+                  )} */}
             </section>
       )
 }

@@ -37,7 +37,7 @@ export function Navbar() {
                                     <div className="flex flex-col lg:flex-row w-full justify-around">
                                           <div className="flex flex-row gap-3 lg:gap-0 w-full items-center justify-between shadow-card py-4 lg:py-0 px-5 lg:px-0 lg:shadow-none bg-white">
                                                 {/* Logo Profile */}
-                                                {!isOpen && (
+                                                {/* {!isOpen && (
                                                       <Link href="/" passHref>
                                                             <div className="w-10 sm:w-[48px] sm:h-fit flex items-center justify-center">
                                                                   <Image
@@ -63,14 +63,14 @@ export function Navbar() {
                                                 )}
 
                                                 {/* Title on Mobile */}
-                                                {isOpen && <h2 className="font-bold text-neutral-700 text-lg">Menu</h2>}
+                                                {/* {isOpen && <h2 className="font-bold text-neutral-700 text-lg">Menu</h2>} */}
 
                                                 {/* Category Button */}
-                                                {!isOpen && <CategoryButton />}
+                                                {/* {!isOpen && <CategoryButton />} */}
 
                                                 {/* Search Button */}
                                                 {!isOpen && <InputSearchAllProduct />}
-                                                {!isOpen && <CartButton />}
+                                                {/* {!isOpen && <CartButton />} */}
                                                 <div className="flex flex-row items-center gap-5">
                                                       <div className="lg:hidden flex items-center justify-center">
                                                             <button onClick={toggleMenu}>
